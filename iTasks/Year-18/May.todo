@@ -1,0 +1,35 @@
+/*
+@author: harold.duan
+@date: 18-05-01
+@memo: Tasks logging
+*/
+
+Todo 1st week:
+  ✔ project Lakh-ITP @done(18-05-05 15:51)
+  ☐ product App-Function Warehouse @critical @started(18-05-05 15:51)
+
+Todo 2nd week:
+  ☐ project YouHome @critical @started(18-05-07 20:35) 
+  ☐ project Lakh @high @started(18-05-07 20:35)
+  ☐ project Vitality @critical @started(18-05-07 20:35)
+  ✔ presale Lcvono @started(18-05-07 20:35) @done(18-05-13 12:26) @lasted(5 days 15 hours 51 minutes 10 seconds)
+  ✔ presale PowerVision @done(18-05-10 14:00)
+  ✔ prject CASIC-FinancialStatement joint debugging planning meeting @done(18-05-10 16:19)
+  ✔ app development meeting(Pancy.Fan&Aaton.Kang&Young.Yan) @done(18-05-13 12:22)
+  ✔ EDI development meeting(Pancy.Fan) @done(18-05-13 12:22)
+  ✔ project development meeting(Milk.Yu) @done(18-05-13 12:22)
+
+Todo 3rd week:
+  ☐ app development-logon view development @high @started(18-05-14 09:00)
+  ☐ app development-logon model service development @high @started(18-05-14 09:00)
+  ☐ project Lakh development and debugging @critical @started(18-05-16 09:00)
+  ☐ project Vitlity addon development and debugging @critical @started(18-05-14 10:00)
+  ✔ project Vitlity webservice output function debugging @critical @started(18-05-14 10:00) @done(18-05-17 18:00) @lasted(3 days 4 hours 0 minutes 0 seconds)
+  ☐ project CK addon bugs processing @critical @started(18-05-18 09:30)
+  ✔ app development meeting-[Inventory Receipt and Inventory Issue] (Pacy.Fan&Aaton.Kang&Young.Yan) @critical @done(18-05-19 18:00)
+
+Todo 4th week:
+  ☐ app development-[Inventory Task] view development @critical @started(18-05-21 09:00)
+  ☐ app development-[Inventory Task] model service development @critical @started(18-05-21 09:00)
+  ✔ project Vitlity webservice input function interface design meeting @critical @started(18-05-21 14:00) @done(18-05-21 17:00) @lasted(3h)
+  ☐ project Chuangzhi development @critical 
