@@ -1,6 +1,6 @@
-# iNotes
+# iNotes 📝 🧡 📜
 
-## Notes
+## Notes 📝
 
 + [2018](./iNotes/Year-18 '2018')
   + [Jan.](./iNotes/Year-18/Jan.md 'January')
@@ -16,7 +16,7 @@
   + [Nov.](./iNotes/Year-18/Nov.md 'November')
   + [Dec.](./iNotes/Year-18/Dec.md 'December')
 
-## Tasks
+## Tasks 📜
 
 + [2018](./iNotes/Year-18 '2018')
   + [Jan.](./iTasks/Year-18/Jan.todo 'January')
