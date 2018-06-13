@@ -11,8 +11,8 @@ Todo 1st week:
   ✔ project CASIC interface meetting @critical @today @started(18-06-05 13:30) @done(18-06-05 16:20) @lasted(2h50m3s)
 
 Todo 2nd week:
-  ☐ Swift development @low 
-  ☐ RDD Employee's promotions @critical @today 
+  ✔ Swift development testing,webapi loggin function debugging @low @started(18-06-12 15:00) @done(18-06-12 23:34) @lasted(8h34m)
+  ✔ RDD Employee's promotions send email @critical @today @done(18-06-11 15:51)
   ☐ Aikang PDA program debugging @critical 
-  ☐ project EDF Time Management function module development requires meeting @high 
+  ✔ project EDF Time Management function module development requires meeting @high @started(18-06-13 09:30) @done(18-06-13 10:00) @lasted(30m)
   ✔ app development-logon review meeting @critical @today @done(18-06-11 18:32)
