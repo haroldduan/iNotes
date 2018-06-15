@@ -26,7 +26,7 @@ Command + Option + / : 标柱
 Command + Left/Right : 行首/尾
 Command + Up/Down : 文首/末
 Ctrl + I : 格式化代码
-Command + Option + Left/Right : 折叠/展开代码(方法)
-Shift + Command + Option + Left/Right : 全局折叠/展开代码(方法)
+Command + Option + Left/Right : 折叠/展开代码
+Shift + Command + Option + Left/Right : 全局折叠/展开代码
 Ctrl + Shift + Command + Left/Right : 折叠/展开代码(/**/之间的代码)
 ```
