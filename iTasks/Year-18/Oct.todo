@@ -21,6 +21,6 @@ Todo 2nd week:
 ✔ Q3 QBR meeting @date: 18-10-12 @created(18-10-12 10:00) @done(18-10-12 13:00)
 
 Todo 3rd week:
-✔ project Topline OA API development meeting @date: 18-10-16 @author: Scott.Zhang @created(18-10-16 10:00) @done(18-10-16 15:30)
-✔ project Man IMS API development meeting @date: 18-10-17 @author: Drew.Liang @created(18-10-17 10:00) @done(18-10-17 15:40)
-✔ project LiDaKang ITP meeting @date: 18-10-17 @created(18-10-17 11:30) @done(18-10-17 12:30)
+✔ project Topline OA API development meeting @critical @date: 18-10-16 @author: Scott.Zhang @created(18-10-16 10:00) @done(18-10-16 15:30)
+✔ project Man IMS API development meeting @critical @date: 18-10-17 @author: Drew.Liang @created(18-10-17 10:00) @done(18-10-17 15:40)
+✔ project LiDaKang ITP meeting @critical @date: 18-10-17 @created(18-10-17 11:30) @done(18-10-17 12:30)
