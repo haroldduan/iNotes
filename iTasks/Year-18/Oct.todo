@@ -30,7 +30,7 @@ Todo 3rd week:
 
 Todo 4th week:
 ✔ new employee SBO SDK Traning @created(18-10-22 17:37) @done(18-10-22 12:30)
-☐ SAP Data Transfer Training @date: 18-10-25 @2d @created(18-10-22 17:51)
-☐ project Topline OA API development meeting @date: 18-10-24 @author: Scott.Zhang @created(18-10-22 17:53)
-☐ project MAN development meeting @date: 18-10-24 @author: Drew.Liang @created(18-10-22 17:54)
-☐ project YSYJ HANA optimization meeting @author: Pancy.Fan @created(18-10-22 18:00)
+☐ SAP Data Transfer Training @high @date: 18-10-25 @2d @created(18-10-22 17:51)
+☐ project Topline OA API development meeting @critical @date: 18-10-24 @author: Scott.Zhang @created(18-10-22 17:53)
+☐ project MAN development meeting @critical @date: 18-10-24 @author: Drew.Liang @created(18-10-22 17:54)
+☐ project YSYJ HANA optimization meeting @critical @author: Pancy.Fan @created(18-10-22 18:00)
