@@ -35,6 +35,6 @@ Todo 4th week:
 ✔ SAP Data Transfer Training @high @date: 18-10-25 @2d @created(18-10-22 17:51) @done(18-10-26 18:00)
 ✔ project Topline OA API development meeting @critical @date: 18-10-24 @author: Scott.Zhang @created(18-10-22 17:53) @done(18-10-24 12:00)
 ✔ project MAN development meeting @critical @date: 18-10-24 @author: Drew.Liang @created(18-10-22 17:54) @done(18-10-24 16:30)
-☐ project YSYJ HANA optimization meeting @critical @author: Pancy.Fan @created(18-10-22 18:00)
+✔ project YSYJ HANA optimization meeting @critical @author: Pancy.Fan @created(18-10-22 18:00) @done(18-10-28 21:29)
 ✔ project Luray ibas addon deployment @critical @author: Alvin.Dong @created(18-10-27 10:50) @done(18-10-27 18:00)
 ☐ Gogs server deployment in department's server machine @created(18-10-28 21:28) @started(18-10-28 10:30)
