@@ -24,3 +24,9 @@ sudo systemctl unmask firewalld
 sudo firewall-cmd  --list-all
 sudo firewall-cmd --list-ports
 ```
+
+## SELinux
+
+``` command
+sudo vim /etc/selinux/config
+```
