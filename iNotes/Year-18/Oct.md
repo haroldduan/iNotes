@@ -30,3 +30,10 @@ sudo firewall-cmd --list-ports
 ``` command
 sudo vim /etc/selinux/config
 ```
+
+# SSH
+
+``` command
+sudo vim /etc/ssh/ssh_config
+sudo vim /etc/ssh/sshd_config
+```
