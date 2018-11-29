@@ -16,6 +16,20 @@
   + [Nov.](./iNotes/Year-18/Nov.md 'November')
   + [Dec.](./iNotes/Year-18/Dec.md 'December')
 
++ [2019](./iNotes/Year-19 '2019')
+  + [Jan.](./iNotes/Year-19/Jan.md 'January')
+  + [Feb.](./iNotes/Year-19/Feb.md 'February')
+  + [Mar.](./iNotes/Year-19/Mar.md 'March')
+  + [Apr.](./iNotes/Year-19/Apr.md 'April')
+  + [May.](./iNotes/Year-19/May.md 'May')
+  + [Jun.](./iNotes/Year-19/Jun.md 'June')
+  + [Jul.](./iNotes/Year-19/Jul.md 'July')
+  + [Aug.](./iNotes/Year-19/Aug.md 'August')
+  + [Sep.](./iNotes/Year-19/Sep.md 'September')
+  + [Oct.](./iNotes/Year-19/Oct.md 'October')
+  + [Nov.](./iNotes/Year-19/Nov.md 'November')
+  + [Dec.](./iNotes/Year-19/Dec.md 'December')
+
 ## Tasks 📜
 
 + [2018](./iNotes/Year-18 '2018')
@@ -31,3 +45,17 @@
   + [Oct.](./iTasks/Year-18/Oct.todo 'October')
   + [Nov.](./iTasks/Year-18/Nov.todo 'November')
   + [Dec.](./iTasks/Year-18/Dec.todo 'December')
+
++ [2019](./iNotes/Year-18 '2019')
+  + [Jan.](./iTasks/Year-19/Jan.todo 'January')
+  + [Feb.](./iTasks/Year-19/Feb.todo 'February')
+  + [Mar.](./iTasks/Year-19/Mar.todo 'March')
+  + [Apr.](./iTasks/Year-19/Apr.todo 'April')
+  + [May.](./iTasks/Year-19/May.todo 'May')
+  + [Jun.](./iTasks/Year-19/Jun.todo 'June')
+  + [Jul.](./iTasks/Year-19/Jul.todo 'July')
+  + [Aug.](./iTasks/Year-19/Aug.todo 'August')
+  + [Sep.](./iTasks/Year-19/Sep.todo 'September')
+  + [Oct.](./iTasks/Year-19/Oct.todo 'October')
+  + [Nov.](./iTasks/Year-19/Nov.todo 'November')
+  + [Dec.](./iTasks/Year-19/Dec.todo 'December'
