@@ -1,6 +1,10 @@
 # B1测试服务器信息
 
-* IP Address: 192.168.3.57
+* IP Address
+
+  + LAN: 192.168.3.57 Port:3389
+
+  + WAN: 182.18.76.130 Port:7789
 
 * OS: Windows Server 2016
 
