@@ -31,3 +31,12 @@ sudo -u admin vboxmanage startvm winsrv2016 --type headless
 # boot log
 /var/log/boot.log
 ```
+
+``` Printscreen
+Printscreen – 截取整个桌面的屏幕截图并保存你的照片文件夹
+Alt + Printscreen – 截取目前获得焦点的窗口截图并保存你的照片文件夹
+Shift + Printscreen – 选定区域截取并将其保存到你的照片文件夹
+Ctrl + Printscreen – 截取整个桌面的屏幕截图并将其复制到剪贴板
+Ctrl + Alt + Printscreen – 截取目前获得焦点的窗口截图并将其复制到剪贴板
+Ctrl + Shift + Printscreen – 选定区域截取并将其复制到剪贴板
+```
