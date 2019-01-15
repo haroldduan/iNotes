@@ -26,7 +26,9 @@ Todo 2nd week:
 ✔ AngularJS view style layout design discussing @critical @author Aaton.Kang @created(19-01-11 17:00) @done(19-01-11 18:27)
 
 Todo 3rd week:
-✔ 2018 annual summarize debriefing meeting @created(19-01-13 10:15) @started(19-01-13 10:20) @done(19-01-13 18:20) @lasted(8h)
-☐ employee management method & styles summary @created(19-01-13 12:30) @started(19-01-13 12:30)
+✔ 2018 annual summarize debriefing meeting @critical @created(19-01-13 10:15) @started(19-01-13 10:20) @done(19-01-13 18:20) @lasted(8h)
+☐ employee management method & styles summary @critical @created(19-01-13 12:30) @started(19-01-13 12:30)
 ✔ project Inspur requires evaluating @created(19-01-14 10:30) @done(19-01-14 11:30)
-✔ team BI developing direction and work planning meeting @Steven.Hu&Lucifer.Liu @created(19-01-15 10:30) @done(19-01-15 12:15)
+✔ team BI developing direction and work planning meeting @critical @author Steven.Hu&Lucifer.Liu @created(19-01-15 10:30) @done(19-01-15 12:15)
+☐ project ChemChina BlueStar API development meeting @critical @author Ocean.Li @created(19-01-15 13:16)
+☐ Sino after sales error processing meeting @critical @date 19-01-16 @author Cathy.Xu @created(19-01-15 13:15)
