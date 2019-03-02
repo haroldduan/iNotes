@@ -1,4 +1,5 @@
 /*
+@title: work notes in March
 @author: harold.duan
 @date: 19-03-01
 @memo: Tasks logging
@@ -7,3 +8,5 @@
 Todo 1st week:
 ☐ department recruitment interview @critical @author Pancy.Fan&HR @date 19-02-28 @created(19-03-01 10:12)
 ☐ department Quarter Technical Salon Meeting @critical @author All-R&D-Personnel @date 19-03-01 @created(19-03-01 10:14)
+✔ project Luray ibas addon error processing @critical @author Jeack.Wang @date 19-03-02 @created(19-03-02 14:07) @done(19-03-02 14:09)
+☐ project Aussco error processing,documents generating by service layer on python dev env @critical @author Crystal.Duan @date 19-03-02 @created(19-03-02 10:30) @started(19-03-02 10:30)
