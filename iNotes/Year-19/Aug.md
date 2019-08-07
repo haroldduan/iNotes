@@ -161,6 +161,20 @@ $ git checkout stable
 # vim ~/taiga-front-dist/dist/conf.json
 ```
 
+```
+{
+     "api": "http://[IP-Address]:[Port]/api/v1/",
+     "eventsUrl": "ws://taiga.hakase-labs.co/events",
+     "debug": "true",
+     "publicRegisterEnabled": true,
+     "feedbackEnabled": true,
+     "privacyPolicyUrl": null,
+     "termsOfServiceUrl": null,
+     "maxUploadFileSize": null,
+     "contribPlugins": []
+ }
+```
+
 ### 配置Taiga事件
 
 ```
