@@ -364,3 +364,81 @@ $ sudo chmod g+x /home/taiga
 $ sudo chmod g+x /home/taiga/taiga-front-dist
 $ sudo chmod g+x /home/taiga/taiga-front-dist/dist
 ```
+
+## Docker
+
+### Docker 简介
+
+> Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从Apache2.0协议开源。  
+> Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。  
+> 容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开销极低。  
+> Docker 从 17.03 版本之后分为 CE（Community Edition: 社区版） 和 EE（Enterprise Edition: 企业版）。
+
+### Docker 架构
+
+> Docker 使用客户端-服务器 (C/S) 架构模式，使用远程API来管理和创建Docker容器。  
+> Docker 容器通过 Docker 镜像来创建。  
+> 容器与镜像的关系类似于面向对象编程中的对象与类。  
+
+Docker |面向对象 
+--- |--- 
+容器 |对象 
+镜像 |类 
+
+![Docker Architecture](./static/image/Sep/docker-arch.png "Docker-Architecture")
+
+Docker 镜像(Images) |Docker 镜像是用于创建 Docker 容器的模板。 
+--- |---
+Docker 容器(Container) |容器是独立运行的一个或一组应用。 
+Docker 客户端(Client) |Docker 客户端通过命令行或者其他工具使用 Docker API (https://docs.docker.com/reference/api/docker_remote_api) 与 Docker 的守护进程通信。 
+Docker 主机(Host) |一个物理或者虚拟的机器用于执行 Docker 守护进程和容器。 
+Docker 仓库(Registry) |Docker 仓库用来保存镜像，可以理解为代码控制中的代码仓库。<br>Docker Hub(https://hub.docker.com) 提供了庞大的镜像集合供使用。 
+Docker Machine |Docker Machine是一个简化Docker安装的命令行工具，通过一个简单的命令行即可在相应的平台上安装Docker，比如VirtualBox、 Digital Ocean、Microsoft Azure。 
+
+### Docker 安装
+
+``` Docker install on CentOS
+# Remove old version
+$ sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-selinux \
+                  docker-engine-selinux \
+                  docker-engine
+# Install toolkits
+$ sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+$ Add software repo source
+$ sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+# Update repo source
+$ sudo yum makecache fast
+# Install docker ce
+$ sudo yum -y install docker-ce
+# Start docker
+$ sudo systemctl start docker
+```
+
+``` Install by scripts
+# Download scripts and install by scripts
+$ curl -fsSL https://get.docker.com -o get-docker.sh
+$ sudo sh get-docker.sh
+# Start docker
+$ sudo systemctl start docker
+# Remove docker
+$ sudo yum remove docker-ce
+$ sudo rm -rf /var/lib/docker
+```
+
+> **镜像加速**
+> 鉴于国内网络问题，后续拉取 Docker 镜像十分缓慢，我们可以需要配置加速器来解决，我使用的是网易的镜像地址：http://hub-mirror.c.163.com。  
+> 新版的 Docker 使用 /etc/docker/daemon.json（Linux） 或者 %programdata%\docker\config\daemon.json（Windows） 来配置 Daemon。  
+> 请在该配置文件中加入（没有该文件的话，请先建一个）：  
+```
+{
+  "registry-mirrors": ["http://hub-mirror.c.163.com"]
+}
+```
+
