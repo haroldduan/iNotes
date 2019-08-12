@@ -442,3 +442,49 @@ $ sudo rm -rf /var/lib/docker
 }
 ```
 
+### Docker 命令
+
+1. ***docker run*** 命令来在容器内运行一个应用程序。
+
+```
+$
+```
+
+2. ***docker ps*** 命令来列出容器
+
+3. ***docker stop*** 命令来停止容器
+
+4. ***docker log*** 命令来查看容器内的标准输出
+
+5. ***docker pull*** 命令来从镜像仓库中拉取或者更新指定镜像
+
+6. ***docker port*** 命令来列出指定的容器的端口映射
+
+7. ***docker top*** 命令来查看容器中运行的进程信息
+
+8. ***docker inspect***  命令来获取容器/镜像的元数据
+
+9. ***docker images*** 命令来列出本地主机上的镜像
+
+10. ***docker search*** 命令来搜索镜像
+
+11. ***docker build*** 命令用于使用 Dockerfile 创建镜像
+
+12. ***docker tag*** : 标记本地镜像，将其归入某一仓库。
+
+
+
+> 当运行容器时，使用的镜像如果在本地中不存在，docker 就会自动从 docker 镜像仓库中下载，默认是从 Docker Hub 公共镜像源下载。
+
+### Error Process
+
+> Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get http://%2Fvar%2Frun%2Fdocker.sock/v1.40/images/search?limit=25&term=nginx: dial unix /var/run/docker.sock: connect: permission denied
+
+```
+# 将当前用户加入docker组:
+$ sudo gpasswd -a ${USER} docker
+# 退出当前用户
+$ su root
+# 切换回当前用户
+$ su admin
+```
