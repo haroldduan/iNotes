@@ -470,7 +470,9 @@ $
 
 11. ***docker build*** 命令用于使用 Dockerfile 创建镜像
 
-12. ***docker tag*** : 标记本地镜像，将其归入某一仓库。
+12. ***docker tag*** : 标记本地镜像，将其归入某一仓库
+
+13. ***docker info*** : 显示 Docker 系统信息，包括镜像和容器数
 
 
 
@@ -488,3 +490,16 @@ $ su root
 # 切换回当前用户
 $ su admin
 ```
+
+> docker是1.12或以上的版本，可以修改（或新建）daemon.json文件。修改后会立即生效，不需重启docker服务。
+> vim /etc/docker/daemon.json  
+> { 
+>   "registry-mirrors":  
+>   [  
+>     "https://registry.docker-cn.com",  
+>     "https://docker.mirrors.ustc.edu.cn"  
+>   ],  
+>   "debug": true,  
+>   "log-level": "info",  
+>   "graph": "/home/root/docker-data"  
+> }  
