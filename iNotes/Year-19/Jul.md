@@ -31,3 +31,11 @@ $ sudo apt install maven
 ```
 
 # install vscode plugin for java,maven,springboot
+
+# yum 删除软件及其依赖
+
+```
+$ sudo yum history list maven
+
+$ sudo yum history undo ID
+```
