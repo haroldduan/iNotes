@@ -57,3 +57,33 @@ export M2_HOME=/opt/maven
 export PATH=${M2_HOME}/bin:${PATH}
 $ source /etc/profile.d/maven.sh
 ```
+
+# jupyter install
+
+## jupyter install
+
+```
+# Upgrade pip(3)
+$ python(3) -m pip install --upgrade pip --user
+$ python(3) -m pip install jupyter --user
+# $ pip(3) install --upgrade pip --user
+# $ pip(3) install jupyter --user
+# jupyter --version
+```
+
+## matplotlib install
+
+```
+$ pip(3) install matplotlib --user
+```
+
+## jupyter_contrib_nbextensions install
+
+```
+# install nbextensions & nbextensions_configurator
+$ pip(3) install jupyter_nbextensions_configurator jupyter_contrib_nbextensions --user
+# nbextension list install
+$ jupyter contrib nbextension install --user
+# nbextension_configurator enable
+$ jupyter nbextensions_configurator enable --user
+```
