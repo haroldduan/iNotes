@@ -87,3 +87,61 @@ $ jupyter contrib nbextension install --user
 # nbextension_configurator enable
 $ jupyter nbextensions_configurator enable --user
 ```
+
+# MariaDB install
+
+## Remove old version
+
+```
+$ sudo rpm -qa | grep mariadb
+$ sudo yum remove mariadb-server-5.5.60-1.el7_5.x86_64
+$ sudo yum remove mariadb-5.5.60-1.el7_5.x86_64
+$ sudo yum remove mariadb-libs-5.5.60-1.el7_5.x86_64
+$ sudo yum remove MariaDB-server-10.4.6-1.el7.centos.x86_64
+$ sudo yum remove MariaDB-client-10.4.6-1.el7.centos.x86_64
+```
+
+## Create repo
+
+```
+$ sudo vim /etc/yum.repos.d/mariadb.repo
+
+[mariadb]
+name = MariaDB
+baseurl = http://mirrors.aliyun.com/mariadb/yum/10.4/centos7-amd64/
+gpgkey =  http://mirrors.aliyun.com/mariadb/yum/RPM-GPG-KEY-MariaDB
+gpgcheck = 1
+```
+## Clean cache & recreate cache
+
+```
+$ sudo yum clean all
+$ sudo yum makecache
+$ sudo yum list --disablerepo=\* --enablerepo=mariadb
+```
+
+## Install MariaDB
+
+```
+$ sudo yum install MariaDB-client MariaDB-server MariaDB-devel -y
+```
+
+## Start MariaDB
+
+```
+$ sudo systemctl start mariadb
+```
+
+## Set auto start
+
+```
+$ sudo systemctl enable mariadb
+```
+
+## Error process
+
+1. > ERROR 1698 (28000): Access denied for user 'root'@'localhost'
+
+```
+$ sudo vim /etc/my.cnf
+```
