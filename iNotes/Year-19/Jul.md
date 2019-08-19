@@ -142,6 +142,27 @@ $ sudo systemctl enable mariadb
 
 1. > ERROR 1698 (28000): Access denied for user 'root'@'localhost'
 
+> 对于 ERROR 1045 (28000): Access denied for user ['root'@'localhost'] 此类错误返回时， (using password: ?)中?的关键字是YES还是NO，关键不在于用户是否存在，密码是否正确，它的结果取决于登录时，用户对于密码有没有字符串的输入，如果没有，MySQL数据库验证后，若出错返回此类信息，则应是 (using password: NO)，若用户对密码有字符串的输入，返回的则是(using password: YES)。
+
+2. > Access denied for user 'admin'@'192.168.3.208' (using password: YES)
+
+```
+# Create user
+$ create user admin@localhost identified by 'password';
+# grant user
+$ grant all privileges on *.* to 'admin'@'%' identified by 'avatech@2019' with grant option;
+$ flush privileges;
+# $ select host,user,password from user;
+# $ alter user admin@localhost identified by 'avatech@2019';
+# $ sudo mysql -u admin -pavatech@2019
+```
+
+3. Important configuration files
+
 ```
 $ sudo vim /etc/my.cnf
+/etc/my.cnf
+/etc/my.cnf.d
+/etc/my.cnf.d/server.cnf
+/etc/my.cnf.d/mysql-clients.cnf
 ```
