@@ -166,3 +166,29 @@ $ sudo vim /etc/my.cnf
 /etc/my.cnf.d/server.cnf
 /etc/my.cnf.d/mysql-clients.cnf
 ```
+
+# Install phpMyAdmin
+
+# Install requirements
+
+```
+# Install Apache server
+$ sudo yum install httpd httpd-devel
+# Install php env
+$ sudo yum install php php-mysql php-common php-gd php-mbstring php-mcrypt php-devel php-xml
+
+```
+
+## Update rpm repo
+
+```
+$ sudo yum install epel-release
+$ sudo rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+```
+
+## Install phpMyAdmin
+
+```
+$ sudo yum install --enablerepo=remi --enablerepo=remi-php56 phpmyadmin
+# $ sudo yum install phpmyadmin
+```
