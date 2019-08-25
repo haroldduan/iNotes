@@ -503,3 +503,19 @@ $ su admin
 >   "log-level": "info",  
 >   "graph": "/home/root/docker-data"  
 > }  
+
+### Window(Windows Server 2016) 安装 docker
+
+```
+# 以管理员权限运行PowerShell
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force #指定Nuget安装包最小版本
+Install-Module -Name DockerMsftProvider -Force                #安装docker模块
+Install-Package -Name docker -ProviderName DockerMsftProvider -Force #安装docker包
+Restart-Computer -Force #重新启动
+```
+
+#### Error Process
+
+```
+Find-Package –providerName DockerMsftProvider | Install-Package -Verbose
+```
