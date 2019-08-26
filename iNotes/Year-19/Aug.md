@@ -514,6 +514,12 @@ Install-Package -Name docker -ProviderName DockerMsftProvider -Force #安装dock
 Restart-Computer -Force #重新启动
 ```
 
+```
+Install-Module -Name DockerMsftProvider -Repository PSGallery -Force
+Install-Package -Name docker -ProviderName DockerMsftProvider
+Restart-Computer -Force
+```
+
 #### Error Process
 
 ```
