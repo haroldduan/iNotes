@@ -364,6 +364,9 @@ $ sudo chmod g+x /home/taiga
 $ sudo chmod g+x /home/taiga/taiga-front-dist
 $ sudo chmod g+x /home/taiga/taiga-front-dist/dist
 ```
+**Taiga LAN**
+
+http://192.168.3.14:8080/
 
 ## Docker
 
