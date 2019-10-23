@@ -68,3 +68,55 @@ $ docker run -d --name wp-web --network wp-net --network-alias wordpress -e WORD
 之后在浏览器上用你服务器的IP，和映射出的端口号（1080），就会得到配置界面
 
 注意：尽管将容器的80端口映射给主机的1080，不需要用到root权限，但CentOS默认的防火墙禁止了大于1000后的所有端口，所以我们要开启这个端口
+
+# gitea in docker
+
+## docker 创建网络
+
+``` command
+$ docker network create gitea-net
+```
+
+## postgres docker install
+
+``` command
+$ docker pull postgres:9.6
+```
+
+``` command
+$ docker run --privileged=true --name gitea-postgres --network gitea-net --network-alias postgres -e POSTGRES_PASSWORD=avatech@2019 -p 5432:5432 -v /data/pgsql:/var/lib/pgsql -d postgres:9.6
+```
+
+## gitea docker install
+
+``` command
+$ docker pull gitea/gitea:latest
+```
+
+## gitea docker running
+
+``` command
+# $ docker run -d --name=gitea -p 1022:22 -p 3000:3000 -v /home/admin/gitea:/data gitea/gitea:latest
+# $ docker run -d --name=gitea --network wp-net --network-alias gitea -p 1022:22 -p 3000:3000 --link wp-mysql:mysql -v /home/admin/gitea:/data gitea/gitea:latest
+# $ docker run -d --name=gitea --network gitea-net --network-alias gitea -p 1022:22 -p 3000:3000 --link gitea-postgres:postgres -v /home/admin/gitea:/data gitea/gitea:latest
+$ docker run -d --name=gitea -p 1022:22 -p 3000:3000 -v /home/admin/gitea:/data gitea/gitea:latest
+```
+
+# gitea in machine
+
+## gitea install
+
+``` command
+$ wget -O gitea https://dl.gitea.io/gitea/1.9.3/gitea-1.9.3-linux-amd64
+chmod +x gitea
+```
+
+## gitea service
+
+``` command
+$ sudo vim /etc/systemd/system/gitea.service
+
+$ sudo systemctl enable gitea
+# $ sudo systemctl disable gitea
+$ sudo systemctl start gitea
+```
