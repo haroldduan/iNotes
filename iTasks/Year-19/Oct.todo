@@ -28,3 +28,5 @@ Todo 4th week:
 ✔ company project standardized deploying meeting @critical @author: PMO&Leon.Li&Jeack.Wang&Anymeng.Meng&Tom.Wang&Gary.Li @created(19-10-22 10:00) @done(19-10-22 11:30)
 ✔ department dev projects and docker training planning meet @critical @author: Pancy.Fan&Zero.Zhang @created(19-10-22 16:00) @done(19-10-22 17:00)
 ☐ presales CountryGarden document dev technology part writing and upgrading @high @created(19-10-22 14:00)
+✔ gitea install in gogs server by docker @critical @created(19-10-23 15:00) @done(19-10-23 17:00)
+✔ create vote for gogs-upgrade on github in team-notes @critical @created(19-10-23 20:19) @done(19-10-23 20:20)
