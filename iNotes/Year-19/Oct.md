@@ -84,7 +84,9 @@ $ docker pull postgres:9.6
 ```
 
 ``` command
-$ docker run --privileged=true --name gitea-postgres --network gitea-net --network-alias postgres -e POSTGRES_PASSWORD=avatech@2019 -p 5432:5432 -v /data/pgsql:/var/lib/pgsql -d postgres:9.6
+# $ docker run --privileged=true --name gitea-postgres --network gitea-net --network-alias postgres -e POSTGRES_PASSWORD=avatech@2019 -p 5432:5432 -v /data/pgsql:/var/lib/pgsql -d postgres:9.6
+
+$ docker run --restart=always --privileged=true --name gitea-postgres --network gitea-net --network-alias postgres -e POSTGRES_PASSWORD=avatech@2019 -p 5432:5432 -v /data/pgsql:/var/lib/pgsql -d postgres:9.6
 ```
 
 ## gitea docker install
@@ -98,8 +100,8 @@ $ docker pull gitea/gitea:latest
 ``` command
 # $ docker run -d --name=gitea -p 1022:22 -p 3000:3000 -v /home/admin/gitea:/data gitea/gitea:latest
 # $ docker run -d --name=gitea --network wp-net --network-alias gitea -p 1022:22 -p 3000:3000 --link wp-mysql:mysql -v /home/admin/gitea:/data gitea/gitea:latest
-# $ docker run -d --name=gitea --network gitea-net --network-alias gitea -p 1022:22 -p 3000:3000 --link gitea-postgres:postgres -v /home/admin/gitea:/data gitea/gitea:latest
-$ docker run -d --name=gitea -p 1022:22 -p 3000:3000 -v /home/admin/gitea:/data gitea/gitea:latest
+# $ docker run --restart=always -d --name=gitea --network gitea-net --network-alias gitea -p 1022:22 -p 3000:3000 --link gitea-postgres:postgres -v /home/admin/gitea:/data gitea/gitea:latest
+$ docker run --restart=always -d --name=gitea -p 1022:22 -p 3000:3000 -v /home/admin/gitea:/data gitea/gitea:latest
 ```
 
 # gitea in machine
@@ -119,4 +121,22 @@ $ sudo vim /etc/systemd/system/gitea.service
 $ sudo systemctl enable gitea
 # $ sudo systemctl disable gitea
 $ sudo systemctl start gitea
+```
+
+# portainer
+
+## portainer docker install
+
+``` command
+$ docker pull docker.io/portainer/portainer
+```
+
+## 
+
+``` command
+$ docker run -d -p 9000:9000 \
+    --restart=always \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    --name prtainer \
+    docker.io/portainer/portainer
 ```
