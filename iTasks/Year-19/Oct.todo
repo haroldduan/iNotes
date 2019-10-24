@@ -30,3 +30,4 @@ Todo 4th week:
 ☐ presales CountryGarden document dev technology part writing and upgrading @high @created(19-10-22 14:00)
 ✔ gitea install in gogs server by docker @critical @created(19-10-23 15:00) @done(19-10-23 17:00)
 ✔ create vote for gogs-upgrade on github in team-notes @critical @created(19-10-23 20:19) @done(19-10-23 20:20)
+✔ WordPress install and configuration in docker on gogs server @created(19-10-24 10:0) @done(19-10-24 20:14)
