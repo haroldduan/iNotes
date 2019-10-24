@@ -25,10 +25,10 @@ $ docker pull mysql:5.6
 + MySQL running
 
 ``` command
-# $ docker run -d --privileged=true --name wp-mysql -v /data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=avatech@2019 -p 7706:3306 mysql:latest
-# $ docker run -d --privileged=true --name wp-mysql -v /data/mysql:/var/lib/mysql -v /data/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=avatech@2019 -p 7706:3306 -d mysql:latest
-# $ docker run -d --privileged=true --name wp-mysql --network wp-net --network-alias mysql -v /data/mysql:/var/lib/mysql -v /data/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=avatech@2019 -p 7706:3306 -d mysql:latest
-$ docker run -d --privileged=true --name wp-mysql --network wp-net --network-alias mysql -v /data/mysql:/var/lib/mysql -v /data/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=avatech@2019 -p 7706:3306 -d mysql:5.6
+# $ docker run -d mysql:latest --privileged=true --name wp-mysql -v /data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=avatech@2019 -p 7706:3306
+# $ docker run--privileged=true --name wp-mysql -v /data/mysql:/var/lib/mysql -v /data/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=avatech@2019 -p 7706:3306 -d mysql:latest
+# $ docker run --privileged=true --name wp-mysql --network wp-net --network-alias mysql -v /data/mysql:/var/lib/mysql -v /data/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=avatech@2019 -p 7706:3306 -d mysql:latest
+$ docker run --privileged=true --name wp-mysql --network wp-net --network-alias mysql -v /data/mysql:/var/lib/mysql -v /data/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=avatech@2019 -p 7706:3306 -d mysql:5.6
 ```
 
 -p: 端口映射，7706表示宿主，3306表示容器中的端口。 这里表示将宿主机的33306映射给镜像的3306.
@@ -49,9 +49,9 @@ $ docker pull wordpress:latest
 
 ``` command
 # $ docker run --name wp-web --link wp-mysql:mysql -d wordpress
-# $ docker run -d --name wp-web -e WORDPRESS_DB_HOST=mysql -e WORDPRESS_DB_PASSWORD=avatech@2019 -p 1080:80 --link wp-mysql:mysql -v /data/wordpress-html:/var/www/html wordpress:latest
-$ docker run -d --name wp-web --network wp-net --network-alias wordpress -e WORDPRESS_DB_HOST=mysql -e WORDPRESS_DB_PASSWORD=avatech@2019 -p 1080:80 --link wp-mysql:mysql -v /data/wordpress-html:/var/www/html wordpress:latest
-$ docker run -d --name wp-web --network wp-net --network-alias wordpress -e WORDPRESS_DB_PASSWORD=avatech@2019 -p 1080:80 -v /data/wordpress-html:/var/www/html wordpress:latest
+# $ docker run -d wordpress:latest --name wp-web -e WORDPRESS_DB_HOST=mysql -e WORDPRESS_DB_PASSWORD=avatech@2019 -p 1080:80 --link wp-mysql:mysql -v /data/wordpress-html:/var/www/html
+$ docker run -d wordpress:latest --name wp-web --network wp-net --network-alias wordpress -e WORDPRESS_DB_HOST=mysql -e WORDPRESS_DB_PASSWORD=avatech@2019 -p 1080:80 --link wp-mysql:mysql -v /data/wordpress-html:/var/www/html 
+$ docker run --name wp-web --network wp-net --network-alias wordpress -e WORDPRESS_DB_PASSWORD=avatech@2019 -p 1080:80 -v /data/wordpress-html:/var/www/html -d wordpress:latest
 ```
 --name 容器的的名字
 --link 和其他容器做连接
@@ -137,6 +137,7 @@ $ docker pull docker.io/portainer/portainer
 $ docker run -d -p 9000:9000 \
     --restart=always \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    --name prtainer \
+    -v /home/admin/portainer:/data \
+    --name portainer \
     docker.io/portainer/portainer
 ```
