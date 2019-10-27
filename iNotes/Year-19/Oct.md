@@ -134,12 +134,12 @@ $ docker pull docker.io/portainer/portainer
 ## 
 
 ``` command
-$ docker run -d -p 9000:9000 \
+$ docker run-p 9000:9000 \
     --restart=always \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /home/admin/portainer:/data \
     --name portainer \
-    docker.io/portainer/portainer
+    -d docker.io/portainer/portainer
 ```
 
 # Tmux
