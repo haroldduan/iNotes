@@ -299,3 +299,15 @@ $ tmux source ~/.tmux.conf
 ```
 
 **重新启动tmux会话.使用鼠标突出显示某些文本,但不要放开鼠标.现在,当文本突出显示并按下鼠标时,按返回键.突出显示的文本将消失,并将复制到剪贴板.现在释放鼠标.**
+
+# MariaDB
+
+## Install in docker
+
+``` command
+$ docker pull mariadb
+```
+
+``` command
+$ docker run --privileged=true --name mariadb --network dahupt-net --network-alias mariadb -v /data/mariadb:/var/lib/mysql -v /data/mariadb/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=avatech@2019 -p 1106:3306 -d mariadb --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+```
