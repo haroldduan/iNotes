@@ -311,3 +311,39 @@ $ docker pull mariadb
 ``` command
 $ docker run --privileged=true --name mariadb --network dahupt-net --network-alias mariadb -v /data/mariadb:/var/lib/mysql -v /data/mariadb/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=avatech@2019 -p 1106:3306 -d mariadb --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 ```
+
+# Consul
+
+## Install in docker
+
+``` command
+$ docker pull consul:1.6.1 #(安装时最新版本为1.6.1)，latest 镜像一致有问题，pull不下来
+```
+
+**Consul 镜像提供了几个个常用环境变量**
+
+CONSUL_CLIENT_INTERFACE ：配置 Consul 的 -client= 命令参数。  
+CONSUL_BIND_INTERFACE ：配置 Consul 的 -bind= 命令参数。  
+CONSUL_DATA_DIR ：配置 Consul 的数据持久化目录。  
+CONSUL_CONFIG_DIR：配置 Consul 的配置文件目录。  
+
+``` command
+$ docker network create consul-net
+```
+
+## Running in docker
+
+``` command
+$ docker run --name=consul-server -p 8500:8500 -v /data/consul:/consul/data --network consul-net --network-alias consul_server -e -d consul:1.6.1 agent -server -bootstrap -ui -node=1 -client='0.0.0.0'
+```
+
+**Consul 命令简单介绍**
+
+agent : 表示启动 Agent 进程。  
+-server：表示启动 Consul Server 模式。  
+-client：表示启动 Consul Cilent 模式。  
+-bootstrap：表示这个节点是 Server-Leader ，每个数据中心只能运行一台服务器。技术角度上讲 Leader 是通过 Raft 算法选举的，但是集群第一次启动时需要一个引导 Leader，在引导群集后，建议不要使用此标志。  
+-ui：表示启动 Web UI 管理器，默认开放端口 8500，所以上面使用 Docker 命令把 8500 端口对外开放。  
+-node：节点的名称，集群中必须是唯一的。  
+-client：表示 Consul 将绑定客户端接口的地址，0.0.0.0 表示所有地址都可以访问。  
+-join：表示加入到某一个集群中去。 如：-json=192.168.1.23  
