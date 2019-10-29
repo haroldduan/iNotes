@@ -31,3 +31,6 @@ Todo 4th week:
 ✔ gitea install in gogs server by docker @critical @created(19-10-23 15:00) @done(19-10-23 17:00)
 ✔ create vote for gogs-upgrade on github in team-notes @critical @created(19-10-23 20:19) @done(19-10-23 20:20)
 ✔ WordPress install and configuration in docker on gogs server @created(19-10-24 10:0) @done(19-10-24 20:14)
+
+Todo 5th week:
+☐ Consul application in docker and Docker Swarm researh @critical @5d @created(19-10-28 10:03) @started(19-10-28 10:00)
