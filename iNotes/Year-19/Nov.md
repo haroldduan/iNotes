@@ -63,3 +63,62 @@ $ npm install electron-builder -g
 ``` command
 $ electron-builder package.json
 ```
+
+# SSH
+
+## SSH Key generating
+
+```
+$ ssh-keygen
+```
+
+## copying the public key to server
+
++ Method 1st
+
+```
+$ scp id_rsa.pub admin@192.168.3.15:/tmp
+$ cd /tmp
+$ cat id_rsa.pub >> ~/.ssh/authorized_keys
+```
+
++ Method 2nd
+
+```
+$ ssh-copy-id admin@192.168.3.15
+```
+
+## change folder authorations
+
+```
+$ chmod 600 ~/.ssh/authorized_keys
+```
+
+## update ssh configuration file
+
+```
+$ sudo vim /etc/ssh/sshd_config
+PasswordAuthentication yes　　　　　　# 口令登录
+RSAAuthentication yes　　　　　　　　　# RSA认证
+PubkeyAuthentication yes　　　　　　　# 公钥登录
+# AuthenticationMethods publickey,password   # 强制需要同时使用公钥和密码登录
+```
+
+## restart ssh service
+
+```
+$ sudo service sshd restart
+```
+
+## login by key
+
+```
+$ ssh -i id_rsa admin@192.168.3.15
+```
+
+***Close the user [root]'s login authorations***
+
+```
+$ sudo vim /etc/ssh/sshd_config
+PermitRootLogin no
+```
