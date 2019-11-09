@@ -120,5 +120,5 @@ $ ssh -i id_rsa admin@192.168.3.15
 
 ```
 $ sudo vim /etc/ssh/sshd_config
-PermitRootLogin no
+PermitRootLogin no # 禁止root登录
 ```
