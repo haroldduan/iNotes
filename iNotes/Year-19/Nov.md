@@ -122,3 +122,28 @@ $ ssh -i id_rsa admin@192.168.3.15
 $ sudo vim /etc/ssh/sshd_config
 PermitRootLogin no
 ```
+
+# pyenv & pipenv
+
+## pyenv
+
+> Simple Python version management
+
+***[pyenv](https://github.com/pyenv/pyenv)***
+
+***[pyenv-win](https://github.com/pyenv-win/pyenv-win)***
+
+### error process
+
++ On windows
+
+***安装python versions时，需要手动安装并配置选项为All-users，不然在使用pipenv时会报错***
+
+## pipenv
+
+> Python Development Workflow for Humans. 
+
+[pipenv](https://github.com/pypa/pipenv)
+
+[pipenv-doc](https://pipenv.kennethreitz.org/en/latest/)
+
