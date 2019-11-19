@@ -15,4 +15,7 @@ Todo 2nd week:
 
 Todo 3rd week:
 ✔ product design manager communication @critical @author: Joyce.Liu @created(19-11-11 17:44) @started(19-11-11 14:00) @done(19-11-13 18:17) @lasted(2d4h17m21s)
-☐ pyenv and pipenv use and research @critical @created(19-11-13 18:18) @started(19-11-13 15:00)
+✔ pyenv and pipenv use and research (on Windows) @critical @created(19-11-13 18:18) @started(19-11-13 15:00) @done(19-11-19 18:51) @lasted(6d3h51m43s)
+
+Todo 4th week:
+☐ service deploying by go lang @high @created(19-11-19 18:52) @started(19-11-17 10:00)
