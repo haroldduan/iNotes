@@ -461,3 +461,489 @@ yum install mod_wsgi
     ```
 
   ***一个结构体只能嵌入一个同类型的成员，无须担心结构体重名和错误赋值的情况，编译器在发现可能的赋值歧义时会报错。***
+
++ go func
+
+  *函数构成了代码执行的逻辑结构，在Go语言中，函数的基本组成为：关键字 func、函数名、参数列表、返回值、函数体和返回语句，每一个程序都包含很多的函数，函数是基本的代码块。*
+
+  *因为Go语言是编译型语言，所以函数编写的顺序是无关紧要的*
+
+  *Go语言里面拥三种类型的函数：*
+
+  + ***普通的带有名字的函数***
+
+  + ***匿名函数或者 lambda 函数***
+
+  + ***方法***
+
+  ***Go语言没有默认参数值，也没有任何方法可以通过参数名指定形参，因此形参和返回值的变量名对于函数调用者而言没有意义。***
+
+  ***在函数中，实参通过值传递的方式进行传递，因此函数的形参是实参的拷贝，对形参进行修改不会影响实参，但是，如果实参包括引用类型，如指针、slice(切片)、map、function、channel 等类型，实参可能会由于函数的间接引用被修改。***
+
+  *函数的返回值*
+
+  + ***同一种类型返回值***
+
+  > 如果返回值是同一种类型，则用括号将多个返回值类型括起来，用逗号分隔每个返回值的类型。  
+  > 使用 return 语句返回时，值列表的顺序需要与函数声明的返回值类型一致，示例代码如下：
+
+  ```
+  func typedTwoValues() (int, int) {
+    return 1, 2
+  }
+  func main() {
+      a, b := typedTwoValues()
+      fmt.Println(a, b)
+  }
+  ```
+
+  + ***带有变量名的返回值***
+
+  > Go语言支持对返回值进行命名，这样返回值就和参数一样拥有参数变量名和类型。  
+  > 命名的返回值变量的默认值为类型的默认值，即数值为 0，字符串为空字符串，布尔为 false、指针为 nil 等。
+
+  > 下面代码中的函数拥有两个整型返回值，函数声明时将返回值命名为 a 和 b，因此可以在函数体中直接对函数返回值进行赋值，在命名的返回值方式的函数体中，在函数结束前需要显式地使用 return 语句进行返回，代码如下：
+
+  ```
+  func namedRetValues() (a, b int) {
+
+    a = 1
+    b = 2
+
+    return
+  }
+  ```
+
+  ***Tips***
+
+  > 同一种类型返回值和命名返回值两种形式只能二选一，混用时将会发生编译错误，例如下面的代码：
+
+  ```
+  func namedRetValues() (a, b int, int)
+  ```
+
+  > Go语言中传入与返回参数在调用和返回时都使用值传递，这里需要注意的是指针、切片和 map 等引用型对象在参数传递中不会发生复制，而是将指针进行复制，类似于创建一次引用。
+
+  > 在Go语言中，函数也是一种类型，可以和其他类型一样保存在变量中。
+
+  ```
+  package main
+
+  import (
+      "fmt"
+  )
+
+  func fire() {
+      fmt.Println("fire")
+  }
+
+  func main() {
+
+      var f func()
+
+      f = fire
+
+      f()
+  }
+  ```
+
+  > 使用 SQL 语言从数据库中获取数据时，可以对原始数据进行排序（sort by）、分组（group by）和去重（distinct）等操作，SQL 将数据的操作与遍历过程作为两个部分进行隔离，这样操作和遍历过程就可以各自独立地进行设计，这就是常见的数据与操作分离的设计。对数据的操作进行多步骤的处理被称为链式处理。
+
+  ```
+  package main
+
+  import (
+      "fmt"
+      "strings"
+  )
+
+  // 字符串处理函数，传入字符串切片和处理链
+  func StringProccess(list []string, chain []func(string) string) {
+
+      // 遍历每一个字符串
+      for index, str := range list {
+
+          // 第一个需要处理的字符串
+          result := str
+
+          // 遍历每一个处理链
+          for _, proc := range chain {
+
+              // 输入一个字符串进行处理，返回数据作为下一个处理链的输入。
+              result = proc(result)
+          }
+
+          // 将结果放回切片
+          list[index] = result
+      }
+  }
+
+  // 自定义的移除前缀的处理函数
+  func removePrefix(str string) string {
+
+      return strings.TrimPrefix(str, "go")
+  }
+
+  func main() {
+
+      // 待处理的字符串列表
+      list := []string{
+          "go scanner",
+          "go parser",
+          "go compiler",
+          "go printer",
+          "go formater",
+      }
+
+      // 处理函数链
+      chain := []func(string) string{
+          removePrefix,
+          strings.TrimSpace,
+          strings.ToUpper,
+      }
+
+      // 处理字符串
+      StringProccess(list, chain)
+
+      // 输出处理好的字符串
+      for _, str := range list {
+          fmt.Println(str)
+      }
+
+  }
+  ```
+
+  > Go语言支持匿名函数，即在需要使用函数时再定义函数，匿名函数没有函数名只有函数体，函数可以作为一种类型被赋值给函数类型的变量，匿名函数也往往以变量方式传递，这与C语言的回调函数比较类似，不同的是，Go语言支持随时在代码里定义匿名函数。  
+  > 匿名函数是指不需要定义函数名的一种函数实现方式，由一个不带函数名的函数声明和函数体组成。
+
+  > 使用匿名函数实现操作封装
+
+  ```
+  package main
+
+  import (
+      "flag"
+      "fmt"
+  )
+
+  var skillParam = flag.String("skill", "", "skill to perform")
+
+  func main() {
+
+      flag.Parse()
+
+      var skill = map[string]func(){
+          "fire": func() {
+              fmt.Println("chicken fire")
+          },
+          "run": func() {
+              fmt.Println("soldier run")
+          },
+          "fly": func() {
+              fmt.Println("angel fly")
+          },
+      }
+
+      if f, ok := skill[*skillParam]; ok {
+          f()
+      } else {
+          fmt.Println("skill not found")
+      }
+
+  }
+  ```
+
+  > 函数和其他类型一样都属于“一等公民”，其他类型能够实现接口，函数也可以。
+
+  ```
+  package main
+
+  import (
+      "fmt"
+  )
+
+  // 调用器接口
+  type Invoker interface {
+      // 需要实现一个Call方法
+      Call(interface{})
+  }
+
+  // 结构体类型
+  type Struct struct {
+  }
+
+  // 实现Invoker的Call
+  func (s *Struct) Call(p interface{}) {
+      fmt.Println("from struct", p)
+  }
+
+  // 函数定义为类型
+  type FuncCaller func(interface{})
+
+  // 实现Invoker的Call
+  func (f FuncCaller) Call(p interface{}) {
+
+      // 调用f函数本体
+      f(p)
+  }
+
+  func main() {
+
+      // 声明接口变量
+      var invoker Invoker
+
+      // 实例化结构体
+      s := new(Struct)
+
+      // 将实例化的结构体赋值到接口
+      invoker = s
+
+      // 使用接口调用实例化结构体的方法Struct.Call
+      invoker.Call("hello")
+
+      // 将匿名函数转为FuncCaller类型，再赋值给接口
+      invoker = FuncCaller(func(v interface{}) {
+          fmt.Println("from function", v)
+      })
+
+      // 使用接口调用FuncCaller.Call，内部会调用函数本体
+      invoker.Call("hello")
+  }
+  ```
+
+  *函数体实现接口*
+
+  ***函数的声明不能直接实现接口，需要将函数定义为类型后，使用类型实现结构体，当类型方法被调用时，还需要调用函数本体。***
+
+  *闭包(Closure)*
+
+  > Go语言中闭包是引用了自由变量的函数，被引用的自由变量和函数一同存在，即使已经离开了自由变量的环境也不会被释放或者删除，在闭包中可以继续使用这个自由变量，因此，简单的说：
+
+  ***函数 + 引用环境 = 闭包***
+
+  > 一个函数类型就像结构体一样，可以被实例化，函数本身不存储任何信息，只有与引用环境结合后形成的闭包才具有“记忆性”，函数是编译期静态的概念，而闭包是运行期动态的概念。
+
+  > 闭包（Closure）在某些编程语言中也被称为 Lambda 表达式。
+
+  > 闭包对环境中变量的引用过程也可以被称为“捕获”，在 C++11 标准中，捕获有两种类型，分别是引用和复制，可以改变引用的原值叫做“引用捕获”，捕获的过程值被复制到闭包中使用叫做“复制捕获”。
+
+  > 被捕获到闭包中的变量让闭包本身拥有了记忆效应，闭包中的逻辑可以修改闭包捕获的变量，变量会跟随闭包生命期一直存在，闭包本身就如同变量一样拥有了记忆效应。
+
+  *可变参数*
+
+  ```
+  func myfunc(args ...int) {
+      for _, arg := range args {
+          fmt.Println(arg)
+      }
+  }
+  ```
+
+  > 形如...type格式的类型只能作为函数的参数类型存在，并且必须是最后一个参数，它是一个语法糖（syntactic sugar），即这种语法对语言的功能并没有影响，但是更方便程序员使用，通常来说，使用语法糖能够增加程序的可读性，从而减少程序出错的可能。
+
+  > 从内部实现机理上来说，类型...type本质上是一个数组切片，也就是[]type，这也是为什么上面的参数 args 可以用 for 循环来获得每个传入的参数。
+
+  *假如没有...type这样的语法糖，开发者将不得不这么写：*
+
+  ```
+  func myfunc2(args []int) {
+      for _, arg := range args {
+          fmt.Println(arg)
+      }
+  }
+  ```
+
+  *从函数的实现角度来看，这没有任何影响，该怎么写就怎么写，但从调用方来说，情形则完全不同：*
+
+  ```
+  myfunc2([]int{1, 3, 7, 13})
+  ```
+
+  *不得不加上[]int{}来构造一个数组切片实例，但是有了...type这个语法糖，就不用自己来处理了。*
+
+  > 任意类型的可变参数，可以指定类型为 interface{}，下面是Go语言标准库中 fmt.Printf() 的函数原型：
+
+  ```
+  func Printf(format string, args ...interface{}) {
+        // ...
+  }
+  ```
+
+  *在多个可变参数函数中传递参数*
+
+  > 可变参数变量是一个包含所有参数的切片，如果要将这个含有可变参数的变量传递给下一个可变参数函数，可以在传递时给可变参数变量后面添加...，这样就可以将切片中的元素进行传递，而不是传递可变参数变量本身。
+
+  ```
+  package main
+  import "fmt"
+  // 实际打印的函数
+  func rawPrint(rawList ...interface{}) {
+      // 遍历可变参数切片
+      for _, a := range rawList {
+          // 打印参数
+          fmt.Println(a)
+      }
+  }
+  // 打印函数封装
+  func print(slist ...interface{}) {
+      // 将slist可变参数切片完整传递给下一个函数
+      rawPrint(slist...)
+  }
+  func main() {
+      print(1, 2, 3)
+  }
+  ```
+
+  ***可变参数使用...进行传递与切片间使用 append 连接是同一个特性。***
+
+  *defer*
+
+  ***Go语言的 defer 语句会将其后面跟随的语句进行延迟处理，在 defer 归属的函数即将返回时，将延迟处理的语句按 defer 的逆序进行执行，也就是说，先被 defer 的语句最后被执行，最后被 defer 的语句，最先被执行。***
+
+  > 关键字 defer 的用法类似于面向对象编程语言 Java 和 C# 的 finally 语句块，它一般用于释放某些已分配的资源，典型的例子就是对一个互斥解锁，或者关闭一个文件。
+
+  **使用延迟执行语句在函数退出时释放资源**
+  > 处理业务或逻辑中涉及成对的操作是一件比较烦琐的事情，比如打开和关闭文件、接收请求和回复请求、加锁和解锁等。在这些操作中，最容易忽略的就是在每个函数退出处正确地释放和关闭资源。  
+  > defer 语句正好是在函数退出时执行的语句，所以使用 defer 能非常方便地处理资源释放问题。
+
+  + ***使用延迟并发解锁***
+
+  + ***使用延迟释放文件句柄***
+
++ go error
+
+  *Go语言的错误处理思想及设计包含以下特征：*
+
+  + **一个可能造成错误的函数，需要返回值中返回一个错误接口（error），如果调用是成功的，错误接口将返回 nil，否则返回错误。**
+  
+  + **在函数调用后需要检查错误，如果发生错误，则进行必要的错误处理。**
+
+  > Go语言没有类似 Java 或 .NET 中的异常处理机制，虽然可以使用 defer、panic、recover 模拟，但官方并不主张这样做，Go语言的设计者认为其他语言的异常机制已被过度使用，上层逻辑需要为函数发生的异常付出太多的资源，同时，如果函数使用者觉得错误处理很麻烦而忽略错误，那么程序将在不可预知的时刻崩溃。  
+  > Go语言希望开发者将错误处理视为正常开发必须实现的环节，正确地处理每一个可能发生错误的函数，同时，Go语言使用返回值返回错误的机制，也能大幅降低编译器、运行时处理错误的复杂度，让开发者真正地掌握错误的处理。
+
+  *根据Go语言的错误处理机制，Conn 是其重要的返回值，因此，为这个函数增加一个错误返回，类似为 error，参见下面的代码：*
+
+  ```
+  func Dial(network, address string) (Conn, error) {
+      var d Dialer
+      return d.Dial(network, address)
+  }
+  ```
+
+  *在 io 包中的 Writer 接口也拥有错误返回，代码如下：*
+
+  ```
+  type Writer interface {
+      Write(p []byte) (n int, err error)
+  }
+  ```
+
+  *io 包中还有 Closer 接口，只有一个错误返回，代码如下：*
+  
+  ```
+  type Closer interface {
+      Close() error
+  }
+  ```
+
+  ***错误接口的定义格式***
+
+  *error 是 Go 系统声明的接口类型，代码如下：*
+
+  ```
+  type error interface {
+      Error() string
+  }
+  ```
+
+  > 所有符合 Error()string 格式的方法，都能实现错误接口，Error() 方法返回错误的具体描述，使用者可以通过这个字符串知道发生了什么错误。
+
+  ***自定义一个错误***
+
+  ```
+  var err = errors.New("this is an error")
+  ```
+
+  > 错误字符串由于相对固定，一般在包作用域声明，应尽量减少在使用时直接使用 errors.New 返回。
+
+  + *errors 包*
+
+  **Go语言的 errors 中对 New 的定义非常简单，代码如下：**
+
+  ```
+  // 创建错误对象
+  func New(text string) error {
+      return &errorString{text}
+  }
+  // 错误字符串
+  type errorString struct {
+      s string
+  }
+  // 返回发生何种错误
+  func (e *errorString) Error() string {
+      return e.s
+  }
+  ```
+
+  + *在代码中使用错误定义*
+
+  ```
+  package main
+  import (
+      "errors"
+      "fmt"
+  )
+  // 定义除数为0的错误
+  var errDivisionByZero = errors.New("division by zero")
+  func div(dividend, divisor int) (int, error) {
+      // 判断除数为0的情况并返回
+      if divisor == 0 {
+          return 0, errDivisionByZero
+      }
+      // 正常计算，返回空错误
+      return dividend / divisor, nil
+  }
+  func main() {
+      fmt.Println(div(1, 0))
+  }
+  ```
+
+  *在解析中使用自定义错误*
+
+  > 使用 errors.New 定义的错误字符串的错误类型是无法提供丰富的错误信息的，那么，如果需要携带错误信息返回，就需要借助自定义结构体实现错误接口。  
+  > 下面代码将实现一个解析错误（ParseError），这种错误包含两个内容，分别是文件名和行号，解析错误的结构还实现了 error 接口的 Error() 方法，返回错误描述时，就需要将文件名和行号返回。
+
+  ```
+  package main
+  import (
+      "fmt"
+  )
+  // 声明一个解析错误
+  type ParseError struct {
+      Filename string // 文件名
+      Line     int    // 行号
+  }
+  // 实现error接口，返回错误描述
+  func (e *ParseError) Error() string {
+      return fmt.Sprintf("%s:%d", e.Filename, e.Line)
+  }
+  // 创建一些解析错误
+  func newParseError(filename string, line int) error {
+      return &ParseError{filename, line}
+  }
+  func main() {
+      var e error
+      // 创建一个错误实例，包含文件名和行号
+      e = newParseError("main.go", 1)
+      // 通过error接口查看错误描述
+      fmt.Println(e.Error())
+      // 根据错误接口具体的类型，获取详细错误信息
+      switch detail := e.(type) {
+      case *ParseError: // 这是一个解析错误
+          fmt.Printf("Filename: %s Line: %d\n", detail.Filename, detail.Line)
+      default: // 其他类型的错误
+          fmt.Println("other error")
+      }
+  }
+  ```
+  
