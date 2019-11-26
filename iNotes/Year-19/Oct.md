@@ -100,8 +100,8 @@ $ docker pull gitea/gitea:latest
 ``` command
 # $ docker run -d --name=gitea -p 1022:22 -p 3000:3000 -v /home/admin/gitea:/data gitea/gitea:latest
 # $ docker run -d --name=gitea --network wp-net --network-alias gitea -p 1022:22 -p 3000:3000 --link wp-mysql:mysql -v /home/admin/gitea:/data gitea/gitea:latest
-# $ docker run --restart=always -d --name=gitea --network gitea-net --network-alias gitea -p 1022:22 -p 3000:3000 --link gitea-postgres:postgres -v /home/admin/gitea:/data gitea/gitea:latest
-$ docker run --restart=always -d --name=gitea -p 1022:22 -p 3000:3000 -v /home/admin/gitea:/data gitea/gitea:latest
+# $ docker run --privileged=true --restart=always -d --name=gitea --network gitea-net --network-alias gitea -p 1022:22 -p 3000:3000 --link gitea-postgres:postgres -v /home/admin/gitea:/data gitea/gitea:latest
+$ docker run --privileged=true --restart=always -d --name=gitea -p 1022:22 -p 3000:3000 -v /home/admin/gitea:/data gitea/gitea:latest
 ```
 
 # gitea in machine
