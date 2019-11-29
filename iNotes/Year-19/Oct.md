@@ -134,7 +134,7 @@ $ docker pull docker.io/portainer/portainer
 ## 
 
 ``` command
-$ docker run-p 9000:9000 \
+$ docker run -p 9000:9000 \
     --restart=always \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /home/admin/portainer:/data \

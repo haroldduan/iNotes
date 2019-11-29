@@ -149,12 +149,31 @@ $ docker run --privileged=true --restart=always -p 7070:80 \
     --network=nginx-net \
     --network-alias=nginx \
     --ip=172.19.0.2 \
-    -v /home/git/nginx/www:/www \
+    -v /home/git/nginx/www:/usr/share/nginx/html \
     -v /home/git/nginx/nginx.conf:/etc/nginx/nginx.conf \
     -v /home/git/nginx/conf.d:/etc/nginx/conf.d \
     -v /home/git/nginx/logs:/var/log/nginx \
-    -v /home/git/nginx/www/logs:/wwwlogs \
     -d nginx
+```
+
+``` php
+$ docker pull php:rc-fpm
+$ docker run -p 9000:9000 \
+    --network=nginx-net \
+    --network-alias=phpfpm \
+    --ip=172.19.0.5 \
+    --name  phpfpm -v /home/git/nginx/www:/var/www/html \
+    -v /home/git/nginx/www/conf:/usr/local/etc/php \
+    -v /home/git/nginx/www/logs:/phplogs \
+    -d php:rc-fpm
+$ docker run \
+    --network=nginx-net \
+    --network-alias=phpfpm \
+    --ip=172.19.0.5 \
+    -d \
+    -p 9000:9000 \
+    -v /home/git/nginx/www:/usr/share/nginx/html \
+    --name phpfpm bitnami/php-fpm:7.0
 ```
 
 ``` gitea
@@ -255,3 +274,171 @@ server {
         proxy_set_header Host $host:$server_port;
     }
 }
+
+# Drone
+
+## Install Drone in docker
+
+*docker-compose.yml*
+
+```
+docker run \
+  --link gitea:gitea \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=/home/admin/drone:/data \
+  --env=DRONE_GITEA_SERVER=http://gitea:3000/ \  #这里配置的是Gitea对应Docker的访问地址, 如果使用必须link, 也可以是192.168.3.15:3000这种
+  --env=DRONE_GIT_ALWAYS_AUTH=false \
+  --env=DRONE_RUNNER_CAPACITY=2 \
+  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \   #这里主机地址为drone安装后的访问地址, 
+  --env=DRONE_SERVER_PROTO=http \
+  --env=DRONE_TLS_AUTOCERT=false \
+  --publish=9090:80 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone:latest
+docker run \
+  --link gitea:gitea \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=/home/admin/drone:/data \
+  --env=DRONE_AGENTS_ENABLED=true \
+  --env=DRONE_GITEA_SERVER=http://gitea:3000/ \
+  --env=DRONE_GITEA_CLIENT_ID=4e5d2dee-0533-48ad-9e03-70af6e7bb8ed \
+  --env=DRONE_GITEA_CLIENT_SECRET=EnA9acNIS0sLyeKYeMTco0RvE3eAmsksR-Ne4v-HxMY= \
+  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
+  --env=DRONE_SERVER_PROTO=http \
+  --publish=9090:80 \
+  --publish=1443:443 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone:latest
+
+docker run \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=/home/admin/drone:/data \
+  --env=DRONE_GITEA_SERVER=http://192.168.3.15:3000/ \
+  --env=DRONE_GIT_ALWAYS_AUTH=false \
+  --env=DRONE_RUNNER_CAPACITY=2 \
+  --env=DRONE_SERVER_HOST=192.168.5.15:9090 \
+  --env=DRONE_SERVER_PROTO=http \
+  --env=DRONE_TLS_AUTOCERT=false \
+  --publish=9090:80 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone:latest
+
+
+version: '2'
+
+services:
+  drone-server:
+  image: drone/drone:latest
+  ports: - 9090:80
+  volumes: - /home/admin/drone:/data
+  restart: always
+  environment: - DRONE_OPEN=true - DOCKER_API_VERSION=1.24 - DRONE_HOST=10.1.86.206 - DRONE_GOGS=true - DRONE_GITEA_URL=http://192.168.3.15:3000/ - DRONE_SECRET=ok
+
+  drone-agent:
+  image: drone/drone:latest
+  command: agent
+  restart: always
+  depends_on: - drone-server
+  volumes: - /var/run/docker.sock:/var/run/docker.sock
+  environment: - DOCKER_API_VERSION=1.24 - DRONE_SERVER=ws://drone-server:8000/ws/broker - DRONE_SECRET=ok
+
+docker run \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=/home/admin/drone:/data \
+  --env=DRONE_AGENTS_ENABLED=true \
+  --env=DRONE_GITEA_SERVER=http://192.168.3.15:3000 \
+  --env=DRONE_GITEA_CLIENT_ID=f670c650-1430-41b9-8792-8f83dfa2ff63 \
+  --env=DRONE_GITEA_CLIENT_SECRET=dUJJOJOT8vvLa0tcmijySoEyorkcGcCFV-ggc81wgWg= \
+  --env=DRONE_GITEA_PRIVATE_MODE=false \
+  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
+  --env=DRONE_SERVER_PROTO=http \
+  --publish=9090:80 \
+  --publish=443:443 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone:latest
+
+docker run \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=/home/admin/drone:/data \
+  --env=DRONE_AGENTS_ENABLED=true \
+  --env=DRONE_GITEA_SERVER=http://192.168.3.15:3000 \
+  --env=DRONE_GIT_ALWAYS_AUTH=false \
+  --env=DRONE_GITEA_PRIVATE_MODE=false \
+  --env=DRONE_GITEA_SKIP_VERIFY=true \
+  --env=DRONE_RUNNER_CAPACITY=2 \
+  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
+  --env=DRONE_SERVER_PROTO=http \
+  --env=DRONE_USER_CREATE=username:administrator,admin:true \
+  --publish=9090:80 \
+  --publish=443:443 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone:latest
+
+
+# right
+docker run \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=/home/admin/drone:/data \
+  --env=DRONE_AGENTS_ENABLED=true \
+  --env=DRONE_GOGS=true \
+  --env=DRONE_GOGS_SKIP_VERIFY=true \
+  --env=DRONE_GOGS_SERVER=http://182.92.165.53:8080 \
+  --env=DRONE_RUNNER_CAPACITY=2 \
+  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
+  --env=DRONE_SERVER_PROTO=http \
+  --env=DRONE_USER_CREATE=username:administrator,admin:true \
+  --publish=9090:80 \
+  --publish=443:443 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone:latest
+
+docker run \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=/home/admin/drone:/data \
+  --env=DRONE_AGENTS_ENABLED=true \
+  --env=DRONE_GITEA=true \
+  --env=DRONE_GITEA_SKIP_VERIFY=true \
+  --env=DRONE_GITEA_SERVER=http://182.92.165.53:7070/gitea/ \
+  --env=DRONE_RUNNER_CAPACITY=2 \
+  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
+  --env=DRONE_SERVER_PROTO=http \
+  --env=DRONE_USER_CREATE=username:administrator,admin:true \
+  --publish=9090:80 \
+  --publish=443:443 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone:latest
+
+
+docker run \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=/home/admin/drone:/data \
+  --env=DRONE_AGENTS_ENABLED=true \
+  --env=DRONE_GITEA_SERVER=http://182.92.165.53:7070/gitea/ \
+  --env=DRONE_GITEA_CLIENT_ID=cc17db57-3c5d-42fe-ae66-b621e0c0ea7f \
+  --env=DRONE_GITEA_CLIENT_SECRET=phIrUusTg56eFwSN33MldDABC68-Fv2t7rGBXJFK2io= \
+  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
+  --env=DRONE_USER_CREATE=username:administrator,admin:true \
+  --env=DRONE_SERVER_PROTO=http \
+  --publish=9090:80 \
+  --publish=443:443 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone:latest
+
+c88642882aceaab7eb69db88a5f80836f1d45ba4
+```
