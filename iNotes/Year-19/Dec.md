@@ -122,29 +122,10 @@ $ docker install nginx
 
 ```
 $ docker network create nginx-net --subnet=172.19.0.0/16
-$ docker run -p 7070:80 --name nginx -d nginx
+$ docker run -p 8080:80 --name nginx -d nginx
 $ docker cp nginx:/etc/nginx/nginx.conf /home/git/nginx/nginx.conf
 $ docker cp nginx:/etc/nginx/conf.d /home/git/nginx/conf.d
-$ # docker run --privileged=true --restart=always -p 7070:80 \
-    --name=nginx --network=nginx-net \
-    --network-alias=nginx \
-    -v /home/git/nginx/www:/www \
-    -v /home/git/nginx/nginx.conf:/etc/nginx/nginx.conf \
-    -v /home/git/nginx/conf.d:/etc/nginx/conf.d \
-    -v /home/git/nginx/logs:/var/log/nginx \
-    -v /home/git/nginx/www/logs:/wwwlogs \
-    -d nginx
-$ # docker run --privileged=true --restart=always -p 7070:80 \
-    --name=nginx --network=nginx-net \
-    --network-alias=nginx \
-    --ip=172.18.0.2 \
-    -v /home/git/nginx/www:/www \
-    -v /home/git/nginx/nginx.conf:/etc/nginx/nginx.conf \
-    -v /home/git/nginx/conf.d:/etc/nginx/conf.d \
-    -v /home/git/nginx/logs:/var/log/nginx \
-    -v /home/git/nginx/www/logs:/wwwlogs \
-    -d nginx
-$ docker run --privileged=true --restart=always -p 7070:80 \
+$ docker run --privileged=true --restart=always -p 8080:80 \
     --name=nginx \
     --network=nginx-net \
     --network-alias=nginx \
@@ -177,41 +158,64 @@ $ docker run \
 ```
 
 ``` gitea
-$ # docker network create gitea-net
+$ docker network create gitea-net --subnet=172.20.0.0/16
 $ # docker run --privileged=true --restart=always -d \
     --network=gitea-net --network-alias=gitea \
+    --ip=172.20.0.2 \
     --name=gitea -p 1022:22 -p 3000:3000 \
     -v /home/git/gitea:/data gitea/gitea:latest
 $ docker run --privileged=true --restart=always -d \
-    --network=nginx-net --network-alias=gitea \
-    --ip=172.19.0.3 \
-    --name=gitea -p 1022:22 -p 3000:3000 \
-    -v /home/git/gitea:/data gitea/gitea:latest
+    --network=gitea-net --network-alias=gitea \
+    --ip=172.20.0.2 \
+    --name=gitea -p 1022:22 -p 7070:3000 \
+    -v /home/git/gitea:/data gitea/gitea:1.10.0
 ```
 
 ``` showdoc
-$ # docker network create showdoc-net
-$ # docker run --privileged=true --restart=always --name=showdoc showdoc -d -p 9090:80 -v /home/git/showdoc/html:/var/www/html/  star7th/showdoc
+$ docker network create showdoc-net --subnet=172.21.0.0/16
 $ docker run --privileged=true \
     --restart=always \
-    --network=nginx-net --network-alias=showdoc \
-    --ip=172.19.0.4 \
-    --name=showdoc -d -p 9090:80 \
+    --network=showdoc-net --network-alias=showdoc \
+    --ip=172.21.0.2 \
+    --name=showdoc -d -p 6060:80 \
     -v /home/git/showdoc/html:/var/www/html/  star7th/showdoc
 ```
 
-``` wordpress
-$ docker network create wp-net --subnet=172.20.0.0/16
+``` drone
+$ docker pull drone/drone:latest
+$ docker network create drone-net --subnet=172.22.0.0/16
+$ docker run \
+    --privileged=true --restart=always -d \
+    --network=drone-net --network-alias=drone \
+    --ip=172.22.0.2 \
+    --volume=/var/run/docker.sock:/var/run/docker.sock \
+    --volume=/home/git/drone:/data \
+    --env=DRONE_AGENTS_ENABLED=true \
+    --env=DRONE_GITEA_SERVER=http://rds.avatech.com.cn:7070/ \
+    --env=DRONE_GITEA_CLIENT_ID=d12d3a96-bdb5-45f4-b0e1-fd30ad6d3282 \
+    --env=DRONE_GITEA_CLIENT_SECRET=Sc5gMjqVUZTg75ISR7Ak7dW9rfeKYhG4JcyZC_Jw_ic= \
+    --env=DRONE_SERVER_HOST=http://rds.avatech.com.cn:5050/ \
+    --env=DRONE_USER_CREATE=username:codebot,admin:false \
+    --env=DRONE_SERVER_PROTO=http \
+    --publish=5050:80 \
+    --publish=443:443 \
+    --restart=always \
+    --detach=true \
+    --name=drone \
+    drone/drone:latest
+```
 
+``` wordpress
+$ docker network create wp-net --subnet=172.23.0.0/16
 $ docker run --name=wp-mysql --privileged=true --restart=always \
     --network wp-net --network-alias mysql \
-    --ip=172.20.0.2 \
+    --ip=172.23.0.2 \
     -v /home/git/wordpress/mysql:/var/lib/mysql -v /home/git/wordpress/mysql/conf:/etc/mysql/conf.d \
     -e MYSQL_ROOT_PASSWORD=avatech@2019 -p 7706:3306 -d mysql:5.6
 
 $ docker run --name wp-web --privileged=true --restart=always \
     --network wp-net --network-alias wordpress \
-    --ip=172.20.0.3 \
+    --ip=172.23.0.3 \
     --link wp-mysql:mysql \
     -e WORDPRESS_DB_PASSWORD=avatech@2019 -p 8000:80 \
     -v /home/git/wordpress/wordpress-html:/var/www/html -d wordpress:latest
@@ -223,14 +227,6 @@ $ docker run --privileged=true \
     --restart=always \
     --network=portainer-net --network-alias=portainer \
     --ip=172.18.0.2 \
-    -p 9000:9000 \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    -v /home/git/portainer:/data \
-    --name portainer \
-    -d docker.io/portainer/portainer
-$ # docker run --privileged=true \
-    --restart=always \
-    --ip=172.17.0.3 \
     -p 9000:9000 \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /home/git/portainer:/data \
@@ -279,114 +275,13 @@ server {
 
 ## Install Drone in docker
 
-*docker-compose.yml*
+```
 
 ```
-docker run \
-  --link gitea:gitea \
-  --volume=/var/run/docker.sock:/var/run/docker.sock \
-  --volume=/home/admin/drone:/data \
-  --env=DRONE_GITEA_SERVER=http://gitea:3000/ \  #这里配置的是Gitea对应Docker的访问地址, 如果使用必须link, 也可以是192.168.3.15:3000这种
-  --env=DRONE_GIT_ALWAYS_AUTH=false \
-  --env=DRONE_RUNNER_CAPACITY=2 \
-  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \   #这里主机地址为drone安装后的访问地址, 
-  --env=DRONE_SERVER_PROTO=http \
-  --env=DRONE_TLS_AUTOCERT=false \
-  --publish=9090:80 \
-  --restart=always \
-  --detach=true \
-  --name=drone \
-  drone/drone:latest
-docker run \
-  --link gitea:gitea \
-  --volume=/var/run/docker.sock:/var/run/docker.sock \
-  --volume=/home/admin/drone:/data \
-  --env=DRONE_AGENTS_ENABLED=true \
-  --env=DRONE_GITEA_SERVER=http://gitea:3000/ \
-  --env=DRONE_GITEA_CLIENT_ID=4e5d2dee-0533-48ad-9e03-70af6e7bb8ed \
-  --env=DRONE_GITEA_CLIENT_SECRET=EnA9acNIS0sLyeKYeMTco0RvE3eAmsksR-Ne4v-HxMY= \
-  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
-  --env=DRONE_SERVER_PROTO=http \
-  --publish=9090:80 \
-  --publish=1443:443 \
-  --restart=always \
-  --detach=true \
-  --name=drone \
-  drone/drone:latest
 
-docker run \
-  --volume=/var/run/docker.sock:/var/run/docker.sock \
-  --volume=/home/admin/drone:/data \
-  --env=DRONE_GITEA_SERVER=http://192.168.3.15:3000/ \
-  --env=DRONE_GIT_ALWAYS_AUTH=false \
-  --env=DRONE_RUNNER_CAPACITY=2 \
-  --env=DRONE_SERVER_HOST=192.168.5.15:9090 \
-  --env=DRONE_SERVER_PROTO=http \
-  --env=DRONE_TLS_AUTOCERT=false \
-  --publish=9090:80 \
-  --restart=always \
-  --detach=true \
-  --name=drone \
-  drone/drone:latest
-
-
-version: '2'
-
-services:
-  drone-server:
-  image: drone/drone:latest
-  ports: - 9090:80
-  volumes: - /home/admin/drone:/data
-  restart: always
-  environment: - DRONE_OPEN=true - DOCKER_API_VERSION=1.24 - DRONE_HOST=10.1.86.206 - DRONE_GOGS=true - DRONE_GITEA_URL=http://192.168.3.15:3000/ - DRONE_SECRET=ok
-
-  drone-agent:
-  image: drone/drone:latest
-  command: agent
-  restart: always
-  depends_on: - drone-server
-  volumes: - /var/run/docker.sock:/var/run/docker.sock
-  environment: - DOCKER_API_VERSION=1.24 - DRONE_SERVER=ws://drone-server:8000/ws/broker - DRONE_SECRET=ok
-
-docker run \
-  --volume=/var/run/docker.sock:/var/run/docker.sock \
-  --volume=/home/admin/drone:/data \
-  --env=DRONE_AGENTS_ENABLED=true \
-  --env=DRONE_GITEA_SERVER=http://192.168.3.15:3000 \
-  --env=DRONE_GITEA_CLIENT_ID=f670c650-1430-41b9-8792-8f83dfa2ff63 \
-  --env=DRONE_GITEA_CLIENT_SECRET=dUJJOJOT8vvLa0tcmijySoEyorkcGcCFV-ggc81wgWg= \
-  --env=DRONE_GITEA_PRIVATE_MODE=false \
-  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
-  --env=DRONE_SERVER_PROTO=http \
-  --publish=9090:80 \
-  --publish=443:443 \
-  --restart=always \
-  --detach=true \
-  --name=drone \
-  drone/drone:latest
-
-docker run \
-  --volume=/var/run/docker.sock:/var/run/docker.sock \
-  --volume=/home/admin/drone:/data \
-  --env=DRONE_AGENTS_ENABLED=true \
-  --env=DRONE_GITEA_SERVER=http://192.168.3.15:3000 \
-  --env=DRONE_GIT_ALWAYS_AUTH=false \
-  --env=DRONE_GITEA_PRIVATE_MODE=false \
-  --env=DRONE_GITEA_SKIP_VERIFY=true \
-  --env=DRONE_RUNNER_CAPACITY=2 \
-  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
-  --env=DRONE_SERVER_PROTO=http \
-  --env=DRONE_USER_CREATE=username:administrator,admin:true \
-  --publish=9090:80 \
-  --publish=443:443 \
-  --restart=always \
-  --detach=true \
-  --name=drone \
-  drone/drone:latest
-
-
-# right
-docker run \
+```
+# gogs
+$ docker run \
   --volume=/var/run/docker.sock:/var/run/docker.sock \
   --volume=/home/admin/drone:/data \
   --env=DRONE_AGENTS_ENABLED=true \
@@ -404,32 +299,14 @@ docker run \
   --name=drone \
   drone/drone:latest
 
-docker run \
+# gitea
+$ docker run \
   --volume=/var/run/docker.sock:/var/run/docker.sock \
   --volume=/home/admin/drone:/data \
   --env=DRONE_AGENTS_ENABLED=true \
-  --env=DRONE_GITEA=true \
-  --env=DRONE_GITEA_SKIP_VERIFY=true \
-  --env=DRONE_GITEA_SERVER=http://182.92.165.53:7070/gitea/ \
-  --env=DRONE_RUNNER_CAPACITY=2 \
-  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
-  --env=DRONE_SERVER_PROTO=http \
-  --env=DRONE_USER_CREATE=username:administrator,admin:true \
-  --publish=9090:80 \
-  --publish=443:443 \
-  --restart=always \
-  --detach=true \
-  --name=drone \
-  drone/drone:latest
-
-
-docker run \
-  --volume=/var/run/docker.sock:/var/run/docker.sock \
-  --volume=/home/admin/drone:/data \
-  --env=DRONE_AGENTS_ENABLED=true \
-  --env=DRONE_GITEA_SERVER=http://182.92.165.53:7070/gitea/ \
-  --env=DRONE_GITEA_CLIENT_ID=cc17db57-3c5d-42fe-ae66-b621e0c0ea7f \
-  --env=DRONE_GITEA_CLIENT_SECRET=phIrUusTg56eFwSN33MldDABC68-Fv2t7rGBXJFK2io= \
+  --env=DRONE_GITEA_SERVER=http://182.92.165.53:7070/ \
+  --env=DRONE_GITEA_CLIENT_ID=db84ac14-0f36-4240-be85-c4e63a70face \
+  --env=DRONE_GITEA_CLIENT_SECRET=jwdWwo2XgKKJ3oJsQuafzM3GccyQ2p-MR0_OoNpQ1tE= \
   --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
   --env=DRONE_USER_CREATE=username:administrator,admin:true \
   --env=DRONE_SERVER_PROTO=http \
@@ -440,5 +317,55 @@ docker run \
   --name=drone \
   drone/drone:latest
 
-c88642882aceaab7eb69db88a5f80836f1d45ba4
+
+docker run \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=/home/admin/drone:/data \
+  --env=DRONE_AGENTS_ENABLED=true \
+  --env=DRONE_GITEA_SERVER=http://182.92.165.53:7070/ \
+  --env=DRONE_GITEA_CLIENT_ID=1497497f-1555-42fa-a597-6e37f083ae64 \
+  --env=DRONE_GITEA_CLIENT_SECRET=kT649PjMIaRdsvzkEgI9wbY5X259uPJpA9xluxuNm0g= \
+  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
+  --env=DRONE_USER_CREATE=username:administrator,admin:true \
+  --env=DRONE_SERVER_PROTO=http \
+  --publish=9090:80 \
+  --publish=443:443 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone:latest
+
+docker run \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=/home/admin/drone:/data \
+  --env=DRONE_AGENTS_ENABLED=true \
+  --env=DRONE_GITEA_SERVER=http://182.92.165.53:7070/ \
+  --env=DRONE_GITEA_CLIENT_ID=755a67f5-e0a2-4824-b348-cd3638d0aa1b \
+  --env=DRONE_GITEA_CLIENT_SECRET=eKoKj-LdCuihwIRqAL1ZxbtBGHHz16iGZBA4JOVW5P4= \
+  --env=DRONE_SERVER_HOST=192.168.3.15:9090 \
+  --env=DRONE_USER_CREATE=username:codebot,admin:true \
+  --env=DRONE_SERVER_PROTO=http \
+  --publish=9090:80 \
+  --publish=443:443 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone:latest
+
+docker run \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=/home/git/drone:/data \
+  --env=DRONE_AGENTS_ENABLED=true \
+  --env=DRONE_GITEA_SERVER=http://182.92.165.53:7070/ \
+  --env=DRONE_GITEA_CLIENT_ID=f7751024-380c-47cd-acae-234a1d40f508 \
+  --env=DRONE_GITEA_CLIENT_SECRET=Jk3WfsQ1D9YPkwJMjdI2qdaTfwC2yeCpLOAUOcfBOXc= \
+  --env=DRONE_SERVER_HOST=182.92.165.53:5050 \
+  --env=DRONE_USER_CREATE=username:codebot,admin:true \
+  --env=DRONE_SERVER_PROTO=http \
+  --publish=5050:80 \
+  --publish=443:443 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone:latest
 ```
