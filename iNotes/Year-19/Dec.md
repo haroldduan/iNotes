@@ -369,3 +369,28 @@ docker run \
   --name=drone \
   drone/drone:latest
 ```
+
+```
+$ ls -lhk
+$ ls -lahk
+$ tar -cvf test.tar test
+$ tar -zcvf test.tar.gz test
+$ tar -zxvf /usr/local/test.tar.gz
+```
+
+``` MediaDrop
+$ docker pull acaranta/mediadrop
+$ docker run --name mediadrop -p 8080:8080 -d acaranta/mediadrop # http://192.168.3.15:8080/admin admin/admin
+
+# MySQL /var/lib/mysql/ /etc/mysql/
+# MediaDrop /mediadrop /mediadrop/development.ini
+# mysql -u username -h localhost -p
+# pass
+# show tables;
+# select * from users;
+```
+
+``` Razuna
+$ docker pull netresearch/razuna
+
+```
