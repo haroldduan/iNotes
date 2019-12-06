@@ -392,5 +392,74 @@ $ docker run --name mediadrop -p 8080:8080 -d acaranta/mediadrop # http://192.16
 
 ``` Razuna
 $ docker pull netresearch/razuna
+$ docker run --name razuna -p 7070:8080 -d netresearch/razuna
+```
 
 ```
+$ git clone https://github.com/skaro13/docker-mediadrop.git
+$ docker build \
+  --no-cache \
+  --pull \
+  -t skaro13/mediadrop:latest .
+$ docker pull skaro13/mediadrop
+$ docker pull mysql:5.7
+$ docker network create mediadrop-net --subnet=172.24.0.0/16
+$ docker run --name=mediadrop-mysql --privileged=true --restart=always \
+    --network mediadrop-net --network-alias mysql \
+    --ip=172.24.0.2 \
+    -v /home/git/mediadrop/mysql/data:/var/lib/mysql \
+    -v /home/git/mediadrop/mysql/conf:/etc/mysql/conf.d \
+    -e MYSQL_ROOT_PASSWORD=avatech@2019 \
+    -e MYSQL_DATABASE=mediadrop \
+    -e MYSQL_USER=mediadrop \
+    -e MYSQL_PASSWORD=avatech@2019 \
+    -d mysql:5.7
+# docker create
+$ docker run --name=mediadrop-web --privileged=true --restart=always \
+  --network mediadrop-net --network-alias mediadrop \
+  --ip=172.24.0.3 \
+  -e DB_HOST=mediadrop-mysql \
+  -e DB_NAME=mediadrop \
+  -e DB_USER=mediadrop \
+  -e DB_PASSWORD=avatech@2019 \
+  -p 9090:8080 \
+  -v /home/git/mediadrop/mediadrop/data:/data \
+  -d skaro13/mediadrop
+```
+
+```
+version: '2'
+services:
+  mediadrop:
+    container_name: md-web
+    image: skaro13/mediadrop
+    environment:
+      - DB_HOST=md-mysql
+      - DB_NAME=mediadrop
+      - DB_USER=mediadrop
+      - DB_PASSWORD=avatech@2019
+    volumes:
+      - /home/git/mediadrop/mediadrop/data:/data
+    ports:
+      - "9090:8080"
+    depends_on:
+      - db
+    restart: always
+  db:
+    container_name: md-mysql
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=avatech@2019
+      - MYSQL_DATABASE=mediadrop
+      - MYSQL_USER=mediadrop
+      - MYSQL_PASSWORD=avatech@2019
+    volumes:
+      - /home/git/mediadrop/mysql/data:/var/lib/mysql
+      - /home/git/mediadrop/mysql/conf:/etc/mysql/conf.d
+```
+
+docker run --privileged=true \
+    --restart=always \
+    --name=showdoc -d -p 6060:80 \
+    -v /home/admin/showdoc/html:/var/www/html/  star7th/showdoc
