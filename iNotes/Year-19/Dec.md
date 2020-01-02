@@ -463,3 +463,114 @@ docker run --privileged=true \
     --restart=always \
     --name=showdoc -d -p 6060:80 \
     -v /home/admin/showdoc/html:/var/www/html/  star7th/showdoc
+
+
+
+
+# Vue
+
+## Vue notes
+
+### Vue 目录解析
+
+目录/文件|说明
+---|-------
+build|项目构建(webpack)相关代码
+config|配置目录，包括端口号等。我们初学可以使用默认的。
+node_modules|npm 加载的项目依赖模块
+src|这里是我们要开发的目录，基本上要做的事情都在这个目录里。里面包含了几个目录及文件： <br> assets: 放置一些图片，如logo等。 <br> components: 目录里面放了一个组件文件，可以不用。 <br> App.vue: 项目入口文件，我们也可以直接将组件写这里，而不使用 components 目录。 <br> main.js: 项目的核心文件。<br>
+static|静态资源目录，如图片、字体等。  
+test|初始测试目录，可删除。
+.xxxx文件|这些是一些配置文件，包括语法配置，git配置等。
+index.html|首页入口文件，你可以添加一些 meta 信息或统计代码啥的。
+package.json|项目配置文‵‵
+README.md|项目的说明文档，markdown 格式
+
+### Vue 构造
+
+```
+<div id="vue_det">
+    <h1>site : {{site}}</h1>
+    <h1>url : {{url}}</h1>
+    <h1>{{details()}}</h1>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#vue_det',
+        data: {
+            site: "菜鸟教程",
+            url: "www.runoob.com",
+            alexa: "10000"
+        },
+        methods: {
+            details: function() {
+                return  this.site + " - 学的不仅是技术，更是梦想！";
+            }
+        }
+    })
+</script>
+```
+
+*可以看到在 Vue 构造器中有一个el 参数，它是 DOM 元素中的 id。在上面实例中 id 为 vue_det，在 div 元素中：*
+
+```
+<div id = "vue_det"></div>
+```
+
+如何定义数据对象。
+
+**data** 用于定义属性，实例中有三个属性分别为：site、url、alexa。
+
+**methods** 用于定义的函数，可以通过 return 来返回函数值。
+
+**{{ }}** 用于输出对象属性和函数返回值。
+
+*当一个 Vue 实例被创建时，它向 Vue 的响应式系统中加入了其 data 对象中能找到的所有的属性。当这些属性的值发生改变时，html 视图将也会产生相应的变化。*]
+
+```
+<div id="vue_det">
+    <h1>site : {{site}}</h1>
+    <h1>url : {{url}}</h1>
+    <h1>Alexa : {{alexa}}</h1>
+</div>
+<script type="text/javascript">
+// 我们的数据对象
+var data = { site: "菜鸟教程", url: "www.runoob.com", alexa: 10000}
+var vm = new Vue({
+    el: '#vue_det',
+    data: data
+})
+// 它们引用相同的对象！
+document.write(vm.site === data.site) // true
+document.write("<br>")
+// 设置属性也会影响到原始数据
+vm.site = "Runoob"
+document.write(data.site + "<br>") // Runoob
+ 
+// ……反之亦然
+data.alexa = 1234
+document.write(vm.alexa) // 1234
+</script>
+```
+
+*除了数据属性，Vue 实例还提供了一些有用的实例属性与方法。它们都有前缀 $，以便与用户定义的属性区分开来。例如：*
+
+```
+<div id="vue_det">
+    <h1>site : {{site}}</h1>
+    <h1>url : {{url}}</h1>
+    <h1>Alexa : {{alexa}}</h1>
+</div>
+<script type="text/javascript">
+// 我们的数据对象
+var data = { site: "菜鸟教程", url: "www.runoob.com", alexa: 10000}
+var vm = new Vue({
+    el: '#vue_det',
+    data: data
+})
+ 
+document.write(vm.$data === data) // true
+document.write("<br>") 
+document.write(vm.$el === document.getElementById('vue_det')) // true
+</script>
+```
