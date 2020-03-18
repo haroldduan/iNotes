@@ -116,6 +116,7 @@ $ docker run -d --link jogetdb:jwdb --name joget -p 8080:8080 -e MYSQL_HOST=jwdb
 
 ```
 $ sudo yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
+$ sudo yum install gcc-c++
 $ sudo yum install  gcc perl-ExtUtils-MakeMaker
 $ wget -c https://github.com/git/git/archive/v2.25.1.tar.gz
 $ tar -zxvf v2.25.1.tar.gz
@@ -125,4 +126,20 @@ $ make prefix=/usr/local/git install
 $ su root
 $ echo "export PATH=$PATH:/usr/local/git/bin" >> /etc/bashrc
 $ source /etc/bashrc
+```
+
+```
+$ sudo yum install -y epel-release
+$ sudo rpm -ivh https://centos7.iuscommunity.org/ius-release.rpm
+$ sudo yum list git2u
+$ sudo yum install -y git2u
+```
+
+``` awesome method
+$ sudo yum install \
+https://repo.ius.io/ius-release-el7.rpm \
+https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+$ sudo yum list git2*
+$ sudo yum install git222
 ```
