@@ -36,6 +36,10 @@ $ sudo vim /etc/fstab
 
 > UUID=107f01e0-8acb-4817-b780-751c465366b3 /home/admin/gogs        ext4    user,rw         0 2
 
+```
+$ chmod 777 /home/admin/gogs
+```
+
 ### 查看sudoers文件权限
 
 ``` command

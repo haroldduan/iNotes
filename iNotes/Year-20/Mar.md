@@ -105,7 +105,7 @@ $ docker run -d --name=syncthing \
 ```
 $ docker pull jogetworkflow/joget-community
 $ docker run -d -p 7070:8080 -v /var/lib/mysql --name joget jogetworkflow/joget-community
-
+docker run -d -p 3000:8080 -v /var/lib/mysql --name joget jogetworkflow/joget-community
 $ docker pull jogetworkflow/joget-enterprise
 $ docker volume create jogetdata
 $ docker run -d --name jogetdb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=jwdb -e MYSQL_USER=joget -e MYSQL_PASSWORD=joget -e MYSQL_DATABASE=jwdb mysql:5.7
@@ -125,4 +125,188 @@ $ make prefix=/usr/local/git install
 $ su root
 $ echo "export PATH=$PATH:/usr/local/git/bin" >> /etc/bashrc
 $ source /etc/bashrc
+```
+
+```
+$ sudo yum install \
+https://repo.ius.io/ius-release-el7.rpm \
+https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+$ sudo yum install git2u
+```
+
++ go-convey
+
+```
+$ go get github.com/smartystreets/goconvey
+```
+
++ go cover
+
+```
+# $ go get code.google.com/p/go.tools/cmd/cover
+$ go get golang.org/x/tools/cmd/cover
+```
+
++ NextCloud install
+
+```
+$ docker pull nextcloud
+$ docker run -d \
+  -v /home/admin/dockers/nextcloud:/var/www/html \
+  -p 80:80 \
+  --name nextcloud \
+  nextcloud
+$ # docker run -d \
+  # -v /home/admin/dockers/nextcloud:/var/www/html \
+  # -v apps:/var/www/html/custom_apps \
+  # -v config:/var/www/html/config \
+  # -v data:/var/www/html/data \
+  # -p 80:80 \
+  # --name nextcloud \
+  # nextcloud
+```
+
++ CapRover
+
+```
+sudo firewall-cmd --zone=public --add-port=3000/tcp --permanent
+sudo firewall-cmd --zone=public --add-port=1433/tcp --permanent
+sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent
+sudo firewall-cmd --zone=public --add-port=7946/tcp --permanent
+sudo firewall-cmd --zone=public --add-port=4789/tcp --permanent
+sudo firewall-cmd --zone=public --add-port=2377/tcp --permanent
+sudo firewall-cmd --zone=public --add-port=996/tcp --permanent
+sudo firewall-cmd --zone=public --add-port=7946/udp --permanent
+sudo firewall-cmd --zone=public --add-port=4789/udp --permanent
+sudo firewall-cmd --zone=public --add-port=2377/udp --permanent
+
+$ docker pull dockersaturn/captainduckduck
+$ sudo mkdir /captain 
+$ docker run -e BY_PASS_PROXY_CHECK='TRUE' -p 8080:80 -p 1443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock --name caprover dockersaturn/captainduckduck
+
+$ docker run -e "MAIN_NODE_IP_ADDRESS=114.113.221.167" -p 8080:80 -p 1443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock --name caprover dockersaturn/captainduckduck
+```
+
+## Docker UI
+
++ Portainer
+
+```
+$ docker pull docker.io/portainer/portainer
+$ docker run -p 9999:9000 \
+    --restart=always \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /home/admin/dockers/portainer:/data \
+    --name portainer \
+    -d docker.io/portainer/portainer
+```
+
+```
+swarmpit/install:1.8
+$ docker pull swarmpit/install:edge
+$ docker run -it --rm \
+  --name swarmpit-installer \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  swarmpit/install:edge
+```
+
+## Docker Machine
+
++ Install
+
+```
+$ base=https://github.com/docker/machine/releases/download/v0.16.0 &&
+  curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
+  sudo mv /tmp/docker-machine /usr/local/bin/docker-machine &&
+  chmod +x /usr/local/bin/docker-machine
+```
+
++ Usage
+
+```
+$ docker-machine version
+$ docker-machine ls
+$ docker-machine create --driver virtualbox test
+```
+
+
+
++ Wekan
+
+```
+# pull MongoDB
+$ docker pull mongo:4.0
+$ docker run -d --restart=always --name wekan-db mongo:4.0
+
+# pull Wekan
+$ docker pull quay.io/wekan/wekan
+$ docker run -d --restart=always \
+  --name wekan \
+  --link "wekan-db:db" \
+  -e "WITH_API=true" \
+  -e "MONGO_URL=mongodb://db" \
+  -e "ROOT_URL=http://192.168.3.14:3000" \
+  -p 3000:8080 \
+  quay.io/wekan/wekan 
+```
+
++ Redmine
+
+```
+$ docker pull redmine
+$ docker run -d --name redmine \
+  -p 3000:3000 \
+  redmine
+```
+
++ Drone
+
+```
+$ docker run -d \
+  --volume=/home/admin/dockers/drone:/data \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --env=DRONE_GITEA_SERVER=http://182.92.165.53:7070/ \
+  --env=DRONE_GITEA_CLIENT_ID=1f7f34d5-b4fc-4b93-bb93-a3fc979dd952 \
+  --env=DRONE_GITEA_CLIENT_SECRET=z1DIMS0lmAOlGX8mi3fOEqT9qhWXD8_CbSiiJluG2Dw= \
+  --env=DRONE_RPC_SECRET=e94722bddc0c5b612ca26025b95cb5e7 \
+  --env=DRONE_SERVER_HOST=114.113.221.167:3000 \
+  --env=DRONE_SERVER_PROTO=http \
+  --env=DRONE_GITEA=true \
+  --publish=3000:80 \
+  --publish=443:443 \
+  --restart=always \
+  --detach=true \
+  --name=drone \
+  drone/drone
+```
+
+```
+$ drone-server:
+    image: drone/drone:0.7
+    ports:
+      - 8381:8000
+    volumes:
+      - drone-db:/var/lib/drone/
+    restart: always
+    environment:
+      - DRONE_OPEN=true
+      - DRONE_HOST=http://drone-server:8381
+      - DRONE_SECRET=test
+      - DRONE_GITEA=true
+      - DRONE_GITEA_URL=http://gitea-server:3000/
+      - DRONE_NETWORK=${DEFAULT_NETWORK}
+    depends_on:
+      - gitea-server
+
+  drone-agent:
+    image: drone/drone:0.7
+    command: agent
+    restart: always
+    depends_on:
+      - drone-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DRONE_SERVER=ws://drone-server:8000/ws/broker
+      - DRONE_SECRET=test
 ```

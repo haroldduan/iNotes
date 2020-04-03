@@ -27,9 +27,10 @@ $ sudo firewall-cmd --list-all
 + Glances install
 
 ```
-$ yum install epel* -y
-$ yum install python-pip python-devel -y
-$ yum install glances -y
+$ sudo yum install epel* -y
+$ sudo yum install python-pip python-devel -y
+$ sudo yum install glances -y
+$ sudo wget -O- https://bit.ly/glances | /bin/bash
 ```
 
 + Git install
@@ -129,4 +130,4 @@ $ docker run -p 9000:9000 \
 ```
 $ sudo yum history list maven
 $ sudo yum history undo ID
-```
+```s
