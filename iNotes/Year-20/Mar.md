@@ -129,7 +129,7 @@ $ source /etc/bashrc
 ```
 
 ```
-<<<<<<< HEAD
+
 $ sudo yum install \
 https://repo.ius.io/ius-release-el7.rpm \
 https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -312,7 +312,7 @@ $ drone-server:
       - DRONE_SERVER=ws://drone-server:8000/ws/broker
       - DRONE_SECRET=test
 ```
-=======
+
 $ sudo yum install -y epel-release
 $ sudo rpm -ivh https://centos7.iuscommunity.org/ius-release.rpm
 $ sudo yum list git2u
@@ -327,4 +327,3 @@ https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 $ sudo yum list git2*
 $ sudo yum install git222
 ```
->>>>>>> c81e39bcb67e5f5b5dc6e3c9bdded3e7b984703d
