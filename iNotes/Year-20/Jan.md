@@ -30,7 +30,7 @@ $ sudo firewall-cmd --list-all
 $ sudo yum install epel* -y
 $ sudo yum install python-pip python-devel -y
 $ sudo yum install glances -y
-$ sudo wget -O- https://bit.ly/glances | /bin/bash
+#$ sudo wget -O- https://bit.ly/glances | /bin/bash
 ```
 
 + Git install

@@ -101,6 +101,8 @@ $ sudo yum install docker-ce docker-ce-cli containerd.io
 ```
 $ sudo service docker start
 $ sudo systemctl enable docker
+# Output contents
+#Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.
 $ sudo groupadd docker
 $ sudo gpasswd -a $USER docker
 $ newgrp docker
@@ -158,10 +160,9 @@ $ sudo service docker restart
 
     *(On testsrv-15)*
 
-    ``` 
-    $ docker node ls
     ```
-
+    $  docker swarm leave
+    ```
     ```
     ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
     6mbb3owo4ykaz1m6xr0h8ifz5 *   testsrv-15          Ready               Active              Leader              19.03.8
@@ -268,6 +269,11 @@ $ sudo service docker restart
     fw0jgf9aa4xuyjxf7k5e263pa     testsrv-16          Ready               Active                                  19.03.8
     ```
 
+    4.4. 离开Swarm
+    ``` 
+    $ docker swarm leave
+    ```
+
     ```
     $ docker info
     ```
@@ -309,9 +315,22 @@ $ sudo service docker restart
 $ docker pull docker.io/portainer/portainer
 
 $ docker run -p 9000:9000 \
+    -p 8000:8000 \
     --restart=always \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /home/admin/dockers/portainer:/data \
     --name portainer \
-    -d docker.io/portainer/portainer
+    -d docker.io/portainer/portainer \
+    -H unix:///var/run/docker.sock
+```
+
+```
+$ docker pull codercom/code-server
+$ docker run -dit --restart=always \
+    --name vscode -h vscode \
+    -u root  -p 8080:8080 \
+    -v /home/admin/dockers/vscode:/root \
+    -e PASSWORD=avatech \
+    -v /etc/localtime:/etc/localtime:ro \
+    codercom/code-server  --auth password
 ```
