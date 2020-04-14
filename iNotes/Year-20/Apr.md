@@ -334,3 +334,82 @@ $ docker run -dit --restart=always \
     -v /etc/localtime:/etc/localtime:ro \
     codercom/code-server  --auth password
 ```
+
+
+## Rust
+
++ Rust installing
+
+```
+$ curl https://sh.rustup.rs -sSf | sh
+# or
+$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Output this contents
+...
+1) Proceed with installation (default)
+2) Customize installation
+3) Cancel installation
+...
+
+$ source $HOME/.cargo/env
+
+$ rustc --version
+$ cargo --version
+```
+
++ Rust kits installing
+
+```
+$ rustup install nightly
+$ rustup default nightly
+```
+
+```
+$ cargo install racer
+$ racer -V
+$ cargo install --force rustfmt
+$ cargo install --force rls
+```
+
++ Rust components installing
+
+```
+$ rustup component add rls-preview rust-analysis rust-src
+```
+
++ VSCode plugin installing
+
+```
+$ ext install rust-lang.rust
+
+$ ext install vadimcn.vscode-lldb
+```
+
++ Debug testing
+
+```
+$ cargo build
+# edit launch.json
+```
+
+
++ ~~Update repository (新版本可以不配置)~~
+
+```
+# vim ~/.cargo/config 
+
+[source.crates-io]
+registry = "https://github.com/rust-lang/crates.io-index"
+replace-with = 'ustc'
+[source.ustc]
+registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+```
+
+``` fish
+# vim $HOME/.config/fish/config.fish
+
+export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
+export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"
+export PATH="$HOME/.cargo/bin:$PATH
+```
