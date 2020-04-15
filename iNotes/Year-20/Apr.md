@@ -117,9 +117,22 @@ $ sudo vim /etc/docker/daemon.json
   ],
   "debug": true,
   "log-level": "info",
-  "graph": "/home/admin/docker-data"
+  "graph": "/home/admin/docker-data",
+  "hosts": ["tcp://0.0.0.0:2375", "unix:///var/run/docker.sock"]
 }
 $ sudo service docker restart
+```
+
+*Docker 服务文件路径：Ubuntu的路径 /lib/systemd/system/docker.service，CentOS的路径 /usr/lib/systemd/system/docker.service*
+
+```
+$ sudo vim /usr/lib/systemd/system/docker.service
+
+# Update contents:
+
+# ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ExecStart=/usr/bin/dockerd
+# ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock
 ```
 
 4. Docker 集群操作
@@ -314,7 +327,7 @@ $ sudo service docker restart
 ```
 $ docker pull docker.io/portainer/portainer
 
-$ docker run -p 9000:9000 \
+# $ docker run -p 9000:9000 \
     -p 8000:8000 \
     --restart=always \
     -v /var/run/docker.sock:/var/run/docker.sock \
@@ -322,6 +335,19 @@ $ docker run -p 9000:9000 \
     --name portainer \
     -d docker.io/portainer/portainer \
     -H unix:///var/run/docker.sock
+$ docker run -d -p 9000:9000 --restart=always --name portainer \
+  -v /home/admin/dockers/portainer:/data \
+  docker.io/portainer/portainer \
+  -H tcp://192.168.3.15:2375
+$ docker run -d -p 9000:9000 --restart=always --name portainer \
+  -v /home/admin/dockers/portainer:/data \
+  docker.io/portainer/portainer
+```
+
+*Docker API 端口开放*
+
+```
+$ sudo firewall-cmd --zone=public --add-port=2375/tcp --permanent
 ```
 
 ```
@@ -334,6 +360,91 @@ $ docker run -dit --restart=always \
     -v /etc/localtime:/etc/localtime:ro \
     codercom/code-server  --auth password
 ```
+
+6. 测试
+
+  6.1. 在一个工作节点上创建一个名为 helloworld 的服务，这里是随机指派给一个工作节点
+
+  ```
+  $ docker service create --replicas 1 --name helloworld alpine ping docker.com
+
+  # Output this content:
+  qi6e6j0r19yl9ejaq7fi614gq
+  overall progress: 1 out of 1 tasks
+  1/1: running   [==================================================>]
+  verify: Service converged
+  ```
+
+  6.2. 查看 helloworld 服务运行在哪个节点上
+
+  ```
+  $ docker service ps helloworld
+
+  # Output this content:
+  ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE                ERROR               PORTS
+  g19pts9cajma        helloworld.1        alpine:latest       testsrv-15          Running             Running about a minute ago
+  ```
+
+  6.3. 查看 helloworld 部署的具体信息
+
+  ```
+  $ docker service inspect --pretty helloworld
+
+  # Output this content:
+  ID:             qi6e6j0r19yl9ejaq7fi614gq
+  Name:           helloworld
+  Service Mode:   Replicated
+    Replicas:      1
+  Placement:
+  UpdateConfig:
+    Parallelism:   1
+    On failure:    pause
+    Monitoring Period: 5s
+    Max failure ratio: 0
+    Update order:      stop-first
+  RollbackConfig:
+    Parallelism:   1
+    On failure:    pause
+    Monitoring Period: 5s
+    Max failure ratio: 0
+    Rollback order:    stop-first
+  ContainerSpec:
+    Image:         alpine:latest@sha256:b276d875eeed9c7d3f1cfa7edb06b22ed22b14219a7d67c52c56612330348239
+    Args:          ping docker.com
+    Init:          false
+  Resources:
+  Endpoint Mode:  vip
+  ```
+
+  6.4. 扩展集群服务，将上述的 helloworld 服务扩展到俩个节点。
+
+  ```
+  $ docker service scale helloworld=2
+
+  # Output this content:
+  helloworld scaled to 2
+  overall progress: 2 out of 2 tasks
+  1/2: running   [==================================================>]
+  2/2: running   [==================================================>]
+  verify: Service converged
+  ```
+
+
+
+
+***Tips***
+
++ > Docker Swarm 是 Docker 的集群管理工具。它将 Docker 主机池转变为单个虚拟 Docker 主机。 Docker Swarm 提供了标准的 Docker API，所有任何已经与 Docker 守护程序通信的工具都可以使用 Swarm 轻松地扩展到多个主机。  
+  > 支持的工具包括但不限于以下各项：  
+  > Dokku<br>Docker Compose<br>Docker Machine<br>Jenkins  
+
++ > swarm 集群由管理节点（manager）和工作节点（work node）构成。  
+  > swarm mananger：负责整个集群的管理工作包括集群配置、服务管理等所有跟集群有关的工作。  
+  > work node：主要负责运行相应的服务来执行任务（task）。
+
++ > 集群管理有关的任何操作，都是在管理节点上操作的。
+
++ > docker info 可以查看当前集群的信息。
 
 
 ## Rust
