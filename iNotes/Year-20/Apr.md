@@ -169,6 +169,8 @@ ExecStart=/usr/bin/dockerd
     #$ docker swarm join-token worker
     ```
 
+    ***工作节点和管理节点的接入命令中使用的接入 Token（SWMTKN...）是不同的***
+
     4.2. 查看节点信息
 
     *(On testsrv-15)*
@@ -202,6 +204,10 @@ ExecStart=/usr/bin/dockerd
     > + TCP port 2377 for cluster management communications  
     > + TCP and UDP port 7946 for communication among nodes  
     > + UDP port 4789 for overlay network traffic  
+
+    ***2377/tcp：用于客户端与 Swarm 进行安全通信。***
+    ***7946/tcp 与 7946/udp：用于控制面 gossip 分发。***
+    ***4789/udp：用于基于 VXLAN 的覆盖网络。***
 
     *(On testsrv-15)*
 
@@ -363,6 +369,8 @@ $ docker run -dit --restart=always \
 
 6. 测试
 
+  *(On testsrv-15)*
+
   6.1. 在一个工作节点上创建一个名为 helloworld 的服务，这里是随机指派给一个工作节点
 
   ```
@@ -429,6 +437,38 @@ $ docker run -dit --restart=always \
   verify: Service converged
   ```
 
+  6.5. 删除服务
+
+  ```
+  $ docker service rm helloworld
+  # Tips,删除服务后，由此服务创建的任务容器会自动删除
+
+  # Show services
+  $ docker service ls
+  ```
+
+
+  6.6. 滚动升级服务
+
+  ```
+  $ docker service create --replicas 1 --name redis --update-delay 10s redis:3.0.6
+
+  $ docker service update --image redis:3.0.7 redis
+  ```
+
+  6.7. 停止某个节点接收新的任务
+
+  ```
+  # Show nodes
+  $ docker node ls
+
+  # Drain node
+  $ docker node update --availability drain testsrv-16
+
+  # Active node
+  $ docker node update --availability active testsrv-16
+  ```
+
 
 
 
@@ -445,6 +485,10 @@ $ docker run -dit --restart=always \
 + > 集群管理有关的任何操作，都是在管理节点上操作的。
 
 + > docker info 可以查看当前集群的信息。
+
++ > + docker swarm：集群管理，子命令有 init, join,join-token, leave, update  
+  > + docker node：节点管理，子命令有 demote, inspect,ls, promote, rm, ps, update  
+  > + docker service：服务管理，子命令有 create, inspect, ps, ls ,rm , scale, update  
 
 
 ## Rust
