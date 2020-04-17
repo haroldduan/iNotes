@@ -95,6 +95,8 @@ $ sudo yum install python3
 
 ```
 $ sudo pip3 install docker-compose
+or
+$ pip3 install docker-compose --user
 ```
 
 + Copying the public key to server

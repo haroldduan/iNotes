@@ -470,7 +470,132 @@ $ docker run -dit --restart=always \
   ```
 
 
+7. Docker Registry installing
 
+*(On testsrv-15)*
+
++ By standalone docker
+
+```
+$ docker pull registry
+$ docker run -d \
+  -v /home/admin/dockers/registry:/var/lib/registry \
+  -p 5000:5000 --restart=always \
+  --name registry \
+  registry:latest
+
+# http address:http://192.168.3.15:5000/v2/_catalog
+```
+
+*(On testsrv-16)*
+
+```
+# Vist registry by curl
+$ curl http://192.168.3.15:5000/v2/_catalog
+# Output this content:
+{"repositories":[]}
+
+$ docker pull busybox
+$ docker images
+# Output this content:
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+busybox             latest              be5888e67be6        2 days ago          1.22MB
+
+$ docker tag busybox:latest 192.168.3.15:5000/busybox:v1
+$ docker images
+# Output this content:
+REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
+192.168.3.15:5000/busybox   v1                  be5888e67be6        2 days ago          1.22MB
+busybox                     latest              be5888e67be6        2 days ago          1.22MB
+
+$ docker push 192.168.3.15:5000/busybox:v1
+# Output this content:
+The push refers to repository [192.168.3.15:5000/busybox]
+Get https://192.168.3.14:5000/v2/: http: server gave HTTP response to HTTPS client
+```
+
+> The push refers to repository [192.168.3.15:5000/busybox]  
+> Get https://192.168.3.14:5000/v2/: http: server gave HTTP response to HTTPS client
+
+*Reason*
+
+> docker registry默认需要https的方法才能上传，可以修改下daemon.json来解决：
+
+*Solution*
+
+> 添加私有镜像服务器的地址到daemon.json
+
+```
+$ sudo vim /etc/docker/daemon.json
+
+# Input this content:
+"insecure-registries": [ "192.168.3.15:5000"]
+
+$ sudo service docker restart
+
+$ docker push 192.168.3.15:5000/busybox:v1
+# Output this content:
+The push refers to repository [192.168.3.15:5000/busybox]
+5b0d2d635df8: Pushed
+v1: digest: sha256:a2490cec4484ee6c1068ba3a05f89934010c85242f736280b35343483b2264b6 size: 527
+
+$ curl http://192.168.3.15:5000/v2/_catalog
+# Output this content:
+{"repositories":["busybox"]}
+
+curl  http://192.168.3.15:5000/v2/busybox/tags/list
+# Output this content:
+{"name":"busybox","tags":["v1"]}
+
+$ docker pull 192.168.3.14:5000/busybox:v1
+# Output this content:
+v1: Pulling from busybox
+e2334dd9fee4: Pull complete
+Digest: sha256:a2490cec4484ee6c1068ba3a05f89934010c85242f736280b35343483b2264b6
+Status: Downloaded newer image for 192.168.3.14:5000/busybox:v1
+192.168.3.14:5000/busybox:v1
+
+$ docker images
+# Output this content:
+REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
+192.168.3.14:5000/busybox   v1                  be5888e67be6        2 days ago          1.22MB
+
+```
+
+8. Portus installing
+
++ Docker-Compose installing
+
+```
+$ sudo yum install python3
+$ pip3 install docker-compose --user
+```
+
++ Portus installing
+
+```
+$ git clone https://github.com/SUSE/Portus.git
+$ cd Portus
+
+```
+
+9. Sonatype-Nexus3 installing
+
+```
+$ docker pull sonatype/nexus3
+$ mkdir /home/admin/dockers/nexus
+$ mkdir /home/admin/dockers/nexus/nexus-data
+$ sudo chown -R 200 /home/admin/dockers/nexus
+
+$ docker run -d \
+  -p 8081:8081 \
+  -v /home/admin/dockers/nexus/nexus-data:/nexus-data \
+  --name nexus \
+  sonatype/nexus3
+
+# Init password
+# /opt/sonatype/nexus3/...
+```
 
 ***Tips***
 
@@ -489,6 +614,24 @@ $ docker run -dit --restart=always \
 + > + docker swarm：集群管理，子命令有 init, join,join-token, leave, update  
   > + docker node：节点管理，子命令有 demote, inspect,ls, promote, rm, ps, update  
   > + docker service：服务管理，子命令有 create, inspect, ps, ls ,rm , scale, update  
+
+
+## Open source Registry kits
+
+Name|Address
+---|---
+Docker-Registry|[Registry](https://github.com/docker-archive/docker-registry)
+Portus|[Portus](https://github.com/SUSE/Portus)
+Harbor|[Harbor](https://github.com/goharbor/harbor)
+Sonatype-Nexus3|[Sonatype Nexus](https://github.com/sonatype/docker-nexus3)
+
+## Open source Docker UI kits
+
+Name|Address
+---|---
+Portainer|[Portainer](https://github.com/portainer/portainer)
+DockerUI|[DockerUI](https://github.com/kevana/ui-for-docker)
+Shipyard|[Shipyard](https://github.com/shipyard/shipyard)
 
 
 ## Rust
