@@ -547,18 +547,18 @@ curl  http://192.168.3.15:5000/v2/busybox/tags/list
 # Output this content:
 {"name":"busybox","tags":["v1"]}
 
-$ docker pull 192.168.3.14:5000/busybox:v1
+$ docker pull 192.168.3.15:5000/busybox:v1
 # Output this content:
 v1: Pulling from busybox
 e2334dd9fee4: Pull complete
 Digest: sha256:a2490cec4484ee6c1068ba3a05f89934010c85242f736280b35343483b2264b6
-Status: Downloaded newer image for 192.168.3.14:5000/busybox:v1
-192.168.3.14:5000/busybox:v1
+Status: Downloaded newer image for 192.168.3.15:5000/busybox:v1
+192.168.3.15:5000/busybox:v1
 
 $ docker images
 # Output this content:
 REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
-192.168.3.14:5000/busybox   v1                  be5888e67be6        2 days ago          1.22MB
+192.168.3.15:5000/busybox   v1                  be5888e67be6        2 days ago          1.22MB
 
 ```
 
@@ -581,6 +581,8 @@ $ cd Portus
 
 9. Sonatype-Nexus3 installing
 
+*(On testsrv-15)*
+
 ```
 $ docker pull sonatype/nexus3
 $ mkdir /home/admin/dockers/nexus
@@ -589,12 +591,106 @@ $ sudo chown -R 200 /home/admin/dockers/nexus
 
 $ docker run -d \
   -p 8081:8081 \
+  -p 5000:5000 \
   -v /home/admin/dockers/nexus/nexus-data:/nexus-data \
   --name nexus \
   sonatype/nexus3
 
 # Init password
 # /opt/sonatype/nexus3/...
+```
+
+*(On testsrv-16)*
+
+```
+$ docker login -u admin -p AVAtech@2020 192.168.3.14:5000
+
+# Output this content:
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /home/admin/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+$ docker tag busybox:latest 192.168.3.15:5000/busybox:v1
+```
+
+> WARNING! Using --password via the CLI is insecure. Use --password-stdin.  
+> Error response from daemon: Get http://192.168.3.15:5000/v2/: dial tcp 192.168.3.15:5000: connect: connection refused
+
+*Reason*
+
+在Nexus中设置的DockerRegistry所需的5000端口未在Nexus容器启动时开放
+
+```
+$ docker run -d \
+  -p 8081:8081 \
+  -p 5000:5000 \ #此端口映射打开
+  -v /home/admin/dockers/nexus/nexus-data:/nexus-data \
+  --name nexus \
+  sonatype/nexus3
+```
+
+> WARNING! Using --password via the CLI is insecure. Use --password-stdin.  
+> Error response from daemon: login attempt to http://192.168.3.15:5000/v2/ failed with status: 401 Unauthorized
+
+*Reason*
+
+Nexus中的realms未配置
+
+*Solution*
+
+在Nexus中配置realms（不配置此项无法进行login,pull,push）
+
+**Docker Bearer Token Realm** active
+
+> [DEPRECATION NOTICE] registry v2 schema1 support will be removed in an upcoming release. Please contact admins of the 192.168.3.14:5000 registry NOW to avoid future disruption. More information at https://docs.docker.com/registry/spec/deprecated-schema-v1/  
+> error parsing HTTP 404 response body: unexpected end of JSON input: ""
+
+*Reason*
+
+5000所对应的Registry为Group类型镜像，只能进行Pull,不能进行Push
+
+*Solution*
+
+为docker-hosted的Registry开放端口(8083),此端口既可以Pull也可以Push
+
+*(On testsrv-15)*
+
+```
+$ docker run -d \
+  -p 8081:8081 \
+  -p 5000:5000 \ #此端口映射打开pull
+  -p 8083:8083 \ #此端口映射打开push
+  -v /home/admin/dockers/nexus/nexus-data:/nexus-data \
+  --name nexus \
+  sonatype/nexus3
+
+$ docker tag 192.168.3.15:5000/busybox:latest 192.168.3.14:8083/busybox:v1
+$ docker push 192.168.3.15:8083/busybox:v1
+# Output this content:
+5b0d2d635df8: Pushed
+v1: digest: sha256:a2490cec4484ee6c1068ba3a05f89934010c85242f736280b35343483b2264b6 size: 527
+```
+
+***整理汇总***
+
+DockerRegistry-Group:组镜像源，聚合DockerRegistry-Hosted 与 DockerRegistry-Proxy,只能进行Pull操作，可自动拉取代理镜像源上的镜像；  
+DockerRegistry-Hosted:私有(本地)镜像源，可进行Pull(允许匿名)和Push操作;  
+DockerRegistry-Proxy：代理镜像源，可使用外部镜像进行代理，只能进行Pull操作;
+
+docker-hosted port:8083  
+docker-proxy port:8082  
+
+```
+$ docker run -d \
+  -p 8081:8081 \
+  -p 8082:8082 \
+  -p 8083:8083 \
+  -v /home/admin/dockers/nexus/nexus-data:/nexus-data \
+  --name nexus \
+  sonatype/nexus3
 ```
 
 ***Tips***
