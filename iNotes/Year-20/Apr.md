@@ -685,6 +685,7 @@ docker-proxy port:8082
 
 ```
 $ docker run -d \
+  --restart=always \
   -p 8081:8081 \
   -p 8082:8082 \
   -p 8083:8083 \
@@ -729,6 +730,20 @@ Portainer|[Portainer](https://github.com/portainer/portainer)
 DockerUI|[DockerUI](https://github.com/kevana/ui-for-docker)
 Shipyard|[Shipyard](https://github.com/shipyard/shipyard)
 
+
+## Trello
+
+## n8n
+
+```
+$ docker pull n8nio/n8n
+
+$ docker run -d --rm \
+  --name n8n \
+  -p 5678:5678 \
+  -v /home/admin/dockers/n8n/n8n-data:/root/.n8n \
+  n8nio/n8n
+```
 
 ## Rust
 
