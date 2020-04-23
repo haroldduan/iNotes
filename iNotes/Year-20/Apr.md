@@ -600,6 +600,8 @@ $ docker run -d \
 # /opt/sonatype/nexus3/...
 ```
 
++ Nexus-Docker
+
 *(On testsrv-16)*
 
 ```
@@ -672,6 +674,23 @@ $ docker push 192.168.3.15:8083/busybox:v1
 # Output this content:
 5b0d2d635df8: Pushed
 v1: digest: sha256:a2490cec4484ee6c1068ba3a05f89934010c85242f736280b35343483b2264b6 size: 527
+```
+
++ Nexus-PyPi
+
+*(On testsrv-16)*
+
+```
+$ pip3 install cactus -i http://192.168.3.15:8081/repository/pypi-group/simple/  --trusted-host 192.168.3.15
+$ pip3 install twine --index http://192.168.3.15:8081/repository/pypi-group/pypi/  --trusted-host 192.168.3.15
+```
+
++ Nexus-npm
+
+*(On testsrv-16)*
+
+```
+$ npm install cnpm -g --registry=http://192.168.3.15:8081/repository/npm-group/
 ```
 
 ***整理汇总***
