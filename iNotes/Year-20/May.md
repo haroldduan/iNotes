@@ -92,21 +92,21 @@ README.md|项目的说明文档，markdown 格式
   * “warn” 或 1 - 违反规则会警告（不会影响项目运行） 
   * “error” 或 2 - 违反规则会报错（屏幕上一堆错误代码）
 
-*for example:*
+  *for example:*
 
-```
-rules: {
-    // allow async-await
-    'generator-star-spacing': 'off',
-    // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    //User-defined configuration
-    "quotes": [0, "single"],//引号类型 `` "" '',
-    //'semi': ["error", "always"],
-    'semi': 0,
-    "space-before-function-paren": 0
-}
-```
+  ```
+  rules: {
+      // allow async-await
+      'generator-star-spacing': 'off',
+      // allow debugger during development
+      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+      //User-defined configuration
+      "quotes": [0, "single"],//引号类型 `` "" '',
+      //'semi': ["error", "always"],
+      'semi': 0,
+      "space-before-function-paren": 0
+  }
+  ```
 
 + Vue.js 事件处理器
 
