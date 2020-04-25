@@ -85,12 +85,12 @@ README.md|项目的说明文档，markdown 格式
 
 *Tips*
 
-项目下的 ***.eslintrc.js*** 文件定义ESLint规则
++ 项目下的 ***.eslintrc.js*** 文件定义ESLint规则
 
-在rules中每个配置项后面第一个值是eslint规则的错误等级。 
-* “off” 或 0 - 关闭这条规则 
-* “warn” 或 1 - 违反规则会警告（不会影响项目运行） 
-* “error” 或 2 - 违反规则会报错（屏幕上一堆错误代码）
+  在rules中每个配置项后面第一个值是eslint规则的错误等级。 
+  * “off” 或 0 - 关闭这条规则 
+  * “warn” 或 1 - 违反规则会警告（不会影响项目运行） 
+  * “error” 或 2 - 违反规则会报错（屏幕上一堆错误代码）
 
 *for example:*
 
@@ -107,3 +107,36 @@ rules: {
     "space-before-function-paren": 0
 }
 ```
+
++ Vue.js 事件处理器
+
+  - 事件修饰符
+
+    Vue.js 为 v-on 提供了事件修饰符来处理 DOM 事件细节，如：event.preventDefault() 或 event.stopPropagation()。  
+    Vue.js通过由点(.)表示的指令后缀来调用修饰符。
+
+    * .stop
+    * .prevent
+    * .capture
+    * .self
+    * .once
+
+  - 按键修饰符
+
+    Vue 允许为 v-on 在监听键盘事件时添加按键修饰符：
+
+    全部的按键别名：
+
+    * .enter
+    * .tab
+    * .delete (捕获 "删除" 和 "退格" 键)
+    * .esc
+    * .space
+    * .up
+    * .down
+    * .left
+    * .right
+    * .ctrl
+    * .alt
+    * .shift
+    * .meta
