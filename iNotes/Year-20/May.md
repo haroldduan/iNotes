@@ -621,6 +621,8 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
     a {text-decoration:none;}
     ```
 
+    *不建议强调指出不是链接的文本，因为这常常混淆用户。*
+    
     ```
     h1 {text-decoration:overline;}
     h2 {text-decoration:line-through;}
