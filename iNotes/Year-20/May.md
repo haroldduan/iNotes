@@ -542,7 +542,7 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
       }
       ```
 
-    + 背景-简写属性
+  - 背景-简写属性
 
       在以上实例中我们可以看到页面的背景颜色通过了很多的属性来控制。
 
@@ -561,5 +561,88 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
       * background-repeat
       * background-attachment
       * background-position
-      
+
       以上属性无需全部使用，你可以按照页面的实际需要使用.
+
+  *Tips*
+
+  Property|描述
+  :---|:---
+  background|简写属性，作用是将背景属性设置在一个声明中。
+  background-attachment|背景图像是否固定或者随着页面的其余部分滚动。
+  background-color|设置元素的背景颜色。
+  background-image|把图像设置为背景。
+  background-position|设置背景图像的起始位置。
+  background-repeat|设置背景图像是否及如何重复。
+
++ CSS 文本格式
+
+  - 文本颜色
+
+    颜色属性被用来设置文字的颜色。
+
+    颜色是通过CSS最经常的指定：
+
+    * 十六进制值 - 如: ＃FF0000
+    * 一个RGB值 - 如: RGB(255,0,0)
+    * 颜色的名称 - 如: red
+
+    一个网页的背景颜色是指在主体内的选择：
+
+    ```
+    body {color:red;}
+    h1 {color:#00ff00;}
+    h2 {color:rgb(255,0,0);}
+    ```
+
+    *对于W3C标准的CSS：如果你定义了颜色属性，你还必须定义背景色属性。*
+
+  - 文本的对齐方式
+
+    文本排列属性是用来设置文本的水平对齐方式。
+
+    文本可居中或对齐到左或右,两端对齐.
+
+    当text-align设置为"justify"，每一行被展开为宽度相等，左，右外边距是对齐（如杂志和报纸）
+
+    ```
+    h1 {text-align:center;}
+    p.date {text-align:right;}
+    p.main {text-align:justify;}
+    ```
+
+  - 文本修饰
+
+    text-decoration 属性用来设置或删除文本的装饰。
+
+    从设计的角度看 text-decoration属性主要是用来删除链接的下划线：
+
+    ```
+    a {text-decoration:none;}
+    ```
+
+    ```
+    h1 {text-decoration:overline;}
+    h2 {text-decoration:line-through;}
+    h3 {text-decoration:underline;}
+    ```
+
+  - 文本转换
+
+    文本转换属性是用来指定在一个文本中的大写和小写字母。
+
+    可用于所有字句变成大写或小写字母，或每个单词的首字母大写。
+
+    ```
+    p.uppercase {text-transform:uppercase;}
+    p.lowercase {text-transform:lowercase;}
+    p.capitalize {text-transform:capitalize;}
+    ```
+
+  - 文本缩进
+
+    文本缩进属性是用来指定文本的第一行的缩进。
+
+    ```
+    p {text-indent:50px;}
+    ```
