@@ -597,7 +597,7 @@ $ docker run -d \
   sonatype/nexus3
 
 # Init password
-# /opt/sonatype/nexus3/...
+# /opt/sonatype/nexus3/admin.password
 ```
 
 + Nexus-Docker
