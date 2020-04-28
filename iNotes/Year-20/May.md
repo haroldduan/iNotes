@@ -565,6 +565,8 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
       以上属性无需全部使用，你可以按照页面的实际需要使用.
 
   *Tips*
+  
+  **CSS 背景属性**
 
   Property|描述
   :---|:---
@@ -647,4 +649,189 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
 
     ```
     p {text-indent:50px;}
+    ```
+
+  *Tips*
+
+  **所有CSS文本属性**
+
+  属性|描述
+  :---|:---
+  color|设置文本颜色
+  direction|设置文本方向。
+  letter-spacing|设置字符间距
+  line-height|设置行高
+  text-align|对齐元素中的文本
+  text-decoration|向文本添加修饰
+  text-indent|缩进元素中文本的首行
+  text-shadow|设置文本阴影
+  text-transform|控制元素中的字母
+  unicode-bidi|设置或返回文本是否被重写 
+  vertical-align|设置元素的垂直对齐
+  white-space|设置元素中空白的处理方式
+  word-spacing|设置字间距
+
++ CSS 字体
+
+  - CSS字型
+
+    * 在CSS中，有两种类型的字体系列名称：
+    * 通用字体系列 - 拥有相似外观的字体系统组合（如 "Serif" 或 "Monospace"）
+特定字体系列 - 一个特定的字体系列（如 "Times" 或 "Courier"）
+
+  Generic family|字体系列|说明
+  :---|:---|:---
+  Serif|Times New Roman<br>Georgia|Serif字体中字符在行的末端拥有额外的装饰
+  Sans-serif|Arial<br>Verdana|"Sans"是指无 - 这些字体在末端没有额外的装饰
+  Monospace|Courier New<br>Lucida Console|所有的等宽字符具有相同的宽度
+
+  - 字体系列
+
+    font-family 属性设置文本的字体系列。  
+    font-family 属性应该设置几个字体名称作为一种"后备"机制，如果浏览器不支持第一种字体，他将尝试下一种字体。  
+    *如果字体系列的名称超过一个字，它必须用引号，如Font Family："宋体"。*  
+    多个字体系列是用一个逗号分隔指明：
+
+    ```
+    p{font-family:"Times New Roman", Times, serif;}
+    ```
+
+  - 字体样式
+
+    主要是用于指定斜体文字的字体样式属性。
+
+    这个属性有三个值：
+
+    * 正常 - 正常显示文本
+    * 斜体 - 以斜体字显示的文字
+    * 倾斜的文字 - 文字向一边倾斜（和斜体非常类似，但不太支持）
+
+    ```
+    p.normal {font-style:normal;}
+    p.italic {font-style:italic;}
+    p.oblique {font-style:oblique;}
+    ```
+
+  - 字体大小
+
+    font-size 属性设置文本的大小。
+
+    能否管理文字的大小，在网页设计中是非常重要的。但是，你不能通过调整字体大小使段落看上去像标题，或者使标题看上去像段落。
+
+    请务必使用正确的HTML标签，就`<h1>` - `<h6>`表示标题和`<p>`表示段落：
+
+    字体大小的值可以是绝对或相对的大小。
+
+    绝对大小：
+
+    * 设置一个指定大小的文本
+    * 不允许用户在所有浏览器中改变文本大小
+    * 确定了输出的物理尺寸时绝对大小很有用
+
+    相对大小：
+
+    * 相对于周围的元素来设置大小
+    * 允许用户在浏览器中改变文字大小
+
+    *如果不指定一个字体的大小，默认大小和普通文本段落一样，是16像素（16px=1em）。*
+
+  - 设置字体大小像素
+
+    设置文字的大小与像素，完全控制文字大小：
+
+    ```
+    h1 {font-size:40px;}
+    h2 {font-size:30px;}
+    p {font-size:14px;}
+    ```
+
+  - 用em来设置字体大小
+
+    为了避免Internet Explorer 中无法调整文本的问题，许多开发者使用 em 单位代替像素。
+
+    em的尺寸单位由W3C建议。
+
+    1em和当前字体大小相等。在浏览器中默认的文字大小是16px。
+
+    因此，1em的默认大小是16px。可以通过下面这个公式将像素转换为em：px/16=em
+
+    ```
+    h1 {font-size:2.5em;} /* 40px/16=2.5em */
+    h2 {font-size:1.875em;} /* 30px/16=1.875em */
+    p {font-size:0.875em;} /* 14px/16=0.875em */
+    ```
+
+  - 使用百分比和EM组合
+
+    在所有浏览器的解决方案中，设置 <body>元素的默认字体大小的是百分比：
+
+    ```
+    body {font-size:100%;}
+    h1 {font-size:2.5em;}
+    h2 {font-size:1.875em;}
+    p {font-size:0.875em;}
+    ```
+
+  *Tips*
+
+  **所有CSS字体属性**
+
+  Property|描述
+  :---|:---
+  font|在一个声明中设置所有的字体属性
+  font-family|指定文本的字体系列
+  font-size|指定文本的字体大小
+  font-style|指定文本的字体样式
+  font-variant|以小型大写字体或者正常字体显示文本。
+  font-weight|指定字体的粗细。
+
++ CSS 链接
+
+  不同的链接可以有不同的样式。
+
+  - 链接样式
+
+    链接的样式，可以用任何CSS属性（如颜色，字体，背景等）。
+
+    特别的链接，可以有不同的样式，这取决于他们是什么状态。
+
+    这四个链接状态是：
+
+    * a:link - 正常，未访问过的链接
+    * a:visited - 用户已访问过的链接
+    * a:hover - 当用户鼠标放在链接上时
+    * a:active - 链接被点击的那一刻
+
+    ```
+    a:link {color:#000000;}      /* 未访问链接*/
+    a:visited {color:#00FF00;}  /* 已访问链接 */
+    a:hover {color:#FF00FF;}  /* 鼠标移动到链接上 */
+    a:active {color:#0000FF;}  /* 鼠标点击时 */
+    ```
+
+    当设置为若干链路状态的样式，也有一些顺序规则：
+
+    * a:hover 必须跟在 a:link 和 a:visited后面
+    * a:active 必须跟在 a:hover后面
+
+  - 文本修饰
+
+    text-decoration 属性主要用于删除链接中的下划线：
+
+    ```
+    a:link {text-decoration:none;}
+    a:visited {text-decoration:none;}
+    a:hover {text-decoration:underline;}
+    a:active {text-decoration:underline;}
+    ```
+
+  - 背景颜色
+
+    背景颜色属性指定链接背景色：
+
+    ```
+    a:link {background-color:#B2FF99;}
+    a:visited {background-color:#FFFF85;}
+    a:hover {background-color:#FF704D;}
+    a:active {background-color:#FF704D;}
     ```
