@@ -835,3 +835,202 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
     a:hover {background-color:#FF704D;}
     a:active {background-color:#FF704D;}
     ```
+  
++ CSS 列表
+
+  CSS列表属性作用如下：
+
+  * 设置不同的列表项标记为有序列表
+  * 设置不同的列表项标记为无序列表
+  * 设置列表项标记为图像
+
+  - 列表
+
+    在HTML中，有两种类型的列表：
+
+    * 无序列表 - 列表项标记用特殊图形（如小黑点、小方框等）
+    * 有序列表 - 列表项的标记有数字或字母
+    使用CSS，可以列出进一步的样式，并可用图像作列表项标记。
+
+    不同的列表项标记
+
+    list-style-type属性指定列表项标记的类型是：
+
+    ```
+    ul.a {list-style-type: circle;}
+    ul.b {list-style-type: square;}
+    
+    ol.c {list-style-type: upper-roman;}
+    ol.d {list-style-type: lower-alpha;}
+    ```
+
+    作为列表项标记的图像
+
+    要指定列表项标记的图像，使用列表样式图像属性：
+
+    ```
+    ul
+    {
+        list-style-image: url('sqpurple.gif');
+    }
+    ```
+
+    浏览器兼容性解决方案
+
+    同样在所有的浏览器，下面的例子会显示的图像标记：
+
+    ```
+    ul
+    {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0px;
+    }
+    ul li
+    {
+        background-image: url(sqpurple.gif);
+        background-repeat: no-repeat;
+        background-position: 0px 5px; 
+        padding-left: 14px; 
+    }
+    ```
+
+  - 列表-简写属性
+
+    在单个属性中可以指定所有的列表属性。这就是所谓的简写属性。
+
+    为列表使用简写属性，列表样式属性设置如下：
+
+    ```
+    ul
+    {
+        list-style: square url("sqpurple.gif");
+    }
+    ```
+
+    可以按顺序设置如下属性：
+
+    * list-style-type
+    * list-style-position (有关说明，请参见下面的CSS属性表)
+    * list-style-image
+    
+    如果上述值丢失一个，其余仍在指定的顺序，就没关系。
+
+  *Tips*
+
+  **所有的CSS列表属性**
+
+  属性|描述
+  :---|:---
+  list-style|简写属性。用于把所有用于列表的属性设置于一个声明中
+  list-style-image|将图像设置为列表项标志。
+  list-style-position|设置列表中列表项标志的位置。
+  list-style-type|设置列表项标志的类型。
+
++ CSS 表格
+
+  使用 CSS 可以使 HTML 表格更美观。
+
+  Company|Contact|Country
+  :---|:---|:---
+  Alfreds Futterkiste|Maria Anders|Germany
+  Berglunds snabbköp|Christina Berglund|Sweden
+  Centro comercial Moctezuma|Francisco Chang|Mexico
+  Ernst Handel|Roland Mendel|Austria
+  Island Trading|Helen Bennett|UK
+  Königlich Essen|Philip Cramer|Germany
+  Laughing Bacchus Winecellars|Yoshi Tannamuri|Canada
+  Magazzini Alimentari Riuniti|Giovanni Rovelli|Italy
+  North/South|Simon Crowther|UK
+  Paris spécialités|Marie Bertrand|France
+  The Big Cheese|Liz Nixon|USA
+  Vaffeljernet|Palle Ibsen|Denmark
+
+  - 表格边框
+
+    指定CSS表格边框，使用border属性。
+
+    ```
+    table, th, td
+    {
+        border: 1px solid black;
+    }
+    ```
+
+  - 折叠边框
+
+    border-collapse 属性设置表格的边框是否被折叠成一个单一的边框或隔开：
+
+    ```
+    table
+    {
+        border-collapse:collapse;
+    }
+    table,th, td
+    {
+        border: 1px solid black;
+    }
+    ```
+
+  - 表格宽度和高度
+
+    Width和height属性定义表格的宽度和高度。
+
+    ```
+    table 
+    {
+        width:100%;
+    }
+    th
+    {
+        height:50px;
+    }
+    ```
+
+  - 表格文字对齐
+
+    表格中的文本对齐和垂直对齐属性。
+
+    text-align属性设置水平对齐方式，向左，右，或中心：
+
+    ```
+    td
+    {
+        text-align:right;
+    }
+    ```
+
+    垂直对齐属性设置垂直对齐，比如顶部，底部或中间：
+
+    ```
+    td
+    {
+        height:50px;
+        vertical-align:bottom;
+    }
+    ```
+
+  - 表格填充
+
+    如果在表的内容中控制空格之间的边框，应使用td和th元素的填充属性：
+
+    ```
+    td
+    {
+        padding:15px;
+    }
+    ```
+  
+  - 表格颜色
+
+    ```
+    table, td, th
+    {
+        border:1px solid green;
+    }
+    th
+    {
+        background-color:green;
+        color:white;
+    }
+    ```
