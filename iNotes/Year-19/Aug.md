@@ -388,7 +388,7 @@ Docker |面向对象
 容器 |对象 
 镜像 |类 
 
-![Docker Architecture](./static/image/Sep/docker-arch.png "Docker-Architecture")
+![Docker Architecture](static/image/Sep/docker-arch.png "Docker-Architecture")
 
 Docker 镜像(Images) |Docker 镜像是用于创建 Docker 容器的模板。 
 --- |---
