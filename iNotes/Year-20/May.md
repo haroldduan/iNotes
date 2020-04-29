@@ -1376,3 +1376,67 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
   padding-left|设置元素的左部填充
   padding-right|设置元素的右部填充
   padding-top|设置元素的顶部填充
+
++ CSS 分组 和 嵌套 选择器
+
+  - 分组选择器
+
+    在样式表中有很多具有相同样式的元素。
+
+    ```
+    h1
+    {
+        color:green;
+    }
+    h2
+    {
+        color:green;
+    }
+    p
+    {
+        color:green;
+    }
+    ```
+
+    为了尽量减少代码，你可以使用分组选择器。
+
+    每个选择器用逗号分隔。
+
+    在下面的例子中，我们对以上代码使用分组选择器
+
+    ```
+    h1,h2,p
+    {
+        color:green;
+    }
+    ```
+
+    - 嵌套选择器
+
+      它可能适用于选择器内部的选择器的样式。
+
+      在下面的例子设置了三个样式
+
+      * p{ }: 为所有 p 元素指定一个样式。
+      * .marked{ }: 为所有 class="marked" 的元素指* 定一个样式。
+      * .marked p{ }: 为所有 class="marked" 元素内的 p 元素指定一个样式。
+      * p.marked{ }: 为所有 class="marked" 的 p 元素指定一个样式。
+
+      ```
+      p
+      {
+          color:blue;
+          text-align:center;
+      }
+      .marked
+      {
+          background-color:red;
+      }
+      .marked p
+      {
+          color:white;
+      }
+      p.marked{
+          text-decoration:underline;
+      }
+      ```
