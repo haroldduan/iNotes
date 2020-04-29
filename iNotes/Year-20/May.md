@@ -1367,3 +1367,12 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
     padding:25px;
 
     * 所有的填充都是25px
+
+  *所有的CSS填充属性*
+
+  属性|说明
+  padding|使用简写属性设置在一个声明中的所有填充属性
+  padding-bottom|设置元素的底部填充
+  padding-left|设置元素的左部填充
+  padding-right|设置元素的右部填充
+  padding-top|设置元素的顶部填充
