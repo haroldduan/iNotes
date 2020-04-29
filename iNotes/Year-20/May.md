@@ -1046,4 +1046,4 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
   下面的图片说明了盒子模型(Box Model)：
 
  
-  ![BoxModel](static/box-model.gi)
+  ![Box-Model](static/box-model.gif "Box Model")
