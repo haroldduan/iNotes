@@ -1251,7 +1251,7 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
 
     margin 可以单独改变元素的上，下，左，右边距，也可以一次改变所有的属性。
   
-    ![Margin](static/VlwVi.png)
+    ![Margin](static/margin.png)
 
   - 可能的值
 
@@ -1303,3 +1303,67 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
 
     * margin:25px;
       * 所有的4个边距都是25px
+
++ CSS padding（填充）
+
+  CSS padding（填充）是一个简写属性，定义元素边框与元素内容之间的空间，即上下左右的内边距。
+
+  - padding（填充）
+
+    当元素的 padding（填充）内边距被清除时，所释放的区域将会受到元素背景颜色的填充。
+
+    单独使用 padding 属性可以改变上下左右的填充。
+
+    ![Padding](static/padding.png "Padding")
+
+  - 可能的值
+
+    值|说明
+    :---|:---
+    length|定义一个固定的填充(像素, pt, em,等)
+    %|使用百分比值定义一个填充
+
+  - 填充-单边内边距属性
+
+    在CSS中，它可以指定不同的侧面不同的填充：
+
+    ```
+    padding-top:25px;
+    padding-bottom:25px;
+    padding-right:50px;
+    padding-left:50px;
+    ```
+
+  - 填充-简写属性
+
+    为了缩短代码，它可以在一个属性中指定的所有填充属性。
+
+    这就是所谓的简写属性。所有的填充属性的简写属性是 padding :
+
+    ```
+    padding:25px 50px;
+    ```
+
+    Padding属性，可以有一到四个值。
+
+    padding:25px 50px 75px 100px;
+
+    * 上填充为25px
+    * 右填充为50px
+    * 下填充为75px
+    * 左填充为100px
+    
+    padding:25px 50px 75px;
+
+    * 上填充为25px
+    * 左右填充为50px
+    * 下填充为75px
+    
+    padding:25px 50px;
+
+    * 上下填充为25px
+    * 左右填充为50px
+    
+    padding:25px;
+
+    * 所有的填充都是25px
