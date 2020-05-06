@@ -1599,3 +1599,69 @@ CSS 规则由两个主要的部分构成：选择器，以及一条或多条声�
     这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。
 
     ***注意:*** *Internet Explorer, Edge 15 及更早 IE 版本不支持 sticky 定位。 Safari 需要使用 -webkit- prefix (查看以下实例)。*
+
+
+
+
+```
+# nginx
+docker run --privileged=true --restart=always -p 8080:80 \
+  --name=nginx \
+  --network=nginx-net \
+  --network-alias=nginx \
+  --ip=172.19.0.2 \
+  -v /home/git/nginx/www:/usr/share/nginx/html \
+  -v /home/git/nginx/nginx.conf:/etc/nginx/nginx.conf \
+  -v /home/git/nginx/conf.d:/etc/nginx/conf.d \
+  -v /home/git/nginx/logs:/var/log/nginx \
+  -d rds.avatech.com.cn:8082/nginx
+
+# portainer
+docker run --privileged=true \
+  --restart=always \
+  --network=portainer-net --network-alias=portainer \
+  --ip=172.18.0.2 \
+  -p 9000:9000 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /home/git/portainer:/data \
+  --name portainer \
+  -d rds.avatech.com.cn:8082/portainer/portainer 
+
+# gitea
+docker run --privileged=true --restart=always -d \
+  --network=gitea-net --network-alias=gitea \
+  --ip=172.20.0.2 \
+  --name=gitea -p 1022:22 -p 7070:3000 \
+  -v /home/git/gitea:/data \
+  rds.avatech.com.cn:8082/gitea/gitea
+
+# nexus
+docker run -d \
+  --restart=always \
+  -p 8081:8081 \
+  -p 8082:8082 \
+  -p 8083:8083 \
+  -v /home/git/nexus/nexus-data:/nexus-data \
+  --name nexus \
+  rds.avatech.com.cn:8082/sonatype/nexus3
+
+# showdoc
+docker run --privileged=true \
+  --restart=always \
+  --network=showdoc-net --network-alias=showdoc \
+  --ip=172.21.0.2 \
+  --name=showdoc -d -p 6060:80 \
+  -v /home/git/showdoc/html:/var/www/html/ \
+  rds.avatech.com.cn:8082/star7th/showdoc  
+
+# nextcloud
+docker run --privileged=true \
+  --restart=always -d \
+  -v /home/git/nextcloud:/var/www/html \
+  -v apps:/var/www/html/custom_apps \
+  -v config:/var/www/html/config \
+  -v data:/var/www/html/data \
+  -p 10080:80 \
+  --name nextcloud \
+  rds.avatech.com.cn:8082/nextcloud
+```
