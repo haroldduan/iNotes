@@ -12,6 +12,8 @@
 
 ## Yarn
 
+*Fast, reliable, and secure dependency management for JavaScript.*
+
 > Apache Hadoop YARN （Yet Another Resource Negotiator，另一种资源协调者）是一种新的 Hadoop 资源管理器，它是一个通用资源管理系统，可为上层应用提供统一的资源管理和调度，它的引入为集群在利用率、资源统一管理和数据共享等方面带来了巨大好处。
 
 Yarn是您的代码的包管理器。它允许您使用和分享来自世界各地的其他开发人员的代码。Yarn 可以快速，安全，可靠地完成此操作，您不必担心。
@@ -26,6 +28,10 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
 
 ```
 $ npm i yarn -g
+# 或
+$ npm install -g yarn
+$ yarn config set registry https://registry.npm.taobao.org -g
+$ yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
 ```
 
 + By Binary

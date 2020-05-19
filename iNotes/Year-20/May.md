@@ -258,18 +258,6 @@ $ npm i element-ui -S
 ### MintUI
 
 
-## Yarn
-
-*Fast, reliable, and secure dependency management for JavaScript.*
-
-### Installing
-
-```
-$ npm install -g yarn
-$ yarn config set registry https://registry.npm.taobao.org -g
-$ yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
-```
-
 ## CSS
 
 CSS 规则由两个主要的部分构成：选择器，以及一条或多条声明:
