@@ -44,6 +44,7 @@ $ yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
 
     $ sudo apt-get update && sudo apt-get install yarn
 
+    # 如果使用nvm，可通过以下操作来避免node的安装
     $ sudo apt-get install --no-install-recommends yarn
     ```
 
