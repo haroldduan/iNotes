@@ -26,13 +26,13 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
 
 + By NPM
 
-```
-$ npm i yarn -g
-# 或
-$ npm install -g yarn
-$ yarn config set registry https://registry.npm.taobao.org -g
-$ yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
-```
+  ```
+  $ npm i yarn -g
+  # 或
+  $ npm install -g yarn
+  $ yarn config set registry https://registry.npm.taobao.org -g
+  $ yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
+  ```
 
 + By Binary
 
@@ -109,4 +109,41 @@ $ yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
 
   # 显示当前安装的Yarn，Node.js及其依赖项的版本信息
   $ yarn versions
+  ```
+
+## NPM
+
+### Usage
+
++ **npm run**
+
+  *npm run 是 npm run-script 的缩写*
+
+  > npm不仅可以用于模块管理，还可以用于执行脚本。package.json文件有一个scripts字段，可以用于指定脚本命令，供npm直接调用。
+
+  ```
+  {
+    "name": "demo",
+    "scripts": {
+      "lint": "jshint **.js",
+      "test": "mocha test/"
+    }
+  }
+  ```
+
+  ***命令行输入 npm run lint 或者 npm run-script lint 就会执行 jshint **.js 。***
+
+  > npm run 会创建一个Shell，执行指定的命令，并临时将node_modules/.bin加入PATH 变量，这意味着本地模块可以直接运行。
+
+  *Tips*
+  
+  **package.json 中的 scripts 执行的脚本是本地项目内 node_modules -> .bin 内的脚本。**
+
+  ```
+   "scripts": {
+        "build": "weex-builder src dist",
+        "build_plugin": "webpack --config ./tools/webpack.config.plugin.js --color",
+        "dev": "weex-builder src dist -w",
+        "serve": "serve -p 8080"
+    }
   ```
