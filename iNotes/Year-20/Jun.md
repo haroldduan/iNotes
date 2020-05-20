@@ -136,7 +136,7 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
   > npm run 会创建一个Shell，执行指定的命令，并临时将node_modules/.bin加入PATH 变量，这意味着本地模块可以直接运行。
 
   *Tips*
-  
+
   **package.json 中的 scripts 执行的脚本是本地项目内 node_modules -> .bin 内的脚本。**
 
   ```
@@ -147,3 +147,72 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
         "serve": "serve -p 8080"
     }
   ```
+
+  **直接运行 npm run 会列出当前项目的 package.json 中 scripts 属性下的所有脚本命令。**
+
+  ```
+  $ npm run
+  Scripts available in vue-element-admin via `npm run-script`:
+    dev
+      vue-cli-service serve
+    build:prod
+      vue-cli-service build
+    build:stage
+      vue-cli-service build --mode staging
+    preview
+      node build/index.js --preview
+    lint
+      eslint --ext .js,.vue src
+    test:unit
+      jest --clearCache && vue-cli-service test:unit
+    test:ci
+      npm run lint && npm run test:unit
+    svgo
+      svgo -f src/icons/svg --config=src/icons/svgo.yml
+    new
+      plop
+  ```
+
++ **npm install from github**
+
+  npm install 也可以直接从 github 下载:
+
+  ```
+  $ npm install git://github.com/package/path.git
+  $ npm install git://github.com/package/path.git#0.1.0
+  ```
+
++ **npm info**
+
+  *npm info <package-name> 可以查看指定包的信息：*
+
+  ```
+  $ npm info vue
+
+  vue@2.6.11 | MIT | deps: none | versions: 279
+  Reactive, component-oriented view layer for modern web interfaces.
+  https://github.com/vuejs/vue#readme
+
+  dist
+  .tarball: https://registry.npm.taobao.org/vue/download/vue-2.6.11.tgz
+  .shasum: 76594d877d4b12234406e84e35275c6d514125c5
+
+  maintainers:
+  - yyx990803 <yyx990803@gmail.com>
+
+  dist-tags:
+  csp: 1.0.28-csp      latest: 2.6.11       next: 3.0.0-beta.14  
+
+  published 5 months ago by yyx990803 <yyx990803@gmail.com>
+  haroldduan@Think-Harold ~/iWorkSpace/iLocal/js/vuejs/vue-element-admin
+  ```
+
++ **npm home/repo**
+
+  *npm home <package-name>命令可以打开指定模块的主页；*  
+  *npm repo <package-name>命令则是打开指定模块的代码仓库。*
+
++ **npm prune**
+
+  *prune 即“修剪”的意思。*  
+  *npm prune 可以检查出当前项目的 node_modules目录中，没有在 package.json里提到的模块。*
