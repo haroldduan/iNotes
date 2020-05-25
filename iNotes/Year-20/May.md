@@ -1653,3 +1653,11 @@ docker run --privileged=true \
   --name nextcloud \
   rds.avatech.com.cn:8082/nextcloud
 ```
+
+```
+$ docker run --name mariadb \
+	-v /home/admin/dockers/mariadb:/var/lib/mysql \
+	-p 8806:3306 \
+	-e MYSQL_ROOT_PASSWORD=AVAtech@2020 \
+	-d rds.avatech.com.cn:8082/mariadb:latest --character-set-server=utf8mb4
+```
