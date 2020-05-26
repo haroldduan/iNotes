@@ -1655,9 +1655,16 @@ docker run --privileged=true \
 ```
 
 ```
-$ docker run --name mariadb \
-	-v /home/admin/dockers/mariadb:/var/lib/mysql \
+$ docker run --name mariadb --privileged=true \
+	-v /home/admin/dockers/mariadb/data:/var/lib/mysql \
+  -v /home/admin/dockers/mariadb/conf:/etc/mysql \
 	-p 8806:3306 \
 	-e MYSQL_ROOT_PASSWORD=AVAtech@2020 \
 	-d rds.avatech.com.cn:8082/mariadb:latest --character-set-server=utf8mb4
+
+docker run --name mariadb --privileged=true \
+	-v /home/admin/dockers/mariadb/data:/var/lib/mysql \
+	-p 8806:3306 \
+	-e MYSQL_ROOT_PASSWORD=AVAtech@2020 \
+	-d rds.avatech.com.cn:8082/mariadb:latest --character-set-server=utf8mb4  --collation-server=utf8mb4_unicode_ci
 ```
