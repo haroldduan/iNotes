@@ -332,7 +332,8 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
     10. 安装基本的系统
 
       ```
-      root@archiso ~ # pacstrap /mnt base base-devel
+      # root@archiso ~ # pacstrap /mnt base base-devel
+      root@archiso ~ # pacstrap /mnt base linux linux-firmware
       ```
 
     *Error Process*
@@ -361,19 +362,19 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
   1. 生成挂载信息文件
 
     ```
-    genfstab -U /mnt >> /mnt/etc/fstab
+    root@archiso ~ # genfstab -U /mnt >> /mnt/etc/fstab
     ```
 
   2. 切换到新系统
 
     ```
-    arch-chroot /mnt
+    root@archiso ~ # arch-chroot /mnt
     ```
 
-  3. 安装vim
+  3. 安装必须软件包
 
     ```
-    pacman -S vim
+    $ pacman -S vim dialog wpa_supplicant ntfs-3g os-prober networkmanager
     ```
 
   4. 设置时区
@@ -402,9 +403,9 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
 
     ```
     # 用vim编辑/etc/hosts，加入如下内容：
-    127.0.0.1   localhost
-    ::1         localhost
-    127.0.1.1   Think-Harold.localdomain  Think-Harold
+    127.0.0.1	localhost.localdomain	localhost
+    ::1		localhost.localdomain	localhost
+    127.0.1.1	Think-Harold.localdomain	Think-Harold
     ```
   
   8. 用户账户配置
@@ -426,7 +427,7 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
     > 经常听说很多人因为引导问题导致系统安装失败，多数是因为教程没有统一或是过时的教程引起的，这里只要按照步骤来其实是不难的。  
     > 这里我们安装最流行的Grub2。（如果曾经装过Linux，记得删掉原来的Grub，否则不可能成功启动）  
 
-    + 首先安装os-prober和ntfs-3g这两个包，它可以配合Grub检测已经存在的系统，自动设置启动选项。
+    + 首先安装os-prober和ntfs-3g这两个包，它可以配合Grub检测已经存在的系统，自动设置启动选项。*上面在软件必须包里安装后可以不用安装*
 
       ```
       # pacman -S os-prober ntfs-3g
@@ -474,11 +475,130 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
         # grub-mkconfig -o /boot/grub/grub.cfg
         ```
 
-  11. 安装图形界面(gnome桌面)
+  12. 显卡驱动的安装
+
+    ![gl-drivers](./static/gl-drivers.png)
+
+    参照这个表格，安装相应的包，比如是intel的集成显卡（绝大多数人的情况），执行：
 
     ```
-    # pacman -S gnome gnome-extra
-
-    # 开机启动
-    # systemctl enable gdm
+    $ pacman -S xf86-video-intel
     ```
+
+  13. 安装图形界面
+
+    *安装Xorg*
+
+    Xorg是Linux下的一个著名的开源图形服务，我们的桌面环境需要Xorg的支持。
+
+    ```
+    $ pacman -S xorg
+    ```
+
+    + Gnome 桌面
+
+      ```
+      $ pacman -S gnome gnome-extra
+
+      # 开机启动
+      $ systemctl enable gdm
+      ```
+
+    + Xfce 桌面
+
+      ```
+      $ pacman -S xfce4 xfce4-goodies
+      ```
+
+    + KDE(Plasma) 桌面
+
+      ```
+      $ pacman -S plasma kde-applications
+      ```
+    
+    *安装桌面管理器*
+
+    ```
+    $ pacman -S sddm
+    $ systemctl enable sddm
+    ```
+  
+  14. 提前配置网络
+
+    *到现在已经安装好了桌面环境，但是还有一件事情需要提前设置一下。由于之前使用的一直都是netctl这个自带的网络服务，而桌面环境使用的是NetworkManager这个网络服务，所以需要禁用netctl并启用NetworkManager：*
+
+    ```
+    $ systemctl disable netctl
+    $ systemctl enable NetworkManager （注意大小写）
+    ```
+
+    *同时可能需要安装工具栏工具来显示网络设置图标（某些桌面环境已经装了，但是为了保险可以再装一下）：*
+
+    ```
+    $ pacman -S network-manager-applet
+    ```
+
+    *这样开机以后就可以在图形界面下配置我们的网络了*
+
+### Usage
+
+  + sudo installing
+
+  ```
+  $ pacman -S sudo
+  ```
+
+  + User add
+
+    ```
+    $ groupadd admin
+    $ useradd -m -g admin -s /bin/bash admin
+    # 或者
+    $ useradd -m -G admin -s /bin/bash admin
+    
+    $ passwd admin
+
+    # sudo 权限赋予
+    $ chmod u+w /etc/sudoers
+    $ vim /etc/sudoers
+    # Add contents
+    # Members of the admin group may gain root privileges
+    %admin ALL=(ALL) ALL
+
+    # Allow members of group sudo to execute any command
+    %sudo   ALL=(ALL:ALL) ALL
+
+    $ chmod u-w /etc/sudoers
+    ```
+
+  + Network configuration
+
+    **Arch Linux 已经弃用了 *net-tools* 转而使用 *iproute2***
+
+    *若已安装dhcpcd 或 networkmanager，可通过dhcpcd自动通过DNS获得IP*
+
+    ```
+    $ dhcpcd
+    ```
+
+    ```
+    # 查看网络设备(列出网络接口)
+    $ ls /sys/class/net
+    # 或者
+    $ ip link
+
+    # 查看网络设备状态(检查接口 eth0 的状态：)
+    $ ip link show dev eth0
+
+    # 可以使用 ip link set interface up|down 来启用 / 禁用网络接口
+    $ ip link set eth0 up
+    # <BROADCAST,MULTICAST,UP,LOWER_UP> 中的 UP 表示接口已经启动，而非表示稍后的 state DOWN 。
+
+    # 查看IP地址
+    $ ip address show
+    ```
+
+    *Tips*
+
+    * *要注意的是 lo 是 Loop 设备 ，不被用于建立网络连接。*
+
