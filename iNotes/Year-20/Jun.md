@@ -692,9 +692,99 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
       ```
 
       安装依赖
-      
+
       ```
       sudo pacman -S fcitx
       sudo pacman -S fcitx-configtool
       sudo pacman -S fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5
       ```
+
+  + Windows Management
+
+    * 平铺式窗口管理 i3wm
+
+      安装显示管理器
+
+      ```
+      $ pacman -S lightdm
+      $ pacman -S lightdm-gtk-greeter
+      $ lightdm --test-mode --debug
+      $ systemctl enable lightdm
+      ```
+
+      安装i3wm(rofi可更换为dmenu)
+
+      ```
+      $ pacman -S i3-gaps i3lock i3status compton rofi feh
+      # 或
+      $ pacman -S i3-gaps i3lock i3status compton dmenu feh
+      # 或
+      $ pacman -S i3-gaps i3 compton dmenu feh
+      ```
+      
+      桌面环境切换
+
+        * 卸载kde的配套工具
+
+        ```
+        $ pacman -Rsc plasma
+        $ pacman -Rsc kde-applications
+        ```
+
+        * 禁用sddm&启用lightdm
+
+        ```
+        $ systemctl disable sddm
+        $ systemctl enable lightdm
+        ```
+    
+  + i3 configuration
+
+    * Powerline Fonts installing
+
+    ```
+    $ git clone https://github.com/powerline/fonts.git
+    ```
+
+    ```
+    $ pacman -S powerline
+    $ pacman -S powerline-fonts
+    $ pacman -S powerline-vim
+    ``` 
+
+    Key|Command
+    :---|:---
+    $mod + Enter|启动虚拟终端
+    $mod + A|焦点转义到父窗口上
+    $mod + S|堆叠布局
+    $mod + W|标签布局
+    $mod + E|默认布局
+    $mod + SpaceBar|焦点在平铺式／浮动式转换
+    $mod + D|启动 dmenu
+    $mod + H|水平分割窗口
+    $mod + V|垂直分割窗口
+    $mod + J|焦点往左窗口移
+    $mod + K|焦点往下窗口移
+    $mod + L|焦点往上窗口移
+    $mod + ;|焦点往右窗口移
+    $mod + Shift + Q|杀死当前窗口的进程
+    $mod + Shift + E|退出 i3
+    $mod + Shift + C|当场重新加载 i3config, 无需重启
+    $mod + Shift + R|重启 i3 （还重新加载了 i3config, 又没有退出过程）
+    $mod + Shift + J|窗口左移
+    $mod + Shift + K|窗口下移
+    $mod + Shift + L|窗口上移
+    $mod + Shift + :|窗口右移
+    $mod + Shift + SpaceBar|窗口在平铺式／浮动式转换
+
+
+    ```
+    $ sudo pacman -S xorg-twm xterm xorg-server xorg-xinit
+    $ sudo pacman -S fcitx
+    $ sudo pacman -S zsh xfce4-terminal feh compton i3-gaps
+    # 文件管理器
+    $ sudo pacman -S nautilus 
+    # 或者
+    $ sudo pacman -S ranger
+    $ sudo pacman -S yay
+    ```
