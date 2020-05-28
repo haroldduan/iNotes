@@ -542,6 +542,20 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
 
 ### Usage
 
+  + Mirror-Repository configuration
+
+  ```
+  vim /etc/pacman.conf
+  # 末尾加上
+  [archlinuxcn]
+  Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
+  # 或者
+  [archlinuxcn]
+  Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
+  $ pacman -Sy
+  $ pacman -S archlinuxcn-keyring
+  ```
+
   + sudo installing
 
   ```
@@ -602,3 +616,85 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
 
     * *要注意的是 lo 是 Loop 设备 ，不被用于建立网络连接。*
 
+  + Font configuration
+
+    **基本中文支持**
+
+    *要正确显示中文，必需设置正确的locale并安装合适的中文字体。*
+
+    1. locale设置
+
+      *安装中文locale*
+
+      Linux中通过locale来设置程序运行的不同环境。常用的中文locale有（最直观的分别是可显示字的数量）：
+
+      > zh_CN.GB2312  
+      > zh_CN.GBK  
+      > zh_CN.GB18030  
+      > zh_CN.UTF-8  
+      > zh_TW.BIG-5  
+      > zh_TW.UTF-8  
+
+      *推荐使用UTF-8的locale。对于glibc（>=2.3.6），需要修改/etc/locale.gen文件来设定系统中可以使用的locale（取消对应项前的注释符号「#」即可）：*
+
+      > en_US.UTF-8 UTF-8
+      > zh_CN.UTF-8 UTF-8
+
+      *然后执行locale-gen命令，便可以在系统中使用这些locale。可以通过locale命令来查看当前使用的locale：亦可通过locale -a命令来查看目前可以使用的locale；*
+
+    2. 启用中文locale
+
+      Arch Linux中，通过/etc/locale.conf文件设置全局有效的locale：
+
+      > LANG=en_US.UTF-8
+
+      ***警告: 不推荐在此设置中文locale，会导致tty乱码；在tty下亦可显示和输入中文，但需要安装cce、zhcon或fbterm；***
+
+      对于特定用户，还可以在~/.bashrc、~/.xinitrc或~/.xprofile中设置自己的用户环境。不同之处在于：
+
+      * .bashrc: 每次终端登录时读取并运用里面的设置。  
+      * .xinitrc: 每次startx启动X界面时读取并运用里面的设置  
+      * .xprofile: 每次使用gdm等图形登录时读取并运用里面的设置  
+
+      单独在图形界面启用中文locale
+
+      不推荐/etc/locale.conf使用全局中文locale，会导致tty乱码。
+      
+      如前面所说，可以在~/.xinitrc或~/.xprofile单独设置中文locale。添加如下内容到上述文件最前端注释之后（如果不确定使用哪个文件，可以都添加）：
+
+      > export LANG=zh_CN.UTF-8  
+      > export LANGUAGE=zh_CN:en_US  
+
+    3. 中文字体
+
+      安装字体
+
+      除了设置好locale，还需要安装中文字体。
+
+      常用的免费（GPL或兼容版权）中文字体有：
+
+        * wqy-microhei  
+        * wqy-microhei-lite  
+        * wqy-bitmapfont  
+        * wqy-zenhei  
+        * ttf-arphic-ukai  
+        * ttf-arphic-uming  
+        * adobe-source-han-sans-cn-fonts  
+        * adobe-source-han-serif-cn-fonts  
+        * noto-fonts-cjk  
+      
+      系统字体将默认安装到/usr/share/fonts。如果没有root权限或只打算自己使用某些字体，可以直接复制这些字体到~/.fonts目录（或其子目录）下面，并把该路径加入/etc/fonts/local.conf中。具体参见后面章节。
+
+      ```
+      $ sudo pacman -S wqy-microhei ttf-dejavu wqy-zenhei wqy-bitmapfont
+      # 刷新字体
+      $ fc-cache -fv
+      ```
+
+      安装依赖
+      
+      ```
+      sudo pacman -S fcitx
+      sudo pacman -S fcitx-configtool
+      sudo pacman -S fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5
+      ```
