@@ -1174,3 +1174,10 @@
       ```
       $ sudo chmod +x ~/.config/polybar/launch.sh
       ```
+
+      ```
+      $ sudo pacman -S zsh
+      $ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      # 或者
+      $ sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+      ```
