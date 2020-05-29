@@ -405,5 +405,6 @@
       $ sudo systemctl enable sddm
 
       $ sudo pacman -S i3-gaps i3status i3lock dmenu
-      $ sudo pacman -S mate-extra
+      #$ sudo pacman -S mate-extra
+      $ sudo pacman -S mate-terminal
       ```
