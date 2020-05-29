@@ -328,6 +328,7 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
       > 网易源  
       > ```China```  
       > ```Server = https://mirrors.163.com/archlinux/$repo/os/$arch```  
+      > ```Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch```
 
     10. 安装基本的系统
 
@@ -374,7 +375,7 @@ Yarn允许您使用其他开发人员针对不同问题的解决方案，使您�
   3. 安装必须软件包
 
     ```
-    $ pacman -S vim dialog wpa_supplicant ntfs-3g os-prober networkmanager
+    $ pacman -S vim dialog wpa_supplicant ntfs-3g os-prober dhcpcd networkmanager
     ```
 
   4. 设置时区
