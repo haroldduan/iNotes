@@ -404,8 +404,7 @@
       $ sudo  pacman -S xorg-server
       $ sudo pacman -S sddm
       $ sudo systemctl enable sddm
-
-<<<<<<< HEAD
+      
       #或者
       
       $ pacman -S lightdm
@@ -416,11 +415,10 @@
       $ sudo pacman -S i3-gaps i3status i3lock dmenu
       #$ sudo pacman -S mate-extra
       $ sudo pacman -S mate-terminal
-=======
+
       $ sudo pacman -S i3-gaps i3status i3lock dmenu rofi feh polybar
       $ sudo pacman -S mate-extra
       #$ sudo pacman -S mate-terminal
->>>>>>> c70d67db13205de06c7742606807c8fe8b1d6510
       ```
 
       i3 配置
