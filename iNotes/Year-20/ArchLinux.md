@@ -333,6 +333,7 @@
       *到现在已经安装好了桌面环境，但是还有一件事情需要提前设置一下。由于之前使用的一直都是netctl这个自带的网络服务，而桌面环境使用的是NetworkManager这个网络服务，所以需要禁用netctl并启用NetworkManager：*
 
       ```
+      $ pacman -S network-manager-applet
       $ systemctl disable netctl
       $ systemctl enable NetworkManager （注意大小写）
       ```
@@ -403,6 +404,13 @@
       $ sudo  pacman -S xorg-server
       $ sudo pacman -S sddm
       $ sudo systemctl enable sddm
+
+      #或者
+      
+      $ pacman -S lightdm
+      $ pacman -S lightdm-gtk-greeter
+      $ lightdm --test-mode --debug
+      $ systemctl enable lightdm
 
       $ sudo pacman -S i3-gaps i3status i3lock dmenu
       #$ sudo pacman -S mate-extra
