@@ -419,3 +419,73 @@
       $ sudo pacman -S i3-gaps i3status i3lock dmenu rofi feh polybar
       $ sudo pacman -S mate-extra
       #$ sudo pacman -S mate-terminal
+
+
+
+分区方案
+我打算将 SSD 用于安装系统，HDD 用于 home 目录，方案如下：
+
+NAME FSTYPE SIZE MOUNTPOINT
+
+├─sdb1 vfat 512M /boot/EFI
+
+├─sdb2 ext4 剩余 /
+
+├─sdc1 swap 8g [SWAP]
+
+└─sdc2 ext4 剩余 home
+
+过程(注意要灵活修改sdX，别将U盘给格了~~，一般U盘为sda，cfdisk 进入后没点 Write 之前数据都在，可以通过硬盘容量区分)：
+
+# fdisk -l #查看硬盘
+
+# cfdisk /dev/sdb
+
+选中一个空闲分区
+
+New -> 输入512M -> 回车
+
+type 选 uefi 啥的
+
+接着选中空闲分区
+
+New -> 直接回车就是剩余的容量(也可按需修改) -> 回车
+
+最后点击 Write 保存修改，请在检查无误后输入 yes 然后 Quit
+
+type 是fileSystem 即可(默认的) ，如果不是请修改
+
+接着是对 sdc 进行分区，操作是一样的
+
+注：swap分区的 type 选为 SWAP (大小按自己电脑修改，其实内存大的话不用这分区也OK)
+
+分好区后检测
+
+#cat /proc/partitions
+
+创建文件系统
+mkfs.fat -F32 /dev/sdb1 # 创建 FAT32 分区
+
+mkfs.ext4 /dev/sdb2 # 创建 ext4 分区
+
+mkfs.ext4 /dev/sdc2 # 创建 ext4 分区
+
+mkswap /dev/sdc1 # 创建交换分区
+
+swapon /dev/sdc1 # 激活交换分区
+
+系统安装
+挂载目标分区
+mount /dev/sdb2 /mnt # 挂载根目录
+
+mkdir /mnt/home # 创建 /home 挂载点
+
+mount /dev/sdc1 /mnt/home # 挂载 /home
+
+mkdir -p /mnt/boot/EFI # 创建 UEFI 挂载点
+
+mount /dev/sdb1 /mnt/boot/EFI # 挂载 UEFI 分区
+
+检查分区：
+
+$ lsblk /dev/sda -o NAME,FSTYPE,SIZE,MOUNTPOINT # 名称，文件系统，大小，挂载点
