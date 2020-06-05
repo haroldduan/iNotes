@@ -1644,3 +1644,5 @@ $ vim .config/i3/config
 #设置文件管理器快捷键
 bindsym $mod+m exec caja
 ```
+
+*fuck*
