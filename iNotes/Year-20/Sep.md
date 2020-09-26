@@ -29,22 +29,94 @@
   $ docker run --privileged=true --restart=always -d \
     --volume=/home/admin/dockers/drone:/data \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
+    --env=DRONE_GITEA=true \
     --env=DRONE_GITEA_SERVER=http://192.168.3.14:3000/ \
     --env=DRONE_GITEA_CLIENT_ID=2c1b96ea-8c88-4f66-bf42-2f03baf93180 \
     --env=DRONE_GITEA_CLIENT_SECRET=vNDu5piicx3Ic79A9DQto4e1IMwiTQf_Pmb7JgO7ipU= \
     --env=DRONE_RPC_SECRET=16096fbe839fad18b6e060a1a05c79e7 \
     --env=DRONE_SERVER_HOST=192.168.3.14:4000 \
     --env=DRONE_SERVER_PROTO=http \
-    --env=DRONE_GITEA=true \
+    --env=DRONE_TLS_AUTOCERT=false \
+    --env=DRONE_AGENTS_ENABLED=true \
     --publish=4000:80 \
     --publish=443:443 \
     --restart=always \
     --detach=true \
     --name=drone \
-    drone/drone
+    drone/drone:latest
+
+  $ docker pull drone/drone:1.2.1
+  $ docker run --privileged=true --restart=always -d \
+    --volume=/home/admin/dockers/drone:/data \
+    --volume=/var/run/docker.sock:/var/run/docker.sock \
+    --env=DRONE_GITEA=true \
+    --env=DRONE_GITEA_SERVER=http://192.168.3.14:3000/ \
+    --env=DRONE_GITEA_CLIENT_ID=2c1b96ea-8c88-4f66-bf42-2f03baf93180 \
+    --env=DRONE_GITEA_CLIENT_SECRET=vNDu5piicx3Ic79A9DQto4e1IMwiTQf_Pmb7JgO7ipU= \
+    --env=DRONE_RPC_SECRET=16096fbe839fad18b6e060a1a05c79e7 \
+    --env=DRONE_SERVER_HOST=192.168.3.14:4000 \
+    --env=DRONE_SERVER_PROTO=http \
+    --env=DRONE_TLS_AUTOCERT=false \
+    --env=DRONE_AGENTS_ENABLED=true \
+    --publish=4000:80 \
+    --publish=443:443 \
+    --restart=always \
+    --detach=true \
+    --name=drone \
+    drone/drone:1.2.1
   
   $ sudo firewall-cmd --zone=public --add-port=4000/tcp --permanent
   ```
+
+  + ***[Drone Agent](https://hub.docker.com/r/drone/agent)***
+
+  ```
+  $ docker pull drone/agent
+  $ docker run --privileged=true --restart=always -d \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -e DRONE_RPC_PROTO=http \
+    -e DRONE_RPC_HOST=192.168.3.14:4000 \
+    -e DRONE_RPC_SECRET=16096fbe839fad18b6e060a1a05c79e7 \
+    -e DRONE_RUNNER_CAPACITY=2 \
+    -e DRONE_RUNNER_NAME=192.169.3.14 \
+    -e DRONE_LOGS_DEBUG=true \
+    --env=DRONE_LOGS_TRACE=true \
+    -p 5000:3000 \
+    --name drone-agent \
+    drone/agent:latest
+
+  $ docker pull drone/agent:1.2.1
+  $ docker run --privileged=true --restart=always -d \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -e DRONE_RPC_PROTO=http \
+    -e DRONE_RPC_HOST=192.168.3.14:4000 \
+    -e DRONE_RPC_SECRET=16096fbe839fad18b6e060a1a05c79e7 \
+    -e DRONE_RUNNER_CAPACITY=2 \
+    -e DRONE_RUNNER_NAME=192.169.3.14 \
+    -e DRONE_LOGS_DEBUG=true \
+    --env=DRONE_LOGS_TRACE=true \
+    -p 5000:3000 \
+    --name drone-agent \
+    drone/agent:1.2.1
+  ```
+
+  + ***[Drone Runner](https://github.com/drone-runners/drone-runner-docker)***
+
+  ```
+  $ docker pull drone/drone-runner-docker
+  $ docker run --privileged=true --restart=always -d \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -e DRONE_RPC_PROTO=http \
+    -e DRONE_RPC_HOST=192.168.3.14:4000 \
+    -e DRONE_RPC_SECRET=16096fbe839fad18b6e060a1a05c79e7 \
+    -e DRONE_RUNNER_CAPACITY=2 \
+    -e DRONE_RUNNER_NAME=192.168.3.14 \
+    -p 6000:3000 \
+    --name drone-runner \
+    drone/drone-runner-docker:latest
+  $ sudo firewall-cmd --zone=public --add-port=6000/tcp --permanent
+  ```
+
 
   + ***[Vault](https://github.com/hashicorp/vault)***
 
