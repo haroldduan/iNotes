@@ -166,3 +166,64 @@
   $ docker pull drone/vault
   ```
 
+  ```
+  $ docker build -t drone-test .
+  $ docker tag drone-test:latest 192.168.3.14:8083/drone-test:alpine
+  $ docker push 192.168.3.14:8083/drone-test:alpine
+  ```
+
+  * Day 1 *go-test*
+
+  ```
+  kind: pipeline
+  name: default
+  workspace:
+    base: /srv/drone-test-go
+    path: .
+  steps:
+  - name: test
+    # pull: true
+    image: golang:alpine
+    commands:
+      - pwd
+      - ls
+      - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o demo .
+      - ./demo
+      - echo "Shit"
+  ```
+
+  * Day 2 *node-test*
+
+  ```
+  kind: pipeline
+  type: docker
+  name: default
+  steps:
+    - name: publish  
+      image: plugins/docker
+      settings:
+        registry: 192.168.3.14:8083
+        repo: 192.168.3.14:8083/avardc/drone-test-node
+        username: admin
+        password: 1qaz@WSX
+        insecure: true
+        tags: alpine
+        dockerfile: ./Dockerfile
+    - name: deploy
+      image: appleboy/drone-ssh
+      settings:
+        host: 192.168.3.14
+        port:
+          22
+          # command_timeout: 2m
+        username: admin
+        password:
+          from_secret: ssh_passwd
+        script:
+          - echo "Remove old image..."
+          - docker rmi -f 192.168.3.14:8082/avardc/drone-test-node:alpine
+          - echo "Pull image..."
+          - docker pull 192.168.3.14:8082/avardc/drone-test-node:alpine
+          - echo "Run docker..."
+          - docker run -p 13000:13000 --name=test-drone-node -d 192.168.3.14:8082/avardc/drone-test-node:alpine
+  ```
