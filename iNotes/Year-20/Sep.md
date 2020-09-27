@@ -205,7 +205,8 @@
         registry: 192.168.3.14:8083
         repo: 192.168.3.14:8083/avardc/drone-test-node
         username: admin
-        password: 1qaz@WSX
+        password: 
+          from_secret: reg_passwd
         insecure: true
         tags: alpine
         dockerfile: ./Dockerfile
