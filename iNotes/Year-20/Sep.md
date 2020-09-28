@@ -228,3 +228,84 @@
           - echo "Run docker..."
           - docker run -p 13000:13000 --name=test-drone-node -d 192.168.3.14:8082/avardc/drone-test-node:alpine
   ```
+
+  * Day 3 *node-test*
+
+  ```
+  kind: pipeline
+  type: docker
+  name: default
+
+  steps:
+    # - name: publish  
+    #   image: plugins/docker
+    #   settings:
+    #     registry: 192.168.3.14:8083
+    #     repo: 192.168.3.14:8083/avardc/drone-test-node
+    #     username: admin
+    #     password: 
+    #       from_secret: reg_passwd
+    #     insecure: true
+    #     tags: alpine
+    #     dockerfile: ./Dockerfile
+    # - name: deploy
+    #   image: appleboy/drone-ssh
+    #   settings:
+    #     host: 192.168.3.14
+    #     port:
+    #       22
+    #       # command_timeout: 2m
+    #     username: admin
+    #     password:
+    #       from_secret: ssh_passwd
+    #     script:
+    #       - echo "Remove old docker ps..."
+    #       - docker stop test-drone-node
+    #       - docker rm test-drone-node -f
+    #       # - echo "Remove old image..."
+    #       # - docker rmi -f 192.168.3.14:8082/avardc/drone-test-node:alpine
+    #       - echo "Pull image..."
+    #       - docker pull 192.168.3.14:8082/avardc/drone-test-node:alpine
+    #       - echo "Run docker..."
+    #       - docker run -p 13000:13000 --name=test-drone-node -d 192.168.3.14:8082/avardc/drone-test-node:alpine
+    - name: deploy
+      image: appleboy/drone-ssh
+      settings:
+        host: 192.168.3.14
+        port:
+          22
+          # command_timeout: 2m
+        username: admin
+        password:
+          from_secret: ssh_passwd
+        script:
+          - echo "Build image..."
+          - docker build -t avardc/drone-test-node:alpine .
+          - echo "Tag image..."
+          - docker tag avardc/drone-test-node:alpine 192.168.3.14:8083/drone-test:alpine
+          - echo "Login registory..."
+          - docker login 192.168.3.14:8083 -u admin -p $reg_passwd
+          - docker push 192.168.3.14:8083/avardc/drone-test-node:alpine
+          - echo "Remove old docker ps..."
+          - docker stop test-drone-node
+          - docker rm test-drone-node -f
+          # - echo "Remove old image..."
+          # - docker rmi -f 192.168.3.14:8082/avardc/drone-test-node:alpine
+          - echo "Pull image..."
+          - docker pull 192.168.3.14:8082/avardc/drone-test-node:alpine
+          - echo "Run docker..."
+          - docker run -p 13000:13000 --name=test-drone-node -d 192.168.3.14:8082/avardc/drone-test-node:alpine
+  # - name: test
+  #   image: node:latest
+  #   commands:
+  #   - npm install
+  #   - npm start
+
+  # - name: docker
+  #   image: plugins/docker
+  #   settings:
+  #     username: admin
+  #     password: *****
+  #     repo: codebot/test-drone-node
+  #     dockerfile: path/to/Dockerfile
+  ```
