@@ -309,3 +309,67 @@
   #     repo: codebot/test-drone-node
   #     dockerfile: path/to/Dockerfile
   ```
+
+  * Day 4 *python-test*
+
+  ```
+  kind: pipeline
+  type: docker
+  name: default
+
+  steps:
+    - name: publish  
+      image: plugins/docker
+      settings:
+        registry: 192.168.3.14:8083
+        repo: 192.168.3.14:8083/avardc/drone-test-python
+        username: admin
+        password: 
+          from_secret: reg_passwd
+        insecure: true
+        tags: alpine
+        dockerfile: ./Dockerfile
+    - name: deploy
+      image: appleboy/drone-ssh
+      settings:
+        host: 192.168.3.14
+        port:
+          22
+          # command_timeout: 2m
+        username: admin
+        password:
+          from_secret: ssh_passwd
+        script:
+          # - echo "Build image..."
+          # - docker build -t avardc/drone-test-python:alpine .
+          # - echo "Tag image..."
+          # - docker tag avardc/drone-test-python:alpine 192.168.3.14:8083/avardc/drone-test-python:alpine
+          # - echo "Login registory..."
+          # - docker login 192.168.3.14:8083 -u admin -p $reg_passwd
+          # - docker push 192.168.3.14:8083/avardc/drone-test-python:alpine
+          - echo "Remove old docker ps..."
+          - docker stop drone-test-python
+          - docker rm drone-test-python -f
+          # - echo "Remove old image..."
+          # - docker rmi -f 192.168.3.14:8082/avardc/drone-test-node:alpine
+          - echo "Pull image..."
+          - docker pull 192.168.3.14:8082/avardc/drone-test-python:alpine
+          - echo "Run docker..."
+          - docker run --privileged=true -p 10080:80 --name=drone-test-python -d 192.168.3.14:8082/avardc/drone-test-python:alpine
+  ```
+
+## Automated Testing
+
+### Macaca
+
+  + ***[DataHub](https://github.com/macacajs/macaca-datahub)***
+
+  ```
+  $ docker pull macacajs/macaca-datahub
+  $ docker run --privileged=true \
+    --name macaca-datahub \
+    -v /home/admin/dockers/macaca-datahub:/root/.macaca-datahub \
+    -p 9200:9200 \
+    -p 9300:9300 \
+    -d macacajs/macaca-datahub
+  ```
