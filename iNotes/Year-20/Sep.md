@@ -373,3 +373,31 @@
     -p 9300:9300 \
     -d macacajs/macaca-datahub
   ```
+
+### OnlyOffice
+
+  + ***[DocumentServer](https://github.com/ONLYOFFICE/DocumentServer)***
+
+  ```
+  $ docker pull onlyoffice/documentserver
+  $ docker run --privileged=true -d -p 8080:80 \
+      --name onlyoffice \
+      -v /home/admin/dockers/onlyoffice/DocumentServer/logs:/var/log/onlyoffice  \
+      -v /home/admin/dockers/onlyoffice/DocumentServer/data:/var/www/onlyoffice/Data \
+      onlyoffice/documentserver
+  $ docker run --privileged=true -d -p 8080:80 \
+      --name onlyoffice \
+      -v /home/admin/dockers/onlyoffice/DocumentServer/logs:/var/log/onlyoffice  \
+      -v /home/admin/dockers/onlyoffice/DocumentServer/data:/var/www/onlyoffice/Data  \
+      -v /home/admin/dockers/onlyoffice/DocumentServer/lib:/var/lib/onlyoffice \
+      -v /home/admin/dockers/onlyoffice/DocumentServer/rabbitmq:/var/lib/rabbitmq \
+      -v /home/admin/dockers/onlyoffice/DocumentServer/redis:/var/lib/redis \
+      -v /home/admin/dockers/onlyoffice/DocumentServer/db:/var/lib/postgresql \
+      onlyoffice/documentserver
+  ```
+
++ ***[AppServer](https://github.com/ONLYOFFICE/AppServer)***
+
+  ```
+  $ 
+  ```
