@@ -396,8 +396,48 @@
       onlyoffice/documentserver
   ```
 
-+ ***[AppServer](https://github.com/ONLYOFFICE/AppServer)***
+  ```
+  $ docker network create --driver bridge onlyoffice
+  ```
+
+  + **STEP 1:** **Install ONLYOFFICE Document Server*
 
   ```
-  $ 
+  $ docker pull onlyoffice/documentserver
+  $ docker run --privileged=true --net onlyoffice -i -t -d --restart=always \
+    --name onlyoffice-document-server \
+    -v /home/admin/dockers/onlyoffice/DocumentServer/data:/var/www/onlyoffice/Data \
+    -v /home/admin/dockers/onlyoffice/DocumentServer/logs:/var/log/onlyoffice \
+    onlyoffice/documentserver
+  ```
+
+  + **STEP 2:** *Install ONLYOFFICE Mail Server*
+
+  ```
+  $ docker pull onlyoffice/mailserver
+  $ docker run --privileged=true --net onlyoffice --privileged -i -t -d --restart=always \
+    --name onlyoffice-mail-server \
+    -p 2525:25 -p 143:143 -p 587:587 \
+    -v /home/admin/dockers/onlyoffice/MailServer/data:/var/vmail \
+    -v /home/admin/dockers/onlyoffice/MailServer/data/certs:/etc/pki/tls/mailserver \
+    -v /home/admin/dockers/onlyoffice/MailServer/logs:/var/log \
+    -v /home/admin/dockers/onlyoffice/MailServer/mysql:/var/lib/mysql \
+    -h 192.168.3.14 \
+    onlyoffice/mailserver
+  ```
+
+  + **STEP 3:** *Install ONLYOFFICE Community Server*
+
+  ```
+  $ docker pull onlyoffice/communityserver
+  $ docker run --privileged=true --net onlyoffice -i -t -d --restart=always \
+    --name onlyoffice-community-server \
+    -p 8080:80 -p 5222:5222 -p 1443:443 \
+    -v /home/admin/dockers/onlyoffice/CommunityServer/data:/var/www/onlyoffice/Data \
+    -v /home/admin/dockers/onlyoffice/CommunityServer/mysql:/var/lib/mysql \
+    -v /home/admin/dockers/onlyoffice/CommunityServer/logs:/var/log/onlyoffice \
+    -v /home/admin/dockers/onlyoffice/DocumentServer/data:/var/www/onlyoffice/DocumentServerData \
+    -e DOCUMENT_SERVER_PORT_80_TCP_ADDR=onlyoffice-document-server \
+    -e MAIL_SERVER_DB_HOST=onlyoffice-mail-server \
+    onlyoffice/communityserver
   ```
