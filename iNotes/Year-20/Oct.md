@@ -136,3 +136,83 @@
     --name drone-agent \
     drone/agent:latest
   ```
+
+  + **Nextcloud**
+
+  ```
+  $ docker pull nextcloud
+  $ docker run --privileged=true -d \
+    -v /home/admin/dockers/nextcloud:/var/www/html \
+    -v /home/admin/dockers/nextcloud/apps:/var/www/html/custom_apps \
+    -v /home/admin/dockers/nextcloud/config:/var/www/html/config \
+    -v /home/admin/dockers/nextcloud/data:/var/www/html/data \
+    -p 8080:80 \
+    --name nextcloud \
+    nextcloud
+  $ sudo vim config/config.php
+
+  <?php
+  $CONFIG = array (
+    'htaccess.RewriteBase' => '/',
+    'memcache.local' => '\\OC\\Memcache\\APCu',
+    'apps_paths' =>
+    array (
+      0 =>
+      array (
+        'path' => '/var/www/html/apps',
+        'url' => '/apps',
+        'writable' => false,
+      ),
+      1 =>
+      array (
+        'path' => '/var/www/html/custom_apps',
+        'url' => '/custom_apps',
+        'writable' => true,
+      ),
+    ),
+    'instanceid' => 'och9bka300hc',
+    'passwordsalt' => 'ACqKhORvSIyfFcyrcpn8EiMkxoO5sd',
+    'secret' => '5jkBmEkoUVc5nxZJFanbbX/HUThVywlsGcgj7lHQh36xFFIE',
+    'trusted_domains' =>
+    array (
+      0 => '192.168.3.14:8080',
+    ),
+    'datadirectory' => '/var/www/html/data',
+    'dbtype' => 'sqlite3',
+    'version' => '20.0.0.9',
+    'overwrite.cli.url' => 'http://192.168.3.14:8080',
+    'installed' => true,
+    'allow_local_remote_servers' => true, #新增此行，配置允许局域网远程服务器
+    'ldapIgnoreNamingRules' => false,
+    'ldapProviderFactory' => 'OCA\\User_LDAP\\LDAPProviderFactory',
+  );
+  ```
+
+  + **OnlyOffice DocumentServer**
+
+  ```
+  $ docker pull onlyoffice/documentserver
+  $ docker run --privileged=true \
+    -i -t -d -p 9080:80 --restart=always \
+    --name onlyoffice-document-server \
+    -v /home/admin/dockers/onlyoffice/DocumentServer/logs:/var/log/onlyoffice \
+    -v /home/admin/dockers/onlyoffice/DocumentServer/data:/var/www/onlyoffice/Data \
+    -v /home/admin/dockers/onlyoffice/DocumentServer/lib:/var/lib/onlyoffice \
+    -v /home/admin/dockers/onlyoffice/DocumentServer/db:/var/lib/postgresql \
+    onlyoffice/documentserver
+  ```
+
+  + **Collabora Online** *废弃不用*
+
+  ```
+  $ docker pull docker.io/collabora/code:latest
+  $ docker pull collabora/code
+  $ docker run -t -d --privileged=true \
+    -p 9980:9980 -e "domain=192\\.168\\.3\\.14" \
+    -e "username=admin" -e "password=1qaz@WSX" --restart always \
+    -e "extra_params=–o:ssl.enable=false" \
+    --cap-add MKNOD \
+    --name collabora-online \
+    collabora/code
+  $ sudo firewall-cmd --zone=public --add-port=9980/tcp --permanent
+  ```
