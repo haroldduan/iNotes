@@ -185,6 +185,16 @@
     'allow_local_remote_servers' => true, #新增此行，配置允许局域网远程服务器
     'ldapIgnoreNamingRules' => false,
     'ldapProviderFactory' => 'OCA\\User_LDAP\\LDAPProviderFactory',
+    'mail_smtpmode' => 'smtp',
+    'mail_smtpsecure' => 'ssl',
+    'mail_sendmailmode' => 'smtp',
+    'mail_smtphost' => 'smtp.qiye.aliyun.com',
+    'mail_from_address' => 'avardd',
+    'mail_domain' => 'avatech.com.cn',
+    'mail_smtpauth' => 1,
+    'mail_smtpport' => '465',
+    'mail_smtpname' => 'avardd@avatech.com.cn',
+    'mail_smtppassword' => '1qaz@WSX',
   );
   ```
 
@@ -215,4 +225,116 @@
     --name collabora-online \
     collabora/code
   $ sudo firewall-cmd --zone=public --add-port=9980/tcp --permanent
+  ```
+
+  ***RDS***
+
+  ```
+  $ docker pull rds.avatech.com.cn:8082/nextcloud
+  $ docker run --privileged=true -d \
+    -v /home/git/docker-data/nextcloud:/var/www/html \
+    -v /home/git/docker-data/nextcloud/apps:/var/www/html/custom_apps \
+    -v /home/git/docker-data/nextcloud/config:/var/www/html/config \
+    -v /home/git/docker-data/nextcloud/data:/var/www/html/data \
+    -p 10080:80 \
+    --name nextcloud \
+    rds.avatech.com.cn:8082/nextcloud
+  ```
+
+  ```
+  $ docker pull onlyoffice/documentserver
+  $ docker run --privileged=true \
+    -i -t -d -p 8000:80 --restart=always \
+    --name onlyoffice-document-server \
+    -v /home/git/docker-data/onlyoffice/DocumentServer/logs:/var/log/onlyoffice \
+    -v /home/git/docker-data/onlyoffice/DocumentServer/data:/var/www/onlyoffice/Data \
+    -v /home/git/docker-data/onlyoffice/DocumentServer/lib:/var/lib/onlyoffice \
+    -v /home/git/docker-data/onlyoffice/DocumentServer/db:/var/lib/postgresql \
+    onlyoffice/documentserver
+  ```
+
+  + **OpenProject**
+
+  ```
+  # $ docker pull openproject/community
+  $ docker pull openproject/community:11
+  $ docker run --privileged=true -d \
+    --name openproject \
+    -p 1080:80 -e SECRET_KEY_BASE=secret \
+    -v /home/admin/dockers/openproject/pgdata:/var/openproject/pgdata \
+    -v /home/admin/dockers/openproject/assets:/var/openproject/assets \
+    openproject/community:11
+  $ sudo firewall-cmd --zone=public --add-port=1080/tcp --permanent
+  ```
+
+  + ***Odoo***
+
+  ```
+  $ docker pull postgres:10
+  $ docker run --privileged=true -d \
+    --name odoo-postgres \
+    -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo \
+    -e POSTGRES_DB=postgres -e PGDATA=/var/lib/postgresql/data/pgdata \
+    -v /home/admin/dockers/odoo-postgres/conf:/etc/postgresql \
+    -v /home/admin/dockers/odoo-postgres/data:/var/lib/postgresql/data \
+    -p 5432:5432 \
+    postgres:10
+  $ sudo firewall-cmd --zone=public --add-port=5432/tcp --permanent
+  $ docker pull odoo
+  $ docker run --privileged=true -d \
+    --name odoo-web \
+    -v /home/admin/dockers/odoo-web/data:/var/lib/odoo \
+    -v /home/admin/dockers/odoo-web/config:/etc/odoo \
+    -v /home/admin/dockers/odoo-web/addons:/mnt/extra-addons \
+    -p 8069:8069 \
+    --link odoo-postgres:db \
+    odoo
+  docker run --privileged=true -d \
+    --name odoo-web \
+    -v /home/admin/dockers/odoo-web/addons:/mnt/extra-addons \
+    -p 8069:8069 \
+    --link odoo-postgres:db \
+    odoo
+  $ sudo firewall-cmd --zone=public --add-port=8069/tcp --permanent
+  ```
+
+  + ***Docker on Windows***
+
+  *PowerShell*
+
+  ```
+  $ Install-Module -Name DockerMsftProvider -Repository PSGallery -Force
+  $ Install-Package -Name docker -ProviderName DockerMsftProvider
+  # $ install-package -name docker -providername DockerMsftProvider -Verbose
+  $ Restart-Computer -Force
+  ```
+
+![docker on Win](./static/Oct_1.png)
+
+![docker on Win](./static/Oct_2.png)
+
+![docker on Win](./static/Oct_3.png)
+
+  *Error*
+
+  > error during connect: Get http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.40/version: open //./pipe/docker_engine: The system cannot find the file specified. In the default daemon configuration on Windows, the docker client must be run elevated to connect. This error may also indicate that the docker daemon is not running.
+
+  ```
+  $ Get-Host | Select-Object Version
+  > Version
+    -------
+    5.1.14393.3471
+
+  $ [Net.ServicePointManager]::SecurityProtocol
+  > Ssl3, Tls
+
+  $ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NetFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Value '1' -Type DWord
+
+  $ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NetFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Value '1' -Type DWord
+
+  # Restart Powershell and check for supported security protocols.
+  $ [Net.ServicePointManager]::SecurityProtocol
+  > Tls, Tls11, Tls12
+
+  $ Install-Module PowershellGet -Force
   ```
