@@ -376,3 +376,52 @@
       "disable-legacy-registry": false
   }
   ```
+
+
+### Scoop
+
+  + **Install**
+
+  > 用户名不含中文字符
+  > Windows 7 SP1+ / Windows Server 2008+
+  > PowerShell 3+
+  > .NET Framework 4.5+
+  > 若Powershell或.NET Franmework版本过旧，更新后重启即可。
+  > 若不清楚版本号，可Win+R运行powershell，输入以下命令获取版本号。
+
+  ``` PowerShell
+  $PSVersionTable.PSVersion.Major   #查看Powershell版本
+  $PSVersionTable.CLRVersion.Major  #查看.NET Framework版本
+  ```
+
+  ```
+  $env:SCOOP='C:\Scoop'
+
+  # [Environment]::SetEnvironmentVariable('SCOOP', $env:SCOOP, 'User') #用户环境变量
+
+  [Environment]::SetEnvironmentVariable('SCOOP', $env:SCOOP, 'Machine') #系统环境变量
+
+  Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+
+  Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+
+  # or shorter
+  iwr -useb get.scoop.sh | iex
+
+  # 更改系统环境变量 Path 追加 C:\Scoop\shims
+  ```
+
+### NodeJS in Windows
+
+  ```
+  npm config ls
+  npm config set prefix "C:\Program Files\nodejs\node_global"
+  npm config set cache "C:\Program Files\nodejs\node_cache"
+  npm config set registry https://registry.npm.taobao.org
+
+  # 用户变量 path 中把 C:\Users\Administrator\AppData\Roaming\npm;---改为----C:\Program Files\nodejs\node_global
+
+  # 在系统变量中 新增变量NODE_PATH----- C:\Program Files\nodejs\node_global\node_modules
+
+  # 系统变量中 path:C:\Program Files\nodejs\;C:\Program Files\nodejs\node_global\node_modules;
+  ```
