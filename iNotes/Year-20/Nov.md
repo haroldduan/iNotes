@@ -226,6 +226,12 @@ ANDROID_HOME=C:\Android\Sdk
 
 https://www.dartcn.com/
 
+https://www.dartcn.com/guides/libraries/
+
+https://www.dartcn.com/guides/language/
+
+https://www.dartcn.com/tools/
+
 https://dart.cn/
 
 https://flutter.cn/docs/get-started/install/windows
