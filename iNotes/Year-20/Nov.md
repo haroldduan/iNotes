@@ -239,3 +239,81 @@ https://zhuanlan.zhihu.com/p/53672286
 https://blog.csdn.net/kabuto_hui/article/details/79505262
 
 https://pub.flutter-io.cn/
+
+
+### Flutter building
+
+**on Android**
+
++ Generate App Keystore
+
+```
+$ keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias key
+```
+
++ New keystore-properties *key.properties* file
+
+*Path:/android/key.properties*
+
+```key.properties
+storePassword=avatech
+keyPassword=avatech
+keyAlias=key
+storeFile=C:\\WorkSpaces\\Harold.Duan\\SourceCode\\dart\\app_test\\android\\app\\key\\my-release-key.jks
+```
+
++ Update grdle *build.gradle* file
+
+*Path:/android/app/build.gradle*
+
+```build.gradle add contents
+...
+
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+...
+android {
+  ...
+
+  signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.release
+        }
+    }
+
+  ...
+}
+```
+
++ Run building
+
+```
+$ flutter build apk --release
+# or
+$ flutter build apk
+```
+
+*Outputs path:build/app/outputs/apk/release/*
+
+*Usefulling URLs*
+
+https://www.cnblogs.com/gdsblog/p/10100972.html
+
+https://www.jianshu.com/p/fabcfd621e01
+
+https://blog.csdn.net/ruoshui_t/article/details/100742079
+
+https://blog.csdn.net/qq_15003505/article/details/62041540
