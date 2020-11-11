@@ -240,6 +240,9 @@ https://blog.csdn.net/kabuto_hui/article/details/79505262
 
 https://pub.flutter-io.cn/
 
+https://flutterchina.club/tutorials/
+
+https://www.w3cschool.cn/nxvsy/
 
 ### Flutter building
 
