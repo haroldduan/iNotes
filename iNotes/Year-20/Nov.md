@@ -538,3 +538,18 @@ class FlutterReduxApp extends StatelessWidget {
 
 *Flutter 在 Debug 和 Release 下分别是 JIT 和 AOT 模式，而在 DEBUG 下，是支持 Hotload 的，而且十分丝滑。但是需要注意的是：**如果开发过程中安装了新的第三方包 ，而新的第三方包如果包含了原生代码，需要停止后重新运行哦。***  
 *pubspec.yaml 文件下就是我们的包依赖目录，其中 ^ 代表大于等于，一般情况下 upgrade和 get 都能达到下载包的作用。但是：**upgrade 会在包有更新的情况下，更新 pubspec.lock 文件下包的版本 。***
+
++ ***Error Warnings***
+
+```
+Error: ADB exited with exit code 1
+Performing Streamed Install
+
+adb: failed to install C:\WorkSpaces\Harold.Duan\SourceCode\dart\app_warehouse_task\build\app\outputs\flutter-apk\app.apk: Failure [INSTALL_FAILED_INSUFFICIENT_STORAGE]
+Error launching application on Android SDK built for x86 64.
+Exited (sigterm)
+```
+
+  - *Reboot emulator*
+
+  - *Remove old emulator and create newest emulator*
