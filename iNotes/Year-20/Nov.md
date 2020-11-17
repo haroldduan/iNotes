@@ -311,6 +311,31 @@ android {
 }
 ```
 
++ Update App Name & Icons
+
+*Path:/android/app/src/main/AndroidManifest.xml*  
+
+``` AndroidManifest.xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.app_warehouse_task">
+    <!-- io.flutter.app.FlutterApplication is an android.app.Application that
+         calls FlutterMain.startInitialization(this); in its onCreate method.
+         In most cases you can leave this as-is, but you if you want to provide
+         additional functionality it is fine to subclass or reimplement
+         FlutterApplication and put your custom class here. -->
+    <application
+        android:name="io.flutter.app.FlutterApplication"
+        android:label="Dahupt" #app name
+        android:icon="@mipmap/ic_launcher"> #app icon
+        ...
+    ...
+...
+```
+
+*Path:/android/app/src/main/res/*
+
+***Folders: mipmap-xxx***
+
 + Run building
 
 ```
