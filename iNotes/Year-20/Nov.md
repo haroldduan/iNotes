@@ -254,6 +254,18 @@ https://flutterchina.club/tutorials/
 
 https://www.w3cschool.cn/nxvsy/
 
+5. Package management
+
+**package toolkit:** *[pub](https://pub.dev/)*
+
+**dependencies file***pubspec.yaml*
+
+```
+$ flutter pub get
+# or 
+$ pub get #not exists flutter env
+```
+
 ### Flutter building
 
 **on Android**
@@ -366,8 +378,35 @@ https://blog.csdn.net/qq_15003505/article/details/62041540
 
 ***[Flutter完整开发实战详解](https://mp.weixin.qq.com/mp/homepage?__biz=Mzg3NTA3MDIxOA==&hid=2&sn=679ad0212470f5155c4412e678411374&scene=1&devicetype=iOS14.1&version=17001228&lang=en&nettype=3G+&ascene=7&session_us=gh_178db80346fd&fontScale=100)***
 
-*pub package path:C:\Users\Administrator\AppData\Local\Pub\\*
+*pub package path:C:\Users\Administrator\AppData\Local\Pub\\* #in dart
 
+*pub package path:flutter-path\.pub-cache\\* #in flutter
+
++ About Emulator
+
+*Into Android emulator by adb*
+
+  - run cmd as Administrator
+
+  - cd AndroidSDK/platform-tools
+
+  - run adb shell
+
+  ```
+  $ adb shell
+  ```
+
+  - access android emulator system
+
+  ``` for example: app database file
+  $ cd /storage/emulator/0/Android/data/com.example.sqflite_test/files
+  ```
+
+  - get file by adb
+
+  ```
+  $ adb pull /storage/emulator/0/Android/data/com.example.sqflite_test/files
+  ```
 
 *Tips*
 
