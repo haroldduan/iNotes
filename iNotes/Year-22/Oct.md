@@ -71,4 +71,16 @@
     -v /home/git/certs/gitea:/certs \
     --name=gitea \
     gitea/gitea:1.17.2
+  
+  $ docker run --privileged=true --restart=always -d \
+    --network=portainer-net --network-alias=portainer \
+    --ip=172.18.0.2 \
+    -p 9443:9443 -p 9000:8000 \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /home/git/docker-data/portainer:/data \
+    -v /home/git/certs/apache:/certs \
+    --name portainer \
+    rds.avacloud.com.cn:8082/portainer/portainer-ce:latest \
+    --sslcert /certs/rds.avacloud.com.cn.crt \
+    --sslkey /certs/rds.avacloud.com.cn.key
   ```
