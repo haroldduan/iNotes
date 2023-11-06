@@ -13,12 +13,19 @@ $ vim app.ini
 ```
 
 ***Old app.ini:***
-    server]
+    [server]
     APP_DATA_PATH=/data/gitea
     ...
     LFS_START_SERVER=true
     LFS_CONTENT_PATH=/data/git/lfs
     LFS_JWT_SECRET=xxx
+
+    [mailer]
+    ENABLED = true
+    HOST = smtp.qiye.aliyun.com:465
+    FROM = avardd@avatech.com.cn
+    USER = avardd@avatech.com.cn
+    PASSWD = xxxxx
 
 ***New app.ini:***
     [lfs]
@@ -29,8 +36,20 @@ $ vim app.ini
     ...
     LFS_START_SERVER=true
     LFS_JWT_SECRET=xxx
+    LOCAL_ROOT_URL = https://rds.avacloud.com.cn:7070/
+
+    [mailer]
+    ENABLED = true
+    ; HOST = smtp.qiye.aliyun.com:465
+    PROTOCOL = smtps
+    SMTP_ADDR = smtp.qiye.aliyun.com
+    SMTP_PORT = 465
+    FROM = avardd@avatech.com.cn
+    USER = avardd@avatech.com.cn
+    PASSWD = xxxxx
 
 ```
+# Exists bugs version 1.20.5
 $ docker run --privileged=true --restart=always -d \
     --network=gitea-net --network-alias=gitea \
     --ip=172.20.0.2 \
